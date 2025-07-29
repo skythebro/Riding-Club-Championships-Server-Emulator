@@ -1,0 +1,4 @@
+images/
+debug_logs/
+users.db
+*.pyc

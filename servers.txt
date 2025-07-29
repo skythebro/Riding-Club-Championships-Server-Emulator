@@ -1,0 +1,14 @@
+[
+    {
+        "Name": "local_emulator",
+        "WebSocketUrl": "ws://127.0.0.1:80/websocket",
+        "Host": "127.0.0.1",
+        "Port": 27130,
+        "PolicyPort": 27132,
+        "ServerURL": "http://127.0.0.1:80/mochiweb/",
+        "ImageURL": "http://127.0.0.1:80/rcc/",
+        "ProxyURL": "http://127.0.0.1:80/",
+        "FacebookOGUrl": "http://127.0.0.1:80/rcc/open_graph/",
+        "FacebookApp": "ridingclub"
+    }
+]
