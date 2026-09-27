@@ -1,0 +1,4884 @@
+{
+    "scores_tab_club": {
+        "text": "Scores",
+        "data": {
+            "ru": {
+                "original": "Scores",
+                "translation": "Очки"
+            }
+        }
+    },
+    "scores_tab_global": {
+        "text": "Global",
+        "data": {
+            "ru": {
+                "original": "Global",
+                "translation": "Глобальный"
+            }
+        }
+    },
+    "scores_tab_friend": {
+        "text": "Friends",
+        "data": {
+            "ru": {
+                "original": "Friends",
+                "translation": "Друзья"
+            }
+        }
+    },
+    "main_menu_guild_create": {
+        "text": "Create Stable Club",
+        "data": {
+            "ru": {
+                "original": "Create Stable Club",
+                "translation": "Создать стабильный клуб"
+            }
+        }
+    },
+    "main_manu_guild_requests": {
+        "text": "Requests",
+        "data": {
+            "ru": {
+                "original": "Requests",
+                "translation": "Запросы"
+            }
+        }
+    },
+    "main_menu_guild_search": {
+        "text": "Search",
+        "data": {
+            "ru": {
+                "original": "Search",
+                "translation": "Поиск"
+            }
+        }
+    },
+    "guild_change_name_warning": {
+        "text": "Changing the guild name will cost coins.",
+        "data": {
+            "ru": {
+                "original": "Changing the guild name will cost coins.",
+                "translation": "Смена названия гильдии будет стоить монеты."
+            }
+        }
+    },
+    "stats_speed": {
+        "text": "Speed",
+        "data": {
+            "ru": {
+                "original": "Speed",
+                "translation": "Скорость"
+            }
+        }
+    },
+    "stats_str": {
+        "text": "Strength",
+        "data": {
+            "ru": {
+                "original": "Strength",
+                "translation": "Сила"
+            }
+        }
+    },
+    "stats_obedience": {
+        "text": "Obedience",
+        "data": {
+            "ru": {
+                "original": "Obedience",
+                "translation": "Послушание"
+            }
+        }
+    },
+    "stats_stamina": {
+        "text": "Stamina",
+        "data": {
+            "ru": {
+                "original": "Stamina",
+                "translation": "Выносливость"
+            }
+        }
+    },
+    "stats_acc": {
+        "text": "Acceleration",
+        "data": {
+            "ru": {
+                "original": "Acceleration",
+                "translation": "Ускорение"
+            }
+        }
+    },
+    "stats_timing": {
+        "text": "Timing",
+        "data": {
+            "ru": {
+                "original": "Timing",
+                "translation": "Тайминг"
+            }
+        }
+    },
+    "guild_change_icon_warning": {
+        "text": "Changing the guild icon will cost coins.",
+        "data": {
+            "ru": {
+                "original": "Changing the guild icon will cost coins.",
+                "translation": "Смена иконки гильдии будет стоить монеты."
+            }
+        }
+    },
+    "main_menu_friends": {
+        "text": "Friends",
+        "data": {
+            "ru": {
+                "original": "Friends",
+                "translation": "Друзья"
+            }
+        }
+    },
+    "main_menu_invite_friends": {
+        "text": "Invite Friends",
+        "data": {
+            "ru": {
+                "original": "Invite Friends",
+                "translation": "Пригласить друзей"
+            }
+        }
+    },
+    "chat_button_close": {
+        "text": "Close",
+        "data": {
+            "ru": {
+                "original": "Close",
+                "translation": "Закрыть"
+            }
+        }
+    },
+    "chat_button_send": {
+        "text": "Send",
+        "data": {
+            "ru": {
+                "original": "Send",
+                "translation": "Отправить"
+            }
+        }
+    },
+    "common_attach": {
+        "text": "Attach",
+        "data": {
+            "ru": {
+                "original": "Attach",
+                "translation": "Прикрепить"
+            }
+        }
+    },
+    "common_text_days": {
+        "text": "days",
+        "data": {
+            "ru": {
+                "original": "days",
+                "translation": "дней"
+            }
+        }
+    },
+    "common_text_hours": {
+        "text": "hours",
+        "data": {
+            "ru": {
+                "original": "hours",
+                "translation": "часов"
+            }
+        }
+    },
+    "common_text_minutes": {
+        "text": "minutes",
+        "data": {
+            "ru": {
+                "original": "minutes",
+                "translation": "минут"
+            }
+        }
+    },
+    "common_text_seconds": {
+        "text": "seconds",
+        "data": {
+            "ru": {
+                "original": "seconds",
+                "translation": "секунд"
+            }
+        }
+    },
+    "daily_bonus_next_day": {
+        "text": "Next bonus in {0}",
+        "data": {
+            "ru": {
+                "original": "Next bonus in {0}",
+                "translation": "Следующий бонус через {0}"
+            }
+        }
+    },
+    "main_menu_player": {
+        "text": "Player",
+        "data": {
+            "ru": {
+                "original": "Player",
+                "translation": "Игрок"
+            }
+        }
+    },
+    "main_menu_player_grooming": {
+        "text": "Grooming",
+        "data": {
+            "ru": {
+                "original": "Grooming",
+                "translation": "Уход"
+            }
+        }
+    },
+    "main_menu_player_inventory": {
+        "text": "Inventory",
+        "data": {
+            "ru": {
+                "original": "Inventory",
+                "translation": "Инвентарь"
+            }
+        }
+    },
+    "main_menu_player_stats": {
+        "text": "Stats",
+        "data": {
+            "ru": {
+                "original": "Stats",
+                "translation": "Статистика"
+            }
+        }
+    },
+    "main_menu_player_change_avatar": {
+        "text": "Change horse",
+        "data": {
+            "ru": {
+                "original": "Change horse",
+                "translation": "Сменить лошадь"
+            }
+        }
+    },
+    "main_menu_guild_your": {
+        "text": "My club",
+        "data": {
+            "ru": {
+                "original": "My club",
+                "translation": "Мой клуб"
+            }
+        }
+    },
+    "main_menu_exit": {
+        "text": "Exit",
+        "data": {
+            "ru": {
+                "original": "Exit",
+                "translation": "Выход"
+            }
+        }
+    },
+    "main_menu_ride_play": {
+        "text": "Ride & Play",
+        "data": {
+            "ru": {
+                "original": "Ride & Play",
+                "translation": "Выездка и игра"
+            }
+        }
+    },
+    "main_menu_ride_play_play_alone": {
+        "text": "Play Alone",
+        "data": {
+            "ru": {
+                "original": "Play Alone",
+                "translation": "Играть в одиночку"
+            }
+        }
+    },
+    "main_menu_ride_play_ranked_match": {
+        "text": "Ranked Match",
+        "data": {
+            "ru": {
+                "original": "Ranked Match",
+                "translation": "Ранговый матч"
+            }
+        }
+    },
+    "main_menu_ride_play_weekly_showdown": {
+        "text": "Weekly Showdown",
+        "data": {
+            "ru": {
+                "original": "Weekly Showdown",
+                "translation": "Еженедельное противостояние"
+            }
+        }
+    },
+    "main_menu_ride_play_paddock": {
+        "text": "Paddock",
+        "data": {
+            "ru": {
+                "original": "Paddock",
+                "translation": "Паддок"
+            }
+        }
+    },
+    "common_guild": {
+        "text": "Stable Club",
+        "data": {
+            "ru": {
+                "original": "Stable Club",
+                "translation": "Стабильный клуб"
+            }
+        }
+    },
+    "common_guilds": {
+        "text": "Stable Clubs",
+        "data": {
+            "ru": {
+                "original": "Stable Clubs",
+                "translation": "Стабильные клубы"
+            }
+        }
+    },
+    "main_menu_shop": {
+        "text": "Shop",
+        "data": {
+            "ru": {
+                "original": "Shop",
+                "translation": "Магазин"
+            }
+        }
+    },
+    "main_menu_ladder": {
+        "text": "Ladder",
+        "data": {
+            "ru": {
+                "original": "Ladder",
+                "translation": "Лестница"
+            }
+        }
+    },
+    "main_menu_course_editor": {
+        "text": "Course Editor",
+        "data": {
+            "ru": {
+                "original": "Course Editor",
+                "translation": "Редактор курсов"
+            }
+        }
+    },
+    "main_menu_news": {
+        "text": "News",
+        "data": {
+            "ru": {
+                "original": "News",
+                "translation": "Новости"
+            }
+        }
+    },
+    "chat_enter_message": {
+        "text": "Enter message",
+        "data": {
+            "ru": {
+                "original": "Enter message",
+                "translation": "Введите сообщение"
+            }
+        }
+    },
+    "main_menu_info_pro_rider": {
+        "text": "Pro Rider",
+        "data": {
+            "ru": {
+                "original": "Pro Rider",
+                "translation": "Профессиональный наездник"
+            }
+        }
+    },
+    "gui_main_menu_ap_progress_enegetic": {
+        "text": "Energetic",
+        "data": {}
+    },
+    "gui_main_menu_ap_progress_allstats": {
+        "text": "All Stats",
+        "data": {
+            "ru": {
+                "original": "All Stats",
+                "translation": "Все характеристики"
+            }
+        }
+    },
+    "main_menu_want_xc": {
+        "text": "Cross country",
+        "data": {
+            "ru": {
+                "original": "Cross country",
+                "translation": "Кросс"
+            }
+        }
+    },
+    "main_menu_info_goto_pro": {
+        "text": "Become a Pro Rider Subscribe now!",
+        "data": {
+            "ru": {
+                "original": "Become a Pro Rider Subscribe now!",
+                "translation": "Станьте профессиональным наездником Подпишитесь сейчас!"
+            }
+        }
+    },
+    "main_menu_open_game_page": {
+        "text": "Open game Page",
+        "data": {
+            "ru": {
+                "original": "Open game Page",
+                "translation": "Открыть страницу игры"
+            }
+        }
+    },
+    "main_menu_open_game_page_tooltip": {
+        "text": "Open the game page",
+        "data": {
+            "ru": {
+                "original": "Open the game page",
+                "translation": "Откройте страницу игры"
+            }
+        }
+    },
+    "main_menu_subscription_information": {
+        "text": "Become a Pro Rider",
+        "data": {
+            "ru": {
+                "original": "Become a Pro Rider",
+                "translation": "Станьте профессиональным наездником"
+            }
+        }
+    },
+    "main_menu_subscription_information_tooltip": {
+        "text": "Subscription details",
+        "data": {
+            "ru": {
+                "original": "Subscription details",
+                "translation": "Подробнее о подписке"
+            }
+        }
+    },
+    "common_info_level": {
+        "text": "Level: {0}",
+        "data": {
+            "ru": {
+                "original": "Level: {0}",
+                "translation": "Уровень: {0}"
+            }
+        }
+    },
+    "common_info_rank": {
+        "text": "Rank: {0}",
+        "data": {
+            "ru": {
+                "original": "Rank: {0}",
+                "translation": "Ранг: {0}"
+            }
+        }
+    },
+    "play_alone_tabs_official": {
+        "text": "Official",
+        "data": {
+            "ru": {
+                "original": "Official",
+                "translation": "Официальные"
+            }
+        }
+    },
+    "play_alone_tabs_i_like": {
+        "text": "I like",
+        "data": {
+            "ru": {
+                "original": "I like",
+                "translation": "Мне нравятся"
+            }
+        }
+    },
+    "play_alone_tabs_friends": {
+        "text": "Friends",
+        "data": {
+            "ru": {
+                "original": "Friends",
+                "translation": "Друзья"
+            }
+        }
+    },
+    "play_alone_tabs_new": {
+        "text": "New",
+        "data": {
+            "ru": {
+                "original": "New",
+                "translation": "Новые"
+            }
+        }
+    },
+    "play_alone_tabs_likes": {
+        "text": "Likes",
+        "data": {
+            "ru": {
+                "original": "Likes",
+                "translation": "Лайки"
+            }
+        }
+    },
+    "play_alone_tabs_likes_per_week": {
+        "text": "Likes Per Week",
+        "data": {
+            "ru": {
+                "original": "Likes Per Week",
+                "translation": "Лайки в неделю"
+            }
+        }
+    },
+    "play_alone_tabs_today_selection": {
+        "text": "Today's Selection",
+        "data": {
+            "ru": {
+                "original": "Today's Selection",
+                "translation": "Выбор дня"
+            }
+        }
+    },
+    "play_alone_tabs_my_courses": {
+        "text": "My Courses",
+        "data": {
+            "ru": {
+                "original": "My Courses",
+                "translation": "Мои курсы"
+            }
+        }
+    },
+    "play_alone_tabs_search": {
+        "text": "Search",
+        "data": {
+            "ru": {
+                "original": "Search",
+                "translation": "Поиск"
+            }
+        }
+    },
+    "gui_wsinformer_qualifiedPassText": {
+        "text": "You qualified for the final.",
+        "data": {
+            "ru": {
+                "original": "You qualified for the final.",
+                "translation": "Вы прошли в финал."
+            }
+        }
+    },
+    "gui_wsinformer_qualifiedDidntPassText": {
+        "text": "You did not qualify.",
+        "data": {
+            "ru": {
+                "original": "You did not qualify.",
+                "translation": "Вы не прошли в финал."
+            }
+        }
+    },
+    "gui_wsinformer_firstPlaceText": {
+        "text": "You finished first.",
+        "data": {
+            "ru": {
+                "original": "You finished first.",
+                "translation": "Вы заняли первое место."
+            }
+        }
+    },
+    "gui_wsinformer_secondPlaceText": {
+        "text": "You finished second.",
+        "data": {
+            "ru": {
+                "original": "You finished second.",
+                "translation": "Вы заняли второе место."
+            }
+        }
+    },
+    "gui_wsinformer_thirdPlaceText": {
+        "text": "You finished third.",
+        "data": {
+            "ru": {
+                "original": "You finished third.",
+                "translation": "Вы заняли третье место."
+            }
+        }
+    },
+    "gui_wsinformer_top10PlaceText": {
+        "text": "You finished in the top 10.",
+        "data": {
+            "ru": {
+                "original": "You finished in the top 10.",
+                "translation": "Вы в десятке лучших."
+            }
+        }
+    },
+    "gui_wsinformer_top50PlaceText": {
+        "text": "You finished in the top 50.",
+        "data": {
+            "ru": {
+                "original": "You finished in the top 50.",
+                "translation": "Вы в пятидесяти лучших."
+            }
+        }
+    },
+    "gui_wsinformer_top100PlaceText": {
+        "text": "You finished in the top 100.",
+        "data": {
+            "ru": {
+                "original": "You finished in the top 100.",
+                "translation": "Вы в сотне лучших."
+            }
+        }
+    },
+    "stats_str_descr": {
+        "text": "How hard the horse pushes off.",
+        "data": {
+            "ru": {
+                "original": "How hard the horse pushes off.",
+                "translation": "Насколько сильно лошадь отталкивается."
+            }
+        }
+    },
+    "stats_timing_descr": {
+        "text": "How well the horse meets the jump.",
+        "data": {
+            "ru": {
+                "original": "How well the horse meets the jump.",
+                "translation": "Насколько точно лошадь выходит на препятствие."
+            }
+        }
+    },
+    "stats_speed_descr": {
+        "text": "Top speed on the flat.",
+        "data": {
+            "ru": {
+                "original": "Top speed on the flat.",
+                "translation": "Максимальная скорость на прямой."
+            }
+        }
+    },
+    "stats_acc_descr": {
+        "text": "How fast the horse reaches speed.",
+        "data": {
+            "ru": {
+                "original": "How fast the horse reaches speed.",
+                "translation": "Как быстро лошадь набирает скорость."
+            }
+        }
+    },
+    "stats_stamina_descr": {
+        "text": "How long the horse can keep going.",
+        "data": {
+            "ru": {
+                "original": "How long the horse can keep going.",
+                "translation": "Как долго лошадь держит темп."
+            }
+        }
+    },
+    "stats_obedience_descr": {
+        "text": "How closely the horse follows the aids.",
+        "data": {
+            "ru": {
+                "original": "How closely the horse follows the aids.",
+                "translation": "Насколько точно лошадь слушается."
+            }
+        }
+    },
+    "messages_buttons_buy_coins": {
+        "text": "Purchase Coins",
+        "data": {
+            "ru": {
+                "original": "Purchase Coins",
+                "translation": "Купить монеты"
+            }
+        }
+    },
+    "daily_bonus_next_day_notify": {
+        "text": "Next bonus in {0}",
+        "data": {
+            "ru": {
+                "original": "Next bonus in {0}",
+                "translation": "Следующий бонус через {0}"
+            }
+        }
+    },
+    "ce_slots_tab_showjump": {
+        "text": "ShowJump",
+        "data": {
+            "ru": {
+                "original": "ShowJump",
+                "translation": "Выездка"
+            }
+        }
+    },
+    "play_alone_tooltip_toogle_showjump_courses": {
+        "text": "Toggle ShowJump Courses",
+        "data": {
+            "ru": {
+                "original": "Toggle ShowJump Courses",
+                "translation": "Переключить курсы выездки"
+            }
+        }
+    },
+    "play_alone_tooltip_toogle_ability_courses": {
+        "text": "Toggle Ability Courses",
+        "data": {
+            "ru": {
+                "original": "Toggle Ability Courses",
+                "translation": "Переключить курсы способностей"
+            }
+        }
+    },
+    "ce_slots_tab_agility": {
+        "text": "Agility",
+        "data": {
+            "ru": {
+                "original": "Agility",
+                "translation": "Скорость"
+            }
+        }
+    },
+    "common_tooltip_coins": {
+        "text": "Coins",
+        "data": {
+            "ru": {
+                "original": "Coins",
+                "translation": "Монеты"
+            }
+        }
+    },
+    "ce_slots_tooltip_showjump": {
+        "text": "Show jumping courses",
+        "data": {
+            "ru": {
+                "original": "Show jumping courses",
+                "translation": "Конкуры"
+            }
+        }
+    },
+    "ce_slots_tooltip_agility": {
+        "text": "Agility courses",
+        "data": {
+            "ru": {
+                "original": "Agility courses",
+                "translation": "Маршруты"
+            }
+        }
+    },
+    "ce_slots_buy_showjump_slot": {
+        "text": "Click here to obtain a new Show Jumping slot",
+        "data": {
+            "ru": {
+                "original": "Click here to obtain a new Show Jumping slot",
+                "translation": "Нажмите здесь, чтобы получить новый слот для выездки"
+            }
+        }
+    },
+    "ce_slots_buy_agility_slot": {
+        "text": "Click here to obtain a new Agility slot",
+        "data": {
+            "ru": {
+                "original": "Click here to obtain a new Agility slot",
+                "translation": "Нажмите здесь, чтобы получить новый слот для скорости"
+            }
+        }
+    },
+    "paddock_leave_paddock": {
+        "text": "Leave paddock",
+        "data": {
+            "ru": {
+                "original": "Leave paddock",
+                "translation": "Покинуть выездку"
+            }
+        }
+    },
+    "gui_camera_change_camera": {
+        "text": "Press C to change camera",
+        "data": {
+            "ru": {
+                "original": "Press C to change camera",
+                "translation": "Нажмите C для смены камеры"
+            }
+        }
+    },
+    "gui_camera_halfperson": {
+        "text": "Saddle view camera selected",
+        "data": {
+            "ru": {
+                "original": "Saddle view camera selected",
+                "translation": "Камера с седла выбрана"
+            }
+        }
+    },
+    "gui_camera_firstperson": {
+        "text": "Rider view camera selected",
+        "data": {
+            "ru": {
+                "original": "Rider view camera selected",
+                "translation": "Камера от первого лица выбрана"
+            }
+        }
+    },
+    "gui_camera_thirdperson": {
+        "text": "Paddock view camera selected",
+        "data": {
+            "ru": {
+                "original": "Paddock view camera selected",
+                "translation": "Камера с выездки выбрана"
+            }
+        }
+    },
+    "messages_shop_not_enough_coins": {
+        "text": "You don't have enough coins to buy this item",
+        "data": {
+            "ru": {
+                "original": "You don't have enough coins to buy this item",
+                "translation": "У вас недостаточно монет для покупки этого предмета"
+            }
+        }
+    },
+    "messages_buttons_buy_now": {
+        "text": "Buy Now",
+        "data": {
+            "ru": {
+                "original": "Buy Now",
+                "translation": "Купить сейчас"
+            }
+        }
+    },
+    "messages_buttons_later": {
+        "text": "Later",
+        "data": {
+            "ru": {
+                "original": "Later",
+                "translation": "Позже"
+            }
+        }
+    },
+    "messages_grooming_on_horse_already_groomed": {
+        "text": "This horse is already clean.",
+        "data": {
+            "ru": {
+                "original": "This horse is already clean.",
+                "translation": "Эта лошадь уже чистая."
+            }
+        }
+    },
+    "common_text_yes": {
+        "text": "Yes",
+        "data": {
+            "ru": {
+                "original": "Yes",
+                "translation": "Да"
+            }
+        }
+    },
+    "common_text_no": {
+        "text": "No",
+        "data": {
+            "ru": {
+                "original": "No",
+                "translation": "Нет"
+            }
+        }
+    },
+    "grooming_options": {
+        "text": "Grooming",
+        "data": {
+            "ru": {
+                "original": "Grooming",
+                "translation": "Уход"
+            }
+        }
+    },
+    "grooming_button_not_now": {
+        "text": "Not now",
+        "data": {
+            "ru": {
+                "original": "Not now",
+                "translation": "Не сейчас"
+            }
+        }
+    },
+    "grooming_button_groom_horse": {
+        "text": "Groom your horse",
+        "data": {
+            "ru": {
+                "original": "Groom your horse",
+                "translation": "Ухаживайте за своей лошадью"
+            }
+        }
+    },
+    "grooming_button_pay_groom": {
+        "text": "Pay to groom {0} coins",
+        "data": {
+            "ru": {
+                "original": "Pay to groom {0} coins",
+                "translation": "Заплатить за уход {0} монет"
+            }
+        }
+    },
+    "grooming_button_stable_hand": {
+        "text": "Use Stable Hand Free",
+        "data": {
+            "ru": {
+                "original": "Use Stable Hand Free",
+                "translation": "Использовать свободные руки в стойле"
+            }
+        }
+    },
+    "grooming_tooltip_stable_hand": {
+        "text": "Pay a stable hand to groom the horse.",
+        "data": {
+            "ru": {
+                "original": "Pay a stable hand to groom the horse.",
+                "translation": "Заплатить конюху за уход."
+            }
+        }
+    },
+    "gui_grooming_exit": {
+        "text": "Exit Grooming",
+        "data": {
+            "ru": {
+                "original": "Exit Grooming",
+                "translation": "Выйти из ухода"
+            }
+        }
+    },
+    "gui_grooming_clean": {
+        "text": "The horse is clean.",
+        "data": {
+            "ru": {
+                "original": "The horse is clean.",
+                "translation": "Лошадь чистая."
+            }
+        }
+    },
+    "shop_exit_shop_button": {
+        "text": "Exit Shop",
+        "data": {
+            "ru": {
+                "original": "Exit Shop",
+                "translation": "Выйти из магазина"
+            }
+        }
+    },
+    "gui_setings_settings": {
+        "text": "Settings",
+        "data": {
+            "ru": {
+                "original": "Settings",
+                "translation": "Настройки"
+            }
+        }
+    },
+    "settings_camera_effects": {
+        "text": "Camera post effects",
+        "data": {
+            "ru": {
+                "original": "Camera post effects",
+                "translation": "Пост-эффекты камеры"
+            }
+        }
+    },
+    "gui_setings_auto_graphics": {
+        "text": "Auto adjust Quality Settings",
+        "data": {
+            "ru": {
+                "original": "Auto adjust Quality settings",
+                "translation": "Автоматическая настройка качества"
+            }
+        }
+    },
+    "gui_setings_adjust_settings": {
+        "text": "Adjust Quality Settings",
+        "data": {
+            "ru": {
+                "original": "Adjust Quality Settings",
+                "translation": "Настроить качество"
+            }
+        }
+    },
+    "gui_setings_high_performance": {
+        "text": "High Performance",
+        "data": {
+            "ru": {
+                "original": "High Performance",
+                "translation": "Высокая производительность"
+            }
+        }
+    },
+    "gui_setings_high_quality": {
+        "text": "High Quality",
+        "data": {
+            "ru": {
+                "original": "High Quality",
+                "translation": "Высокое качество"
+            }
+        }
+    },
+    "gui_setings_music": {
+        "text": "Adjust Music Volume",
+        "data": {
+            "ru": {
+                "original": "Adjust Music Volume",
+                "translation": "Настроить громкость музыки"
+            }
+        }
+    },
+    "gui_setings_low": {
+        "text": "Low",
+        "data": {
+            "ru": {
+                "original": "Low",
+                "translation": "Низкое"
+            }
+        }
+    },
+    "gui_setings_high": {
+        "text": "High",
+        "data": {
+            "ru": {
+                "original": "High",
+                "translation": "Высокое"
+            }
+        }
+    },
+    "gui_setings_sfx": {
+        "text": "Adjust SFX Volume",
+        "data": {
+            "ru": {
+                "original": "Adjust SFX Volume",
+                "translation": "Настроить громкость звуковых эффектов"
+            }
+        }
+    },
+    "gui_setings_apply": {
+        "text": "Apply",
+        "data": {
+            "ru": {
+                "original": "Apply",
+                "translation": "Применить"
+            }
+        }
+    },
+    "game_settings": {
+        "text": "Game Settings",
+        "data": {
+            "ru": {
+                "original": "Game Settings",
+                "translation": "Настройки игры"
+            }
+        }
+    },
+    "chat_button_ignores": {
+        "text": "Ignore List",
+        "data": {
+            "ru": {
+                "original": "Ignore List",
+                "translation": "Список игнорирования"
+            }
+        }
+    },
+    "chat_ignores_list": {
+        "text": "List of ignored players",
+        "data": {
+            "ru": {
+                "original": "List of ignored players",
+                "translation": "Список проигнорированных игроков"
+            }
+        }
+    },
+    "chat_no_ignores": {
+        "text": "No ignored players",
+        "data": {
+            "ru": {
+                "original": "No ignored players",
+                "translation": "Нет проигнорированных игроков"
+            }
+        }
+    },
+    "chat_button_rider_search": {
+        "text": "Rider Search",
+        "data": {
+            "ru": {
+                "original": "Rider Search",
+                "translation": "Поиск наездника"
+            }
+        }
+    },
+    "chat_rider_search": {
+        "text": "Search for a rider",
+        "data": {
+            "ru": {
+                "original": "Search for a rider",
+                "translation": "Поиск наездника"
+            }
+        }
+    },
+    "chat_search": {
+        "text": "Search",
+        "data": {
+            "ru": {
+                "original": "Search",
+                "translation": "Поиск"
+            }
+        }
+    },
+    "common_text_cancel": {
+        "text": "Cancel",
+        "data": {
+            "ru": {
+                "original": "Cancel",
+                "translation": "Отмена"
+            }
+        }
+    },
+    "news_capture": {
+        "text": "RIP to the servers July 26th 2025",
+        "data": {
+            "ru": {
+                "original": "RIP to the servers July 26th 2025",
+                "translation": "RIP серверам 26 июля 2025 года"
+            }
+        }
+    },
+    "news_text": {
+        "text": "Rest in peace Riding Club Championships you will be missed",
+        "data": {
+            "ru": {
+                "original": "Rest in peace Riding Club Championships you will be missed",
+                "translation": "Покойся с миром, Чемпионат по верховой езде, ты будешь нам недоставать"
+            }
+        }
+    },
+    "guild_change_name": {
+        "text": "Change Stable Club",
+        "data": {
+            "ru": {
+                "original": "Change Stable Club",
+                "translation": "Изменить клуб"
+            }
+        }
+    },
+    "guild_only_owner_can_change": {
+        "text": "Only the owner can change that",
+        "data": {
+            "ru": {
+                "original": "Only the owner can change that",
+                "translation": "Только владелец может это изменить"
+            }
+        }
+    },
+    "guild_kick": {
+        "text": "Kick",
+        "data": {
+            "ru": {
+                "original": "Kick",
+                "translation": "Исключить"
+            }
+        }
+    },
+    "guild_make_owner": {
+        "text": "Make owner",
+        "data": {
+            "ru": {
+                "original": "Make owner",
+                "translation": "Сделать владельцем"
+            }
+        }
+    },
+    "guild_make_manager": {
+        "text": "Make manager",
+        "data": {
+            "ru": {
+                "original": "Make manager",
+                "translation": "Сделать менеджером"
+            }
+        }
+    },
+    "guild_make_member": {
+        "text": "Make member",
+        "data": {
+            "ru": {
+                "original": "Make member",
+                "translation": "Сделать участником"
+            }
+        }
+    },
+    "guild_leave": {
+        "text": "Leave",
+        "data": {
+            "ru": {
+                "original": "Leave",
+                "translation": "Выйти"
+            }
+        }
+    },
+    "common_description": {
+        "text": "Description",
+        "data": {
+            "ru": {
+                "original": "Description",
+                "translation": "Описание"
+            }
+        }
+    },
+    "guild_welcome_message": {
+        "text": "Welcome message",
+        "data": {
+            "ru": {
+                "original": "Welcome message",
+                "translation": "Приветствие"
+            }
+        }
+    },
+    "guild_leace_ask": {
+        "text": "Leave this stable club?",
+        "data": {
+            "ru": {
+                "original": "Leave this stable club?",
+                "translation": "Покинуть клуб?"
+            }
+        }
+    },
+    "guild_error_unknown": {
+        "text": "That club change could not be saved",
+        "data": {
+            "ru": {
+                "original": "That club change could not be saved",
+                "translation": "Изменение клуба не сохранилось"
+            }
+        }
+    },
+    "guild_admin_name": {
+        "text": "Club admin",
+        "data": {
+            "ru": {
+                "original": "Club admin",
+                "translation": "Администратор клуба"
+            }
+        }
+    },
+    "guild_news_today": {
+        "text": "Today",
+        "data": {
+            "ru": {
+                "original": "Today",
+                "translation": "Сегодня"
+            }
+        }
+    },
+    "guild_news_yesterday": {
+        "text": "Yesterday",
+        "data": {
+            "ru": {
+                "original": "Yesterday",
+                "translation": "Вчера"
+            }
+        }
+    },
+    "common_text_ok": {
+        "text": "Ok",
+        "data": {
+            "ru": {
+                "original": "Ok",
+                "translation": "Ок"
+            }
+        }
+    },
+    "common_text_buy": {
+        "text": "Buy",
+        "data": {
+            "ru": {
+                "original": "Buy",
+                "translation": "Купить"
+            }
+        }
+    },
+    "common_text_vs": {
+        "text": "vs",
+        "data": {
+            "ru": {
+                "original": "vs",
+                "translation": "против"
+            }
+        }
+    },
+    "common_coins": {
+        "text": "Coins",
+        "data": {
+            "ru": {
+                "original": "Coins",
+                "translation": "Монеты"
+            }
+        }
+    },
+    "common_course": {
+        "text": "Course",
+        "data": {
+            "ru": {
+                "original": "Course",
+                "translation": "Трасса"
+            }
+        }
+    },
+    "common_player": {
+        "text": "Player",
+        "data": {
+            "ru": {
+                "original": "Player",
+                "translation": "Игрок"
+            }
+        }
+    },
+    "common_skill_tickets": {
+        "text": "Skill tickets",
+        "data": {
+            "ru": {
+                "original": "Skill tickets",
+                "translation": "Билеты навыков"
+            }
+        }
+    },
+    "ce_button_save": {
+        "text": "Save",
+        "data": {
+            "ru": {
+                "original": "Save",
+                "translation": "Сохранить"
+            }
+        }
+    },
+    "ce_button_submit": {
+        "text": "Submit",
+        "data": {
+            "ru": {
+                "original": "Submit",
+                "translation": "Отправить"
+            }
+        }
+    },
+    "ce_buy_new_slot": {
+        "text": "Buy a new slot",
+        "data": {
+            "ru": {
+                "original": "Buy a new slot",
+                "translation": "Купить слот"
+            }
+        }
+    },
+    "ce_not_enough_money": {
+        "text": "Not enough coins",
+        "data": {
+            "ru": {
+                "original": "Not enough coins",
+                "translation": "Недостаточно монет"
+            }
+        }
+    },
+    "challenge_ok": {
+        "text": "Ok",
+        "data": {
+            "ru": {
+                "original": "Ok",
+                "translation": "Ок"
+            }
+        }
+    },
+    "challenge_time": {
+        "text": "Time",
+        "data": {
+            "ru": {
+                "original": "Time",
+                "translation": "Время"
+            }
+        }
+    },
+    "challenge_penalties": {
+        "text": "Penalties",
+        "data": {
+            "ru": {
+                "original": "Penalties",
+                "translation": "Штрафы"
+            }
+        }
+    },
+    "challenge_win_title": {
+        "text": "You won",
+        "data": {
+            "ru": {
+                "original": "You won",
+                "translation": "Победа"
+            }
+        }
+    },
+    "daily_bonus_open_reward": {
+        "text": "Open reward",
+        "data": {
+            "ru": {
+                "original": "Open reward",
+                "translation": "Открыть награду"
+            }
+        }
+    },
+    "gui_main_menu_back_to_menu_button": {
+        "text": "Back to menu",
+        "data": {
+            "ru": {
+                "original": "Back to menu",
+                "translation": "В меню"
+            }
+        }
+    },
+    "main_menu_exit_ask": {
+        "text": "Quit the game?",
+        "data": {
+            "ru": {
+                "original": "Quit the game?",
+                "translation": "Выйти из игры?"
+            }
+        }
+    },
+    "messages_buttons_yes": {
+        "text": "Yes",
+        "data": {
+            "ru": {
+                "original": "Yes",
+                "translation": "Да"
+            }
+        }
+    },
+    "messages_buttons_no": {
+        "text": "No",
+        "data": {
+            "ru": {
+                "original": "No",
+                "translation": "Нет"
+            }
+        }
+    },
+    "grooming_not_enough_coins": {
+        "text": "Not enough coins",
+        "data": {
+            "ru": {
+                "original": "Not enough coins",
+                "translation": "Недостаточно монет"
+            }
+        }
+    },
+    "friends_challenge_invite": {
+        "text": "Challenge",
+        "data": {
+            "ru": {
+                "original": "Challenge",
+                "translation": "Вызов"
+            }
+        }
+    },
+    "rm_waiting_found_opponent": {
+        "text": "Opponent found",
+        "data": {
+            "ru": {
+                "original": "Opponent found",
+                "translation": "Соперник найден"
+            }
+        }
+    },
+    "rm_waiting_expanding_search": {
+        "text": "Expanding search",
+        "data": {
+            "ru": {
+                "original": "Expanding search",
+                "translation": "Расширяем поиск"
+            }
+        }
+    },
+    "rm_waiting_looking_for_opponent": {
+        "text": "Looking for an opponent",
+        "data": {
+            "ru": {
+                "original": "Looking for an opponent",
+                "translation": "Ищем соперника"
+            }
+        }
+    },
+    "messages_rm_not_enough_ap_to_play": {
+        "text": "Not enough action points",
+        "data": {
+            "ru": {
+                "original": "Not enough action points",
+                "translation": "Недостаточно очков действий"
+            }
+        }
+    },
+    "gui_cource_result_you_win": {
+        "text": "You win",
+        "data": {
+            "ru": {
+                "original": "You win",
+                "translation": "Победа"
+            }
+        }
+    },
+    "gui_cource_result_you_lost": {
+        "text": "You lost",
+        "data": {
+            "ru": {
+                "original": "You lost",
+                "translation": "Поражение"
+            }
+        }
+    },
+    "gui_cource_result_draw": {
+        "text": "Draw",
+        "data": {
+            "ru": {
+                "original": "Draw",
+                "translation": "Ничья"
+            }
+        }
+    },
+    "gui_cource_result_time": {
+        "text": "Time",
+        "data": {
+            "ru": {
+                "original": "Time",
+                "translation": "Время"
+            }
+        }
+    },
+    "help_paddock": {
+        "text": "Ride around the paddock and collect presents.",
+        "data": {
+            "ru": {
+                "original": "Ride around the paddock and collect presents.",
+                "translation": "Покатайтесь по паддоку и собирайте подарки."
+            }
+        }
+    },
+    "messages_inmatch_menu_showdown_warning": {
+        "text": "Leave this showdown ride?",
+        "data": {
+            "ru": {
+                "original": "Leave this showdown ride?",
+                "translation": "Покинуть заезд?"
+            }
+        }
+    },
+    "messages_buttons_continue": {
+        "text": "Continue",
+        "data": {
+            "ru": {
+                "original": "Continue",
+                "translation": "Продолжить"
+            }
+        }
+    },
+    "messages_buttons_cancel": {
+        "text": "Cancel",
+        "data": {
+            "ru": {
+                "original": "Cancel",
+                "translation": "Отмена"
+            }
+        }
+    },
+    "gui_cource_result_penalties": {
+        "text": "Penalties",
+        "data": {
+            "ru": {
+                "original": "Penalties",
+                "translation": "Штрафы"
+            }
+        }
+    },
+    "gui_track_info_ideal_time": {
+        "text": "Ideal time",
+        "data": {
+            "ru": {
+                "original": "Ideal time",
+                "translation": "Идеальное время"
+            }
+        }
+    },
+    "gui_cource_result_reward": {
+        "text": "Reward",
+        "data": {
+            "ru": {
+                "original": "Reward",
+                "translation": "Награда"
+            }
+        }
+    },
+    "gui_cource_result_highscores": {
+        "text": "High scores",
+        "data": {
+            "ru": {
+                "original": "High scores",
+                "translation": "Рекорды"
+            }
+        }
+    },
+    "gui_cource_result_disqualified": {
+        "text": "Disqualified",
+        "data": {
+            "ru": {
+                "original": "Disqualified",
+                "translation": "Дисквалификация"
+            }
+        }
+    },
+    "gui_cource_result_rank": {
+        "text": "Place {0}",
+        "data": {
+            "ru": {
+                "original": "Place {0}",
+                "translation": "Место {0}"
+            }
+        }
+    },
+    "ce_already_checked_checkpoint": {
+        "text": "That checkpoint is already used",
+        "data": {
+            "ru": {
+                "original": "That checkpoint is already used",
+                "translation": "Эта точка уже использована"
+            }
+        }
+    },
+    "ce_course_completed_for": {
+        "text": "Completed for",
+        "data": {
+            "ru": {
+                "original": "Completed for",
+                "translation": "Пройдено за"
+            }
+        }
+    },
+    "ce_course_is_not_completed": {
+        "text": "Course is not completed",
+        "data": {
+            "ru": {
+                "original": "Course is not completed",
+                "translation": "Трасса не пройдена"
+            }
+        }
+    },
+    "ce_no_obstacle_order": {
+        "text": "Set an obstacle order",
+        "data": {
+            "ru": {
+                "original": "Set an obstacle order",
+                "translation": "Задайте порядок препятствий"
+            }
+        }
+    },
+    "ce_no_obstacles": {
+        "text": "Add an obstacle",
+        "data": {
+            "ru": {
+                "original": "Add an obstacle",
+                "translation": "Добавьте препятствие"
+            }
+        }
+    },
+    "ce_remove": {
+        "text": "Remove",
+        "data": {
+            "ru": {
+                "original": "Remove",
+                "translation": "Убрать"
+            }
+        }
+    },
+    "ce_tooltip_dnd": {
+        "text": "Drag and drop",
+        "data": {
+            "ru": {
+                "original": "Drag and drop",
+                "translation": "Перетащите"
+            }
+        }
+    },
+    "ce_you_have_penalties": {
+        "text": "You have penalties",
+        "data": {
+            "ru": {
+                "original": "You have penalties",
+                "translation": "Есть штрафы"
+            }
+        }
+    },
+    "grooming_subscription_info": {
+        "text": "Stable hand needs a subscription",
+        "data": {
+            "ru": {
+                "original": "Stable hand needs a subscription",
+                "translation": "Конюх доступен по подписке"
+            }
+        }
+    },
+    "paddock_reward_desc_ap": {
+        "text": "Action points",
+        "data": {
+            "ru": {
+                "original": "Action points",
+                "translation": "Очки действий"
+            }
+        }
+    },
+    "paddock_reward_desc_coins": {
+        "text": "Coins",
+        "data": {
+            "ru": {
+                "original": "Coins",
+                "translation": "Монеты"
+            }
+        }
+    },
+    "paddock_reward_desc_head": {
+        "text": "You found",
+        "data": {
+            "ru": {
+                "original": "You found",
+                "translation": "Вы нашли"
+            }
+        }
+    },
+    "paddock_reward_desc_skill_tickets": {
+        "text": "Skill tickets",
+        "data": {
+            "ru": {
+                "original": "Skill tickets",
+                "translation": "Билеты навыков"
+            }
+        }
+    },
+    "paddock_reward_desc_xp": {
+        "text": "Experience",
+        "data": {
+            "ru": {
+                "original": "Experience",
+                "translation": "Опыт"
+            }
+        }
+    },
+    "gui_grooming_exit_question": {
+        "text": "Leave grooming?",
+        "data": {
+            "ru": {
+                "original": "Leave grooming?",
+                "translation": "Закончить уход?"
+            }
+        }
+    },
+    "gui_grooming_cant_use_here": {
+        "text": "You cannot use that here",
+        "data": {
+            "ru": {
+                "original": "You cannot use that here",
+                "translation": "Здесь это нельзя использовать"
+            }
+        }
+    },
+    "challenge_claim_reward": {
+        "text": "Claim reward",
+        "data": {
+            "ru": {
+                "original": "Claim reward",
+                "translation": "Забрать награду"
+            }
+        }
+    },
+    "challenge_disqualified": {
+        "text": "Disqualified",
+        "data": {
+            "ru": {
+                "original": "Disqualified",
+                "translation": "Дисквалификация"
+            }
+        }
+    },
+    "challenge_ok_n_share": {
+        "text": "Ok and share",
+        "data": {
+            "ru": {
+                "original": "Ok and share",
+                "translation": "Ок и поделиться"
+            }
+        }
+    },
+    "challenge_player": {
+        "text": "Player",
+        "data": {
+            "ru": {
+                "original": "Player",
+                "translation": "Игрок"
+            }
+        }
+    },
+    "challenge_state_draw": {
+        "text": "Draw",
+        "data": {
+            "ru": {
+                "original": "Draw",
+                "translation": "Ничья"
+            }
+        }
+    },
+    "challenge_state_lost": {
+        "text": "Lost",
+        "data": {
+            "ru": {
+                "original": "Lost",
+                "translation": "Поражение"
+            }
+        }
+    },
+    "challenge_state_won": {
+        "text": "Won",
+        "data": {
+            "ru": {
+                "original": "Won",
+                "translation": "Победа"
+            }
+        }
+    },
+    "challenge_summary": {
+        "text": "Summary",
+        "data": {
+            "ru": {
+                "original": "Summary",
+                "translation": "Итог"
+            }
+        }
+    },
+    "challenge_wasnt_accepted": {
+        "text": "Challenge was not accepted",
+        "data": {
+            "ru": {
+                "original": "Challenge was not accepted",
+                "translation": "Вызов не принят"
+            }
+        }
+    },
+    "challenge_wasnt_accepted_by_you": {
+        "text": "You did not accept the challenge",
+        "data": {
+            "ru": {
+                "original": "You did not accept the challenge",
+                "translation": "Вы не приняли вызов"
+            }
+        }
+    },
+    "chat_attach_current_course": {
+        "text": "Attach current course",
+        "data": {
+            "ru": {
+                "original": "Attach current course",
+                "translation": "Прикрепить трассу"
+            }
+        }
+    },
+    "chat_button_unignore": {
+        "text": "Unignore",
+        "data": {
+            "ru": {
+                "original": "Unignore",
+                "translation": "Не игнорировать"
+            }
+        }
+    },
+    "chat_go_to_profile": {
+        "text": "Profile",
+        "data": {
+            "ru": {
+                "original": "Profile",
+                "translation": "Профиль"
+            }
+        }
+    },
+    "chat_message_bad_words": {
+        "text": "That message was blocked",
+        "data": {
+            "ru": {
+                "original": "That message was blocked",
+                "translation": "Сообщение заблокировано"
+            }
+        }
+    },
+    "chat_message_not_english": {
+        "text": "Write in English",
+        "data": {
+            "ru": {
+                "original": "Write in English",
+                "translation": "Пишите по-английски"
+            }
+        }
+    },
+    "chat_message_removed": {
+        "text": "Message removed",
+        "data": {
+            "ru": {
+                "original": "Message removed",
+                "translation": "Сообщение удалено"
+            }
+        }
+    },
+    "chat_message_same_characters": {
+        "text": "Message is too repetitive",
+        "data": {
+            "ru": {
+                "original": "Message is too repetitive",
+                "translation": "Слишком повторяющееся сообщение"
+            }
+        }
+    },
+    "chat_nothing_found": {
+        "text": "Nothing found",
+        "data": {
+            "ru": {
+                "original": "Nothing found",
+                "translation": "Ничего не найдено"
+            }
+        }
+    },
+    "chat_open_private": {
+        "text": "Private message",
+        "data": {
+            "ru": {
+                "original": "Private message",
+                "translation": "Личное сообщение"
+            }
+        }
+    },
+    "chat_popup_remove_all_player_messages": {
+        "text": "Remove this player messages",
+        "data": {
+            "ru": {
+                "original": "Remove this player messages",
+                "translation": "Удалить сообщения игрока"
+            }
+        }
+    },
+    "chat_popup_remove_message": {
+        "text": "Remove message",
+        "data": {
+            "ru": {
+                "original": "Remove message",
+                "translation": "Удалить сообщение"
+            }
+        }
+    },
+    "chat_searching": {
+        "text": "Searching",
+        "data": {
+            "ru": {
+                "original": "Searching",
+                "translation": "Поиск"
+            }
+        }
+    },
+    "chat_system_message": {
+        "text": "System",
+        "data": {
+            "ru": {
+                "original": "System",
+                "translation": "Система"
+            }
+        }
+    },
+    "chat_tooltip_chat_settings": {
+        "text": "Chat settings",
+        "data": {
+            "ru": {
+                "original": "Chat settings",
+                "translation": "Настройки чата"
+            }
+        }
+    },
+    "chat_type_minimum": {
+        "text": "Type at least a few characters",
+        "data": {
+            "ru": {
+                "original": "Type at least a few characters",
+                "translation": "Введите несколько символов"
+            }
+        }
+    },
+    "chat_you_banned": {
+        "text": "You are banned from chat",
+        "data": {
+            "ru": {
+                "original": "You are banned from chat",
+                "translation": "Вам запрещен чат"
+            }
+        }
+    },
+    "chat_you_banned_for": {
+        "text": "Banned for",
+        "data": {
+            "ru": {
+                "original": "Banned for",
+                "translation": "Запрет на"
+            }
+        }
+    },
+    "chat_you_unbanned": {
+        "text": "You can chat again",
+        "data": {
+            "ru": {
+                "original": "You can chat again",
+                "translation": "Чат снова доступен"
+            }
+        }
+    },
+    "friends_list_friends_online": {
+        "text": "Friends online",
+        "data": {
+            "ru": {
+                "original": "Friends online",
+                "translation": "Друзья в сети"
+            }
+        }
+    },
+    "shop_buy_coins_tooltip": {
+        "text": "Buy with coins",
+        "data": {
+            "ru": {
+                "original": "Buy with coins",
+                "translation": "Купить за монеты"
+            }
+        }
+    },
+    "shop_exit_shop_button_tooltip": {
+        "text": "Leave the shop",
+        "data": {
+            "ru": {
+                "original": "Leave the shop",
+                "translation": "Выйти из магазина"
+            }
+        }
+    },
+    "shop_select_item": {
+        "text": "Select an item",
+        "data": {
+            "ru": {
+                "original": "Select an item",
+                "translation": "Выберите предмет"
+            }
+        }
+    },
+    "shop_tab_all": {
+        "text": "All",
+        "data": {
+            "ru": {
+                "original": "All",
+                "translation": "Все"
+            }
+        }
+    },
+    "shop_tab_already_exists": {
+        "text": "Owned",
+        "data": {
+            "ru": {
+                "original": "Owned",
+                "translation": "Куплено"
+            }
+        }
+    },
+    "shop_tab_clothes": {
+        "text": "Clothes",
+        "data": {
+            "ru": {
+                "original": "Clothes",
+                "translation": "Одежда"
+            }
+        }
+    },
+    "shop_tab_consumable": {
+        "text": "Consumables",
+        "data": {
+            "ru": {
+                "original": "Consumables",
+                "translation": "Расходники"
+            }
+        }
+    },
+    "shop_tab_gear": {
+        "text": "Gear",
+        "data": {
+            "ru": {
+                "original": "Gear",
+                "translation": "Снаряжение"
+            }
+        }
+    },
+    "common_ap_amount": {
+        "text": "{0} AP\n",
+        "data": {
+            "ru": {
+                "original": "{0} AP",
+                "translation": "{0} ОД"
+            }
+        }
+    },
+    "common_attach_tooltip": {
+        "text": "Attach",
+        "data": {
+            "ru": {
+                "original": "Attach",
+                "translation": "Прикрепить"
+            }
+        }
+    },
+    "common_course_course_fans_count": {
+        "text": "{0} likes",
+        "data": {
+            "ru": {
+                "original": "{0} likes",
+                "translation": "{0} лайков"
+            }
+        }
+    },
+    "common_course_like_course": {
+        "text": "Like",
+        "data": {
+            "ru": {
+                "original": "Like",
+                "translation": "Нравится"
+            }
+        }
+    },
+    "common_course_unlike_course": {
+        "text": "Unlike",
+        "data": {
+            "ru": {
+                "original": "Unlike",
+                "translation": "Не нравится"
+            }
+        }
+    },
+    "common_course_you_and_course_fans_count": {
+        "text": "You and {0} likes",
+        "data": {
+            "ru": {
+                "original": "You and {0} likes",
+                "translation": "Вы и {0} лайков"
+            }
+        }
+    },
+    "common_insert_to_chat": {
+        "text": "Insert into chat",
+        "data": {
+            "ru": {
+                "original": "Insert into chat",
+                "translation": "Вставить в чат"
+            }
+        }
+    },
+    "common_search_min_chars": {
+        "text": "Type at least 2 characters",
+        "data": {
+            "ru": {
+                "original": "Type at least 2 characters",
+                "translation": "Введите хотя бы 2 символа"
+            }
+        }
+    },
+    "common_tooltip_diamonds": {
+        "text": "Diamonds",
+        "data": {
+            "ru": {
+                "original": "Diamonds",
+                "translation": "Алмазы"
+            }
+        }
+    },
+    "common_tooltip_skill_tickets": {
+        "text": "Skill tickets",
+        "data": {
+            "ru": {
+                "original": "Skill tickets",
+                "translation": "Билеты навыков"
+            }
+        }
+    },
+    "common_tooltip_social_tickets": {
+        "text": "Social tickets",
+        "data": {
+            "ru": {
+                "original": "Social tickets",
+                "translation": "Социальные билеты"
+            }
+        }
+    },
+    "common_vk_credit": {
+        "text": "VK credit",
+        "data": {
+            "ru": {
+                "original": "VK credit",
+                "translation": "Кредит VK"
+            }
+        }
+    },
+    "common_xp_amount": {
+        "text": "{0} XP\n",
+        "data": {
+            "ru": {
+                "original": "{0} XP",
+                "translation": "{0} опыта"
+            }
+        }
+    },
+    "daily_login_day_n": {
+        "text": "Day {0}",
+        "data": {
+            "ru": {
+                "original": "Day {0}",
+                "translation": "День {0}"
+            }
+        }
+    },
+    "daily_login_title_multiple_day": {
+        "text": "Daily rewards",
+        "data": {
+            "ru": {
+                "original": "Daily rewards",
+                "translation": "Ежедневные награды"
+            }
+        }
+    },
+    "daily_login_title_single_day": {
+        "text": "Daily reward",
+        "data": {
+            "ru": {
+                "original": "Daily reward",
+                "translation": "Ежедневная награда"
+            }
+        }
+    },
+    "gui_avatar_open_fb_profile": {
+        "text": "Facebook profile",
+        "data": {
+            "ru": {
+                "original": "Facebook profile",
+                "translation": "Профиль Facebook"
+            }
+        }
+    },
+    "gui_avatar_open_steam_profile": {
+        "text": "Steam profile",
+        "data": {
+            "ru": {
+                "original": "Steam profile",
+                "translation": "Профиль Steam"
+            }
+        }
+    },
+    "gui_avatar_open_vk_profile": {
+        "text": "VK profile",
+        "data": {
+            "ru": {
+                "original": "VK profile",
+                "translation": "Профиль VK"
+            }
+        }
+    },
+    "gui_avatar_view_user_info": {
+        "text": "Player info",
+        "data": {
+            "ru": {
+                "original": "Player info",
+                "translation": "Об игроке"
+            }
+        }
+    },
+    "gui_chat_popup_ban": {
+        "text": "Ban",
+        "data": {
+            "ru": {
+                "original": "Ban",
+                "translation": "Забанить"
+            }
+        }
+    },
+    "gui_chat_popup_ignore": {
+        "text": "Ignore",
+        "data": {
+            "ru": {
+                "original": "Ignore",
+                "translation": "Игнорировать"
+            }
+        }
+    },
+    "gui_chat_popup_private": {
+        "text": "Private message",
+        "data": {
+            "ru": {
+                "original": "Private message",
+                "translation": "Личное сообщение"
+            }
+        }
+    },
+    "gui_chat_popup_system_message": {
+        "text": "System message",
+        "data": {
+            "ru": {
+                "original": "System message",
+                "translation": "Системное сообщение"
+            }
+        }
+    },
+    "gui_chat_popup_unban": {
+        "text": "Unban",
+        "data": {
+            "ru": {
+                "original": "Unban",
+                "translation": "Разбанить"
+            }
+        }
+    },
+    "gui_chat_popup_unignore": {
+        "text": "Unignore",
+        "data": {
+            "ru": {
+                "original": "Unignore",
+                "translation": "Не игнорировать"
+            }
+        }
+    },
+    "gui_chat_popup_view_profile": {
+        "text": "View profile",
+        "data": {
+            "ru": {
+                "original": "View profile",
+                "translation": "Профиль"
+            }
+        }
+    },
+    "gui_settings_open_window": {
+        "text": "Settings",
+        "data": {
+            "ru": {
+                "original": "Settings",
+                "translation": "Настройки"
+            }
+        }
+    },
+    "gui_shop_buttons_upgrade": {
+        "text": "Upgrade",
+        "data": {
+            "ru": {
+                "original": "Upgrade",
+                "translation": "Улучшить"
+            }
+        }
+    },
+    "gui_skill_update_close": {
+        "text": "Close",
+        "data": {
+            "ru": {
+                "original": "Close",
+                "translation": "Закрыть"
+            }
+        }
+    },
+    "gui_skill_update_confirm": {
+        "text": "Confirm",
+        "data": {
+            "ru": {
+                "original": "Confirm",
+                "translation": "Подтвердить"
+            }
+        }
+    },
+    "gui_skill_update_exp_progress_bar": {
+        "text": "Experience",
+        "data": {
+            "ru": {
+                "original": "Experience",
+                "translation": "Опыт"
+            }
+        }
+    },
+    "gui_skill_update_free_sp": {
+        "text": "Free skill points",
+        "data": {
+            "ru": {
+                "original": "Free skill points",
+                "translation": "Свободные очки"
+            }
+        }
+    },
+    "gui_skill_update_level": {
+        "text": "Level",
+        "data": {
+            "ru": {
+                "original": "Level",
+                "translation": "Уровень"
+            }
+        }
+    },
+    "gui_skill_update_reset": {
+        "text": "Reset",
+        "data": {
+            "ru": {
+                "original": "Reset",
+                "translation": "Сброс"
+            }
+        }
+    },
+    "gui_skill_update_sp_add": {
+        "text": "Add point",
+        "data": {
+            "ru": {
+                "original": "Add point",
+                "translation": "Добавить очко"
+            }
+        }
+    },
+    "gui_upgrade_confirmation_enough_resource": {
+        "text": "Upgrade this item?",
+        "data": {
+            "ru": {
+                "original": "Upgrade this item?",
+                "translation": "Улучшить предмет?"
+            }
+        }
+    },
+    "gui_upgrade_confirmation_no": {
+        "text": "Not enough resources",
+        "data": {
+            "ru": {
+                "original": "Not enough resources",
+                "translation": "Недостаточно ресурсов"
+            }
+        }
+    },
+    "gui_upgrade_confirmation_upgrade": {
+        "text": "Upgrade",
+        "data": {
+            "ru": {
+                "original": "Upgrade",
+                "translation": "Улучшить"
+            }
+        }
+    },
+    "gui_wsinformer_ok": {
+        "text": "Ok",
+        "data": {
+            "ru": {
+                "original": "Ok",
+                "translation": "Ок"
+            }
+        }
+    },
+    "gui_wsinformer_ok_and_share": {
+        "text": "Ok and share",
+        "data": {
+            "ru": {
+                "original": "Ok and share",
+                "translation": "Ок и поделиться"
+            }
+        }
+    },
+    "gui_wsinformer_play_later": {
+        "text": "Play later",
+        "data": {
+            "ru": {
+                "original": "Play later",
+                "translation": "Позже"
+            }
+        }
+    },
+    "gui_wsinformer_play_now": {
+        "text": "Play now",
+        "data": {
+            "ru": {
+                "original": "Play now",
+                "translation": "Играть"
+            }
+        }
+    },
+    "gui_wsinformer_share": {
+        "text": "Share",
+        "data": {
+            "ru": {
+                "original": "Share",
+                "translation": "Поделиться"
+            }
+        }
+    },
+    "gui_wsinformer_weekly": {
+        "text": "Weekly showdown",
+        "data": {
+            "ru": {
+                "original": "Weekly showdown",
+                "translation": "Недельное шоу"
+            }
+        }
+    },
+    "guild_error_name_min_chars": {
+        "text": "Name is too short",
+        "data": {
+            "ru": {
+                "original": "Name is too short",
+                "translation": "Слишком короткое имя"
+            }
+        }
+    },
+    "guild_manager": {
+        "text": "Manager",
+        "data": {
+            "ru": {
+                "original": "Manager",
+                "translation": "Менеджер"
+            }
+        }
+    },
+    "guild_member": {
+        "text": "Member",
+        "data": {
+            "ru": {
+                "original": "Member",
+                "translation": "Участник"
+            }
+        }
+    },
+    "guild_owner": {
+        "text": "Owner",
+        "data": {
+            "ru": {
+                "original": "Owner",
+                "translation": "Владелец"
+            }
+        }
+    },
+    "guild_request_to_club": {
+        "text": "Request to join",
+        "data": {
+            "ru": {
+                "original": "Request to join",
+                "translation": "Запрос на вступление"
+            }
+        }
+    },
+    "help_course_editor": {
+        "text": "Build a course, then save or submit it.",
+        "data": {
+            "ru": {
+                "original": "Build a course, then save or submit it.",
+                "translation": "Соберите трассу, затем сохраните или отправьте."
+            }
+        }
+    },
+    "help_showdown_buttons": {
+        "text": "Ride the weekly course.",
+        "data": {
+            "ru": {
+                "original": "Ride the weekly course.",
+                "translation": "Проедьте недельную трассу."
+            }
+        }
+    },
+    "help_upgrade_item": {
+        "text": "Spend resources to upgrade an item.",
+        "data": {
+            "ru": {
+                "original": "Spend resources to upgrade an item.",
+                "translation": "Потратьте ресурсы, чтобы улучшить предмет."
+            }
+        }
+    },
+    "inmatch_track_info_bar_knocked_down": {
+        "text": "Knocked a rail",
+        "data": {
+            "ru": {
+                "original": "Knocked a rail",
+                "translation": "Сбита жердь"
+            }
+        }
+    },
+    "inmatch_track_info_hardbreak": {
+        "text": "Hard stop",
+        "data": {
+            "ru": {
+                "original": "Hard stop",
+                "translation": "Резкая остановка"
+            }
+        }
+    },
+    "inmatch_track_info_over_time_limit": {
+        "text": "Over the time limit",
+        "data": {
+            "ru": {
+                "original": "Over the time limit",
+                "translation": "Превышено время"
+            }
+        }
+    },
+    "inmatch_track_info_refuse": {
+        "text": "Refusal",
+        "data": {
+            "ru": {
+                "original": "Refusal",
+                "translation": "Отказ"
+            }
+        }
+    },
+    "inmatch_track_info_step_into_water": {
+        "text": "Stepped in water",
+        "data": {
+            "ru": {
+                "original": "Stepped in water",
+                "translation": "Зашли в воду"
+            }
+        }
+    },
+    "inmatch_track_info_wrong_dir_obstacle": {
+        "text": "Wrong direction",
+        "data": {
+            "ru": {
+                "original": "Wrong direction",
+                "translation": "Неверное направление"
+            }
+        }
+    },
+    "inmatch_track_info_wrong_obstacle": {
+        "text": "Wrong obstacle",
+        "data": {
+            "ru": {
+                "original": "Wrong obstacle",
+                "translation": "Неверное препятствие"
+            }
+        }
+    },
+    "local_connecting_game_server": {
+        "text": "Connecting",
+        "data": {
+            "ru": {
+                "original": "Connecting",
+                "translation": "Подключение"
+            }
+        }
+    },
+    "local_creating_player_data": {
+        "text": "Creating rider",
+        "data": {
+            "ru": {
+                "original": "Creating rider",
+                "translation": "Создание всадника"
+            }
+        }
+    },
+    "local_disconnect": {
+        "text": "Disconnected",
+        "data": {
+            "ru": {
+                "original": "Disconnected",
+                "translation": "Нет соединения"
+            }
+        }
+    },
+    "local_downloading": {
+        "text": "Downloading",
+        "data": {
+            "ru": {
+                "original": "Downloading",
+                "translation": "Загрузка"
+            }
+        }
+    },
+    "local_loading_account": {
+        "text": "Loading account",
+        "data": {
+            "ru": {
+                "original": "Loading account",
+                "translation": "Загрузка аккаунта"
+            }
+        }
+    },
+    "local_loading_daily_data": {
+        "text": "Loading daily reward",
+        "data": {
+            "ru": {
+                "original": "Loading daily reward",
+                "translation": "Загрузка награды"
+            }
+        }
+    },
+    "local_loading_game_data": {
+        "text": "Loading game",
+        "data": {
+            "ru": {
+                "original": "Loading game",
+                "translation": "Загрузка игры"
+            }
+        }
+    },
+    "local_loading_server_data": {
+        "text": "Loading server data",
+        "data": {
+            "ru": {
+                "original": "Loading server data",
+                "translation": "Загрузка данных сервера"
+            }
+        }
+    },
+    "local_loading_server_params": {
+        "text": "Loading settings",
+        "data": {
+            "ru": {
+                "original": "Loading settings",
+                "translation": "Загрузка настроек"
+            }
+        }
+    },
+    "local_logging_in": {
+        "text": "Logging in",
+        "data": {
+            "ru": {
+                "original": "Logging in",
+                "translation": "Вход"
+            }
+        }
+    },
+    "local_preparing_next_scene": {
+        "text": "Preparing scene",
+        "data": {
+            "ru": {
+                "original": "Preparing scene",
+                "translation": "Подготовка сцены"
+            }
+        }
+    },
+    "local_refresh_page": {
+        "text": "Refresh",
+        "data": {
+            "ru": {
+                "original": "Refresh",
+                "translation": "Обновить"
+            }
+        }
+    },
+    "local_setting_up_scene": {
+        "text": "Setting up scene",
+        "data": {
+            "ru": {
+                "original": "Setting up scene",
+                "translation": "Настройка сцены"
+            }
+        }
+    },
+    "local_sync_with_facebook": {
+        "text": "Syncing Facebook",
+        "data": {
+            "ru": {
+                "original": "Syncing Facebook",
+                "translation": "Синхронизация Facebook"
+            }
+        }
+    },
+    "local_sync_with_steam": {
+        "text": "Syncing Steam",
+        "data": {
+            "ru": {
+                "original": "Syncing Steam",
+                "translation": "Синхронизация Steam"
+            }
+        }
+    },
+    "local_sync_with_vkontakte": {
+        "text": "Syncing VK",
+        "data": {
+            "ru": {
+                "original": "Syncing VK",
+                "translation": "Синхронизация VK"
+            }
+        }
+    },
+    "local_unpacking": {
+        "text": "Unpacking",
+        "data": {
+            "ru": {
+                "original": "Unpacking",
+                "translation": "Распаковка"
+            }
+        }
+    },
+    "look_at_horse_user_state_avatar": {
+        "text": "Choosing a horse",
+        "data": {
+            "ru": {
+                "original": "Choosing a horse",
+                "translation": "Выбор лошади"
+            }
+        }
+    },
+    "look_at_horse_user_state_menu": {
+        "text": "In the menu",
+        "data": {
+            "ru": {
+                "original": "In the menu",
+                "translation": "В меню"
+            }
+        }
+    },
+    "look_at_horse_user_state_offline": {
+        "text": "Offline",
+        "data": {
+            "ru": {
+                "original": "Offline",
+                "translation": "Не в сети"
+            }
+        }
+    },
+    "look_at_horse_user_state_paddock": {
+        "text": "In the paddock",
+        "data": {
+            "ru": {
+                "original": "In the paddock",
+                "translation": "В паддоке"
+            }
+        }
+    },
+    "look_at_horse_user_state_practice": {
+        "text": "Practicing",
+        "data": {
+            "ru": {
+                "original": "Practicing",
+                "translation": "Тренировка"
+            }
+        }
+    },
+    "look_at_horse_user_state_ranked_match": {
+        "text": "In a ranked match",
+        "data": {
+            "ru": {
+                "original": "In a ranked match",
+                "translation": "Рейтинговый заезд"
+            }
+        }
+    },
+    "look_at_horse_user_state_rm_search": {
+        "text": "Searching for a match",
+        "data": {
+            "ru": {
+                "original": "Searching for a match",
+                "translation": "Поиск заезда"
+            }
+        }
+    },
+    "messages_low_action_points": {
+        "text": "Not enough action points",
+        "data": {
+            "ru": {
+                "original": "Not enough action points",
+                "translation": "Недостаточно очков действий"
+            }
+        }
+    },
+    "messages_buttons_ok": {
+        "text": "Ok",
+        "data": {
+            "ru": {
+                "original": "Ok",
+                "translation": "Ок"
+            }
+        }
+    },
+    "messages_buttons_ok_n_share": {
+        "text": "Ok and share",
+        "data": {
+            "ru": {
+                "original": "Ok and share",
+                "translation": "Ок и поделиться"
+            }
+        }
+    },
+    "messages_welcome_riding_club": {
+        "text": "Welcome to the riding club",
+        "data": {
+            "ru": {
+                "original": "Welcome to the riding club",
+                "translation": "Добро пожаловать в клуб"
+            }
+        }
+    },
+    "messages_select_horse": {
+        "text": "Select a horse",
+        "data": {
+            "ru": {
+                "original": "Select a horse",
+                "translation": "Выберите лошадь"
+            }
+        }
+    },
+    "messages_ready_for_horse": {
+        "text": "Your horse is ready",
+        "data": {
+            "ru": {
+                "original": "Your horse is ready",
+                "translation": "Лошадь готова"
+            }
+        }
+    },
+    "play_alone_search_button": {
+        "text": "Search",
+        "data": {
+            "ru": {
+                "original": "Search",
+                "translation": "Поиск"
+            }
+        }
+    },
+    "play_alone_slot_info_play": {
+        "text": "Play",
+        "data": {
+            "ru": {
+                "original": "Play",
+                "translation": "Играть"
+            }
+        }
+    },
+    "play_alone_slot_info_open": {
+        "text": "Open",
+        "data": {
+            "ru": {
+                "original": "Open",
+                "translation": "Открыть"
+            }
+        }
+    },
+    "play_alone_slot_info_course_ideal_time": {
+        "text": "Ideal time",
+        "data": {
+            "ru": {
+                "original": "Ideal time",
+                "translation": "Идеальное время"
+            }
+        }
+    },
+    "play_alone_slot_info_creation_date": {
+        "text": "Created",
+        "data": {
+            "ru": {
+                "original": "Created",
+                "translation": "Создано"
+            }
+        }
+    },
+    "play_alone_slot_info_number_of_plays": {
+        "text": "Plays",
+        "data": {
+            "ru": {
+                "original": "Plays",
+                "translation": "Заезды"
+            }
+        }
+    },
+    "play_alone_tooltip_search": {
+        "text": "Search courses",
+        "data": {
+            "ru": {
+                "original": "Search courses",
+                "translation": "Поиск трасс"
+            }
+        }
+    },
+    "play_alone_tooltip_my_courses": {
+        "text": "My courses",
+        "data": {
+            "ru": {
+                "original": "My courses",
+                "translation": "Мои трассы"
+            }
+        }
+    },
+    "play_alone_tooltip_official": {
+        "text": "Official",
+        "data": {
+            "ru": {
+                "original": "Official",
+                "translation": "Официальные"
+            }
+        }
+    },
+    "play_alone_tooltip_new": {
+        "text": "New",
+        "data": {
+            "ru": {
+                "original": "New",
+                "translation": "Новые"
+            }
+        }
+    },
+    "play_alone_tooltip_friends": {
+        "text": "Friends",
+        "data": {
+            "ru": {
+                "original": "Friends",
+                "translation": "Друзья"
+            }
+        }
+    },
+    "play_alone_tooltip_i_like": {
+        "text": "Liked",
+        "data": {
+            "ru": {
+                "original": "Liked",
+                "translation": "Понравившиеся"
+            }
+        }
+    },
+    "play_alone_tooltip_likes": {
+        "text": "Likes",
+        "data": {
+            "ru": {
+                "original": "Likes",
+                "translation": "Лайки"
+            }
+        }
+    },
+    "play_alone_tooltip_number_of_obstacles": {
+        "text": "Obstacles",
+        "data": {
+            "ru": {
+                "original": "Obstacles",
+                "translation": "Препятствия"
+            }
+        }
+    },
+    "play_alone_tooltip_number_of_checkpoints": {
+        "text": "Checkpoints",
+        "data": {
+            "ru": {
+                "original": "Checkpoints",
+                "translation": "Контрольные точки"
+            }
+        }
+    },
+    "showdown_buttons_weekly_showdown": {
+        "text": "Weekly showdown",
+        "data": {
+            "ru": {
+                "original": "Weekly showdown",
+                "translation": "Недельное шоу"
+            }
+        }
+    },
+    "showdown_buttons_exit_showdown": {
+        "text": "Exit",
+        "data": {
+            "ru": {
+                "original": "Exit",
+                "translation": "Выход"
+            }
+        }
+    },
+    "showdown_buttons_help": {
+        "text": "Help",
+        "data": {
+            "ru": {
+                "original": "Help",
+                "translation": "Помощь"
+            }
+        }
+    },
+    "showdown_play_todays_challange": {
+        "text": "Play today course",
+        "data": {
+            "ru": {
+                "original": "Play today course",
+                "translation": "Трасса дня"
+            }
+        }
+    },
+    "showdown_qualified": {
+        "text": "Qualified",
+        "data": {
+            "ru": {
+                "original": "Qualified",
+                "translation": "Квалификация пройдена"
+            }
+        }
+    },
+    "showdown_info_time": {
+        "text": "Time",
+        "data": {
+            "ru": {
+                "original": "Time",
+                "translation": "Время"
+            }
+        }
+    },
+    "showdown_info_penalties": {
+        "text": "Penalties",
+        "data": {
+            "ru": {
+                "original": "Penalties",
+                "translation": "Штрафы"
+            }
+        }
+    },
+    "showdown_info_rank": {
+        "text": "Rank",
+        "data": {
+            "ru": {
+                "original": "Rank",
+                "translation": "Место"
+            }
+        }
+    },
+    "showdown_info_player": {
+        "text": "Player",
+        "data": {
+            "ru": {
+                "original": "Player",
+                "translation": "Игрок"
+            }
+        }
+    },
+    "showdown_info_score": {
+        "text": "Score",
+        "data": {
+            "ru": {
+                "original": "Score",
+                "translation": "Очки"
+            }
+        }
+    },
+    "scores_time": {
+        "text": "Time",
+        "data": {
+            "ru": {
+                "original": "Time",
+                "translation": "Время"
+            }
+        }
+    },
+    "scores_penalties": {
+        "text": "Penalties",
+        "data": {
+            "ru": {
+                "original": "Penalties",
+                "translation": "Штрафы"
+            }
+        }
+    },
+    "scores_highscores": {
+        "text": "High scores",
+        "data": {
+            "ru": {
+                "original": "High scores",
+                "translation": "Рекорды"
+            }
+        }
+    },
+    "scores_close": {
+        "text": "Close",
+        "data": {
+            "ru": {
+                "original": "Close",
+                "translation": "Закрыть"
+            }
+        }
+    },
+    "scores_your_best_result": {
+        "text": "Your best",
+        "data": {
+            "ru": {
+                "original": "Your best",
+                "translation": "Ваш лучший"
+            }
+        }
+    },
+    "rm_info_opponent": {
+        "text": "Opponent",
+        "data": {
+            "ru": {
+                "original": "Opponent",
+                "translation": "Соперник"
+            }
+        }
+    },
+    "rm_waiting_preloading": {
+        "text": "Loading the course",
+        "data": {
+            "ru": {
+                "original": "Loading the course",
+                "translation": "Загрузка трассы"
+            }
+        }
+    },
+    "error_failed_to_initialize_steam": {
+        "text": "Steam did not start",
+        "data": {
+            "ru": {
+                "original": "Steam did not start",
+                "translation": "Steam не запустился"
+            }
+        }
+    },
+    "error_you_are_vac_banned": {
+        "text": "This Steam account is VAC banned",
+        "data": {
+            "ru": {
+                "original": "This Steam account is VAC banned",
+                "translation": "Этот аккаунт Steam забанен VAC"
+            }
+        }
+    },
+    "error_you_don_t_logged_on_to_steam": {
+        "text": "Log in to Steam first",
+        "data": {
+            "ru": {
+                "original": "Log in to Steam first",
+                "translation": "Сначала войдите в Steam"
+            }
+        }
+    },
+    "main_menu_avatar_is_changed": {
+        "text": "Avatar saved",
+        "data": {
+            "ru": {
+                "original": "Avatar saved",
+                "translation": "Аватар сохранен"
+            }
+        }
+    },
+    "message_objective_skip": {
+        "text": "Skip",
+        "data": {
+            "ru": {
+                "original": "Skip",
+                "translation": "Пропустить"
+            }
+        }
+    },
+    "messages_avatar_creation_confirm_avatar": {
+        "text": "Use this horse?",
+        "data": {
+            "ru": {
+                "original": "Use this horse?",
+                "translation": "Выбрать эту лошадь?"
+            }
+        }
+    },
+    "messages_avatar_creation_enter_horse_name": {
+        "text": "Enter a horse name",
+        "data": {
+            "ru": {
+                "original": "Enter a horse name",
+                "translation": "Введите имя лошади"
+            }
+        }
+    },
+    "messages_ce_on_leave_without_save": {
+        "text": "Leave without saving?",
+        "data": {
+            "ru": {
+                "original": "Leave without saving?",
+                "translation": "Выйти без сохранения?"
+            }
+        }
+    },
+    "messages_ce_on_try_change": {
+        "text": "Save your changes first",
+        "data": {
+            "ru": {
+                "original": "Save your changes first",
+                "translation": "Сначала сохраните изменения"
+            }
+        }
+    },
+    "messages_challenge_on_send_challenge": {
+        "text": "Send a challenge?",
+        "data": {
+            "ru": {
+                "original": "Send a challenge?",
+                "translation": "Отправить вызов?"
+            }
+        }
+    },
+    "messages_level_up_on_new_level": {
+        "text": "Level up",
+        "data": {
+            "ru": {
+                "original": "Level up",
+                "translation": "Новый уровень"
+            }
+        }
+    },
+    "messages_level_up_rewards": {
+        "text": "Rewards",
+        "data": {
+            "ru": {
+                "original": "Rewards",
+                "translation": "Награды"
+            }
+        }
+    },
+    "messages_main_menu_on_friend_challeng": {
+        "text": "Challenge this friend?",
+        "data": {
+            "ru": {
+                "original": "Challenge this friend?",
+                "translation": "Вызвать этого друга?"
+            }
+        }
+    },
+    "messages_main_menu_on_select_course": {
+        "text": "Select a course",
+        "data": {
+            "ru": {
+                "original": "Select a course",
+                "translation": "Выберите трассу"
+            }
+        }
+    },
+    "messages_main_menu_on_unknown_friend_challenge": {
+        "text": "That player is not on this server",
+        "data": {
+            "ru": {
+                "original": "That player is not on this server",
+                "translation": "Этого игрока нет на сервере"
+            }
+        }
+    },
+    "messages_objectives_your_reward_is_template": {
+        "text": "Your reward: {0}",
+        "data": {
+            "ru": {
+                "original": "Your reward: {0}",
+                "translation": "Ваша награда: {0}"
+            }
+        }
+    },
+    "messages_payment_accept": {
+        "text": "Payment accepted",
+        "data": {
+            "ru": {
+                "original": "Payment accepted",
+                "translation": "Оплата принята"
+            }
+        }
+    },
+    "messages_payment_not_yet_completed": {
+        "text": "Payment is not complete",
+        "data": {
+            "ru": {
+                "original": "Payment is not complete",
+                "translation": "Оплата не завершена"
+            }
+        }
+    },
+    "messages_quests_zero_count": {
+        "text": "No quests",
+        "data": {
+            "ru": {
+                "original": "No quests",
+                "translation": "Нет заданий"
+            }
+        }
+    },
+    "messages_showdown_low_level": {
+        "text": "Level is too low",
+        "data": {
+            "ru": {
+                "original": "Level is too low",
+                "translation": "Слишком низкий уровень"
+            }
+        }
+    },
+    "messages_showdown_not_enough_skill_tickets": {
+        "text": "Not enough skill tickets",
+        "data": {
+            "ru": {
+                "original": "Not enough skill tickets",
+                "translation": "Недостаточно билетов навыков"
+            }
+        }
+    },
+    "messages_skill_update_confirm_ask": {
+        "text": "Spend these skill points?",
+        "data": {
+            "ru": {
+                "original": "Spend these skill points?",
+                "translation": "Потратить очки навыков?"
+            }
+        }
+    },
+    "messages_skill_update_reset_ask": {
+        "text": "Reset skill points?",
+        "data": {
+            "ru": {
+                "original": "Reset skill points?",
+                "translation": "Сбросить очки навыков?"
+            }
+        }
+    },
+    "messages_upgrade_confirmation_not_enough_resource_coins": {
+        "text": "Not enough coins",
+        "data": {
+            "ru": {
+                "original": "Not enough coins",
+                "translation": "Недостаточно монет"
+            }
+        }
+    },
+    "messages_wants_be_friends": {
+        "text": "Wants to be friends",
+        "data": {
+            "ru": {
+                "original": "Wants to be friends",
+                "translation": "Хочет дружить"
+            }
+        }
+    },
+    "play_alone_tooltip_course_ideal_time": {
+        "text": "Ideal time",
+        "data": {
+            "ru": {
+                "original": "Ideal time",
+                "translation": "Идеальное время"
+            }
+        }
+    },
+    "play_alone_tooltip_i_liked_course": {
+        "text": "Courses you liked",
+        "data": {
+            "ru": {
+                "original": "Courses you liked",
+                "translation": "Понравившиеся трассы"
+            }
+        }
+    },
+    "play_alone_tooltip_likes_per_week": {
+        "text": "Likes this week",
+        "data": {
+            "ru": {
+                "original": "Likes this week",
+                "translation": "Лайки за неделю"
+            }
+        }
+    },
+    "play_alone_tooltip_obstacle_max_height": {
+        "text": "Max height",
+        "data": {
+            "ru": {
+                "original": "Max height",
+                "translation": "Макс. высота"
+            }
+        }
+    },
+    "play_alone_tooltip_today_selection": {
+        "text": "Today",
+        "data": {
+            "ru": {
+                "original": "Today",
+                "translation": "Сегодня"
+            }
+        }
+    },
+    "play_alone_tooltip_total_obstacles_count": {
+        "text": "Total obstacles",
+        "data": {
+            "ru": {
+                "original": "Total obstacles",
+                "translation": "Всего препятствий"
+            }
+        }
+    },
+    "player_view_context_guild_invite": {
+        "text": "Invite to club",
+        "data": {
+            "ru": {
+                "original": "Invite to club",
+                "translation": "Пригласить в клуб"
+            }
+        }
+    },
+    "player_view_context_insert_to_chat": {
+        "text": "Insert into chat",
+        "data": {
+            "ru": {
+                "original": "Insert into chat",
+                "translation": "Вставить в чат"
+            }
+        }
+    },
+    "player_view_context_private_chat": {
+        "text": "Private message",
+        "data": {
+            "ru": {
+                "original": "Private message",
+                "translation": "Личное сообщение"
+            }
+        }
+    },
+    "player_view_context_profile": {
+        "text": "Profile",
+        "data": {
+            "ru": {
+                "original": "Profile",
+                "translation": "Профиль"
+            }
+        }
+    },
+    "player_view_context_social_fb": {
+        "text": "Facebook",
+        "data": {
+            "ru": {
+                "original": "Facebook",
+                "translation": "Facebook"
+            }
+        }
+    },
+    "player_view_context_social_steam": {
+        "text": "Steam",
+        "data": {
+            "ru": {
+                "original": "Steam",
+                "translation": "Steam"
+            }
+        }
+    },
+    "player_view_context_social_vk": {
+        "text": "VK",
+        "data": {
+            "ru": {
+                "original": "VK",
+                "translation": "VK"
+            }
+        }
+    },
+    "premium_premium_active": {
+        "text": "Premium is active",
+        "data": {
+            "ru": {
+                "original": "Premium is active",
+                "translation": "Премиум активен"
+            }
+        }
+    },
+    "quests_reward": {
+        "text": "Reward",
+        "data": {
+            "ru": {
+                "original": "Reward",
+                "translation": "Награда"
+            }
+        }
+    },
+    "showdown_buttons_weekly_showdown_rules": {
+        "text": "Rules",
+        "data": {
+            "ru": {
+                "original": "Rules",
+                "translation": "Правила"
+            }
+        }
+    },
+    "showdown_course_info_obstacle": {
+        "text": "Obstacles",
+        "data": {
+            "ru": {
+                "original": "Obstacles",
+                "translation": "Препятствия"
+            }
+        }
+    },
+    "showdown_course_info_todays_course": {
+        "text": "Today course",
+        "data": {
+            "ru": {
+                "original": "Today course",
+                "translation": "Трасса дня"
+            }
+        }
+    },
+    "showdown_current_positions": {
+        "text": "Standings",
+        "data": {
+            "ru": {
+                "original": "Standings",
+                "translation": "Таблица"
+            }
+        }
+    },
+    "showdown_currently_qualifying": {
+        "text": "Qualifying",
+        "data": {
+            "ru": {
+                "original": "Qualifying",
+                "translation": "Квалификация"
+            }
+        }
+    },
+    "showdown_daily_time_remaining": {
+        "text": "Time left",
+        "data": {
+            "ru": {
+                "original": "Time left",
+                "translation": "Осталось времени"
+            }
+        }
+    },
+    "showdown_last_week_result": {
+        "text": "Last week",
+        "data": {
+            "ru": {
+                "original": "Last week",
+                "translation": "Прошлая неделя"
+            }
+        }
+    },
+    "showdown_play_grand_final": {
+        "text": "Grand final",
+        "data": {
+            "ru": {
+                "original": "Grand final",
+                "translation": "Финал"
+            }
+        }
+    },
+    "showdown_week_index": {
+        "text": "Week {0}",
+        "data": {
+            "ru": {
+                "original": "Week {0}",
+                "translation": "Неделя {0}"
+            }
+        }
+    },
+    "subscriptions_activate_payment_method": {
+        "text": "Steam checkout is not available on this server",
+        "data": {
+            "ru": {
+                "original": "Steam checkout is not available on this server",
+                "translation": "Оплата Steam на этом сервере недоступна"
+            }
+        }
+    },
+    "subscriptions_buy": {
+        "text": "Buy",
+        "data": {
+            "ru": {
+                "original": "Buy",
+                "translation": "Купить"
+            }
+        }
+    },
+    "subscriptions_payment_fail": {
+        "text": "Steam checkout is not available on this server",
+        "data": {
+            "ru": {
+                "original": "Steam checkout is not available on this server",
+                "translation": "Оплата Steam на этом сервере недоступна"
+            }
+        }
+    },
+    "subscriptions_subscription_active": {
+        "text": "Subscription active",
+        "data": {
+            "ru": {
+                "original": "Subscription active",
+                "translation": "Подписка активна"
+            }
+        }
+    },
+    "subscriptions_subscription_cancel": {
+        "text": "Cancel subscription",
+        "data": {
+            "ru": {
+                "original": "Cancel subscription",
+                "translation": "Отменить подписку"
+            }
+        }
+    },
+    "adv_want_cross_country_button_cancel": {
+        "text": "Cancel",
+        "data": {
+            "ru": {
+                "original": "Cancel",
+                "translation": "Отмена"
+            }
+        }
+    },
+    "adv_want_cross_country_button_revise": {
+        "text": "Revise",
+        "data": {
+            "ru": {
+                "original": "Revise",
+                "translation": "Изменить"
+            }
+        }
+    },
+    "adv_want_cross_country_button_subscribe": {
+        "text": "Subscribe",
+        "data": {
+            "ru": {
+                "original": "Subscribe",
+                "translation": "Подписаться"
+            }
+        }
+    },
+    "adv_want_cross_country_subscribers": {
+        "text": "Subscribers",
+        "data": {
+            "ru": {
+                "original": "Subscribers",
+                "translation": "Подписчики"
+            }
+        }
+    },
+    "adv_want_cross_country_text": {
+        "text": "Cross country",
+        "data": {
+            "ru": {
+                "original": "Cross country",
+                "translation": "Кросс"
+            }
+        }
+    },
+    "guild_change_icon_ask": {
+        "text": "Change the club icon?",
+        "data": {
+            "ru": {
+                "original": "Change the club icon?",
+                "translation": "Сменить значок клуба?"
+            }
+        }
+    },
+    "guild_change_name_ask": {
+        "text": "Change the club name?",
+        "data": {
+            "ru": {
+                "original": "Change the club name?",
+                "translation": "Сменить название клуба?"
+            }
+        }
+    },
+    "guild_error_already_member": {
+        "text": "Already in this club",
+        "data": {
+            "ru": {
+                "original": "Already in this club",
+                "translation": "Уже в этом клубе"
+            }
+        }
+    },
+    "guild_error_guild_disabled_request": {
+        "text": "This club is not taking requests",
+        "data": {
+            "ru": {
+                "original": "This club is not taking requests",
+                "translation": "Клуб не принимает заявки"
+            }
+        }
+    },
+    "guild_error_guild_is_full": {
+        "text": "This club is full",
+        "data": {
+            "ru": {
+                "original": "This club is full",
+                "translation": "Клуб заполнен"
+            }
+        }
+    },
+    "guild_error_name_exist": {
+        "text": "That name is already used",
+        "data": {
+            "ru": {
+                "original": "That name is already used",
+                "translation": "Такое имя уже занято"
+            }
+        }
+    },
+    "guild_error_name_shor_texist": {
+        "text": "That short name is already used",
+        "data": {
+            "ru": {
+                "original": "That short name is already used",
+                "translation": "Такое короткое имя уже занято"
+            }
+        }
+    },
+    "guild_error_permission_denied": {
+        "text": "You cannot do that",
+        "data": {
+            "ru": {
+                "original": "You cannot do that",
+                "translation": "Недостаточно прав"
+            }
+        }
+    },
+    "guild_error_self_operation": {
+        "text": "You cannot do that to yourself",
+        "data": {
+            "ru": {
+                "original": "You cannot do that to yourself",
+                "translation": "Нельзя сделать это с собой"
+            }
+        }
+    },
+    "guild_error_user_disabled_request": {
+        "text": "That player is not taking club requests",
+        "data": {
+            "ru": {
+                "original": "That player is not taking club requests",
+                "translation": "Игрок не принимает заявки"
+            }
+        }
+    },
+    "guild_error_you_in_guild": {
+        "text": "You are already in a club",
+        "data": {
+            "ru": {
+                "original": "You are already in a club",
+                "translation": "Вы уже состоите в клубе"
+            }
+        }
+    },
+    "guild_error_you_not_in_guild": {
+        "text": "You are not in a club",
+        "data": {
+            "ru": {
+                "original": "You are not in a club",
+                "translation": "Вы не состоите в клубе"
+            }
+        }
+    },
+    "guild_news_challenge_played": {
+        "text": "played a challenge",
+        "data": {
+            "ru": {
+                "original": "played a challenge",
+                "translation": "сыграл вызов"
+            }
+        }
+    },
+    "guild_news_course_created": {
+        "text": "created a course",
+        "data": {
+            "ru": {
+                "original": "created a course",
+                "translation": "создал трассу"
+            }
+        }
+    },
+    "guild_news_description_changed": {
+        "text": "changed the description",
+        "data": {
+            "ru": {
+                "original": "changed the description",
+                "translation": "изменил описание"
+            }
+        }
+    },
+    "guild_news_guild_created": {
+        "text": "created the club",
+        "data": {
+            "ru": {
+                "original": "created the club",
+                "translation": "создал клуб"
+            }
+        }
+    },
+    "guild_news_member_join": {
+        "text": "joined the club",
+        "data": {
+            "ru": {
+                "original": "joined the club",
+                "translation": "вступил в клуб"
+            }
+        }
+    },
+    "guild_news_member_kick": {
+        "text": "was removed from the club",
+        "data": {
+            "ru": {
+                "original": "was removed from the club",
+                "translation": "исключен из клуба"
+            }
+        }
+    },
+    "guild_news_member_leave": {
+        "text": "left the club",
+        "data": {
+            "ru": {
+                "original": "left the club",
+                "translation": "покинул клуб"
+            }
+        }
+    },
+    "guild_news_member_role": {
+        "text": "changed a member role",
+        "data": {
+            "ru": {
+                "original": "changed a member role",
+                "translation": "изменил роль"
+            }
+        }
+    },
+    "guild_news_name_changed": {
+        "text": "changed the club name",
+        "data": {
+            "ru": {
+                "original": "changed the club name",
+                "translation": "изменил название"
+            }
+        }
+    },
+    "guild_news_rm_played": {
+        "text": "played a ranked match",
+        "data": {
+            "ru": {
+                "original": "played a ranked match",
+                "translation": "сыграл рейтинговый заезд"
+            }
+        }
+    },
+    "guild_news_welcome_changed": {
+        "text": "changed the welcome message",
+        "data": {
+            "ru": {
+                "original": "changed the welcome message",
+                "translation": "изменил приветствие"
+            }
+        }
+    },
+    "main_menu_player_change_avatar_text": {
+        "text": "Change avatar",
+        "data": {
+            "ru": {
+                "original": "Change avatar",
+                "translation": "Сменить аватар"
+            }
+        }
+    },
+    "messages_settings_low_auto": {
+        "text": "Graphics were lowered",
+        "data": {
+            "ru": {
+                "original": "Graphics were lowered",
+                "translation": "Графика снижена"
+            }
+        }
+    },
+    "messages_settings_low_auto_still": {
+        "text": "Graphics stay low for now",
+        "data": {
+            "ru": {
+                "original": "Graphics stay low for now",
+                "translation": "Графика пока остается низкой"
+            }
+        }
+    },
+    "gui_cource_result_player": {
+        "text": "Player",
+        "data": {
+            "ru": {
+                "original": "Player",
+                "translation": "Игрок"
+            }
+        }
+    },
+    "gui_cource_result_play_again": {
+        "text": "Play again",
+        "data": {
+            "ru": {
+                "original": "Play again",
+                "translation": "Играть снова"
+            }
+        }
+    },
+    "gui_cource_result_complete": {
+        "text": "Complete",
+        "data": {
+            "ru": {
+                "original": "Complete",
+                "translation": "Завершено"
+            }
+        }
+    },
+    "gui_cource_result_summary": {
+        "text": "Summary",
+        "data": {
+            "ru": {
+                "original": "Summary",
+                "translation": "Итог"
+            }
+        }
+    },
+    "gui_cource_result_main_menu": {
+        "text": "Main menu",
+        "data": {
+            "ru": {
+                "original": "Main menu",
+                "translation": "Главное меню"
+            }
+        }
+    },
+    "ce_enter_course_name": {
+        "text": "Course name",
+        "data": {
+            "ru": {
+                "original": "Course name",
+                "translation": "Название трассы"
+            }
+        }
+    },
+    "ce_button_play": {
+        "text": "Play",
+        "data": {
+            "ru": {
+                "original": "Play",
+                "translation": "Играть"
+            }
+        }
+    },
+    "ce_stop": {
+        "text": "Stop",
+        "data": {
+            "ru": {
+                "original": "Stop",
+                "translation": "Стоп"
+            }
+        }
+    },
+    "ce_button_set_start_position": {
+        "text": "Set start",
+        "data": {
+            "ru": {
+                "original": "Set start",
+                "translation": "Точка старта"
+            }
+        }
+    },
+    "ce_button_set_course_icon": {
+        "text": "Set icon",
+        "data": {
+            "ru": {
+                "original": "Set icon",
+                "translation": "Значок"
+            }
+        }
+    },
+    "ce_changes_cost": {
+        "text": "Change cost",
+        "data": {
+            "ru": {
+                "original": "Change cost",
+                "translation": "Цена правки"
+            }
+        }
+    },
+    "ce_button_shop_submit": {
+        "text": "Submit",
+        "data": {
+            "ru": {
+                "original": "Submit",
+                "translation": "Отправить"
+            }
+        }
+    },
+    "ce_button_obstacle_order": {
+        "text": "Order",
+        "data": {
+            "ru": {
+                "original": "Order",
+                "translation": "Порядок"
+            }
+        }
+    },
+    "ce_no_icon": {
+        "text": "No icon",
+        "data": {
+            "ru": {
+                "original": "No icon",
+                "translation": "Нет значка"
+            }
+        }
+    },
+    "ce_button_return_main_menu": {
+        "text": "Main menu",
+        "data": {
+            "ru": {
+                "original": "Main menu",
+                "translation": "Главное меню"
+            }
+        }
+    },
+    "ce_button_help": {
+        "text": "Help",
+        "data": {
+            "ru": {
+                "original": "Help",
+                "translation": "Помощь"
+            }
+        }
+    },
+    "ce_toggle_grid": {
+        "text": "Grid",
+        "data": {
+            "ru": {
+                "original": "Grid",
+                "translation": "Сетка"
+            }
+        }
+    },
+    "ce_button_shop_save": {
+        "text": "Save",
+        "data": {
+            "ru": {
+                "original": "Save",
+                "translation": "Сохранить"
+            }
+        }
+    },
+    "ce_button_use": {
+        "text": "Use",
+        "data": {
+            "ru": {
+                "original": "Use",
+                "translation": "Использовать"
+            }
+        }
+    },
+    "common_monday": {
+        "text": "Monday",
+        "data": {
+            "ru": {
+                "original": "Monday",
+                "translation": "Понедельник"
+            }
+        }
+    },
+    "common_tuesday": {
+        "text": "Tuesday",
+        "data": {
+            "ru": {
+                "original": "Tuesday",
+                "translation": "Вторник"
+            }
+        }
+    },
+    "common_wednesday": {
+        "text": "Wednesday",
+        "data": {
+            "ru": {
+                "original": "Wednesday",
+                "translation": "Среда"
+            }
+        }
+    },
+    "common_thursday": {
+        "text": "Thursday",
+        "data": {
+            "ru": {
+                "original": "Thursday",
+                "translation": "Четверг"
+            }
+        }
+    },
+    "common_friday": {
+        "text": "Friday",
+        "data": {
+            "ru": {
+                "original": "Friday",
+                "translation": "Пятница"
+            }
+        }
+    },
+    "common_saturday": {
+        "text": "Saturday",
+        "data": {
+            "ru": {
+                "original": "Saturday",
+                "translation": "Суббота"
+            }
+        }
+    },
+    "common_sunday": {
+        "text": "Sunday",
+        "data": {
+            "ru": {
+                "original": "Sunday",
+                "translation": "Воскресенье"
+            }
+        }
+    },
+    "gui_cource_result_waiting_for_opponent": {
+        "text": "Waiting for opponent",
+        "data": {
+            "ru": {
+                "original": "Waiting for opponent",
+                "translation": "Ожидание соперника"
+            }
+        }
+    },
+    "avatar_creation_mane_n_tail_color": {
+        "text": "Mane and tail",
+        "data": {
+            "ru": {
+                "original": "Mane and tail",
+                "translation": "Грива и хвост"
+            }
+        }
+    },
+    "avatar_creation_female": {
+        "text": "Female",
+        "data": {
+            "ru": {
+                "original": "Female",
+                "translation": "Женский"
+            }
+        }
+    },
+    "avatar_creation_choose_skin_color": {
+        "text": "Skin color",
+        "data": {
+            "ru": {
+                "original": "Skin color",
+                "translation": "Цвет кожи"
+            }
+        }
+    },
+    "avatar_creation_done": {
+        "text": "Done",
+        "data": {
+            "ru": {
+                "original": "Done",
+                "translation": "Готово"
+            }
+        }
+    },
+    "avatar_creation_choose_rider_gender": {
+        "text": "Rider",
+        "data": {
+            "ru": {
+                "original": "Rider",
+                "translation": "Всадник"
+            }
+        }
+    },
+    "avatar_creation_enter_horse_name": {
+        "text": "Horse name",
+        "data": {
+            "ru": {
+                "original": "Horse name",
+                "translation": "Имя лошади"
+            }
+        }
+    },
+    "avatar_creation_choose_horse_name": {
+        "text": "Choose a name",
+        "data": {
+            "ru": {
+                "original": "Choose a name",
+                "translation": "Выберите имя"
+            }
+        }
+    },
+    "avatar_creation_choose_horse_color": {
+        "text": "Horse color",
+        "data": {
+            "ru": {
+                "original": "Horse color",
+                "translation": "Масть лошади"
+            }
+        }
+    },
+    "avatar_creation_male": {
+        "text": "Male",
+        "data": {
+            "ru": {
+                "original": "Male",
+                "translation": "Мужской"
+            }
+        }
+    },
+    "avatar_creation_choose_horse_gender": {
+        "text": "Horse",
+        "data": {
+            "ru": {
+                "original": "Horse",
+                "translation": "Лошадь"
+            }
+        }
+    },
+    "avatar_creation_create_your_character": {
+        "text": "Create your character",
+        "data": {
+            "ru": {
+                "original": "Create your character",
+                "translation": "Создайте персонажа"
+            }
+        }
+    },
+    "avatar_creation_welcome": {
+        "text": "Welcome",
+        "data": {
+            "ru": {
+                "original": "Welcome",
+                "translation": "Добро пожаловать"
+            }
+        }
+    },
+    "daily_login_claim_reward": {
+        "text": "Claim",
+        "data": {
+            "ru": {
+                "original": "Claim",
+                "translation": "Забрать"
+            }
+        }
+    },
+    "common_buy_premium": {
+        "text": "Buy premium",
+        "data": {
+            "ru": {
+                "original": "Buy premium",
+                "translation": "Купить премиум"
+            }
+        }
+    },
+    "gui_item_level": {
+        "text": "Level",
+        "data": {
+            "ru": {
+                "original": "Level",
+                "translation": "Уровень"
+            }
+        }
+    },
+    "gui_item_no_bonus": {
+        "text": "No bonus",
+        "data": {
+            "ru": {
+                "original": "No bonus",
+                "translation": "Без бонуса"
+            }
+        }
+    },
+    "stats_max_action_points": {
+        "text": "Max action points",
+        "data": {
+            "ru": {
+                "original": "Max action points",
+                "translation": "Макс. очки действия"
+            }
+        }
+    },
+    "stats_action_points_recovery": {
+        "text": "Action point recovery",
+        "data": {
+            "ru": {
+                "original": "Action point recovery",
+                "translation": "Восстановление очков"
+            }
+        }
+    },
+    "challenge_button_play": {
+        "text": "Play",
+        "data": {
+            "ru": {
+                "original": "Play",
+                "translation": "Играть"
+            }
+        }
+    },
+    "common_text_play": {
+        "text": "Play",
+        "data": {
+            "ru": {
+                "original": "Play",
+                "translation": "Играть"
+            }
+        }
+    },
+    "guild_change_icon": {
+        "text": "Change icon",
+        "data": {
+            "ru": {
+                "original": "Change icon",
+                "translation": "Сменить значок"
+            }
+        }
+    },
+    "guild_join": {
+        "text": "Join",
+        "data": {
+            "ru": {
+                "original": "Join",
+                "translation": "Вступить"
+            }
+        }
+    },
+    "common_rank": {
+        "text": "Rank",
+        "data": {
+            "ru": {
+                "original": "Rank",
+                "translation": "Ранг"
+            }
+        }
+    },
+    "look_at_horse_info_friends": {
+        "text": "Friends",
+        "data": {
+            "ru": {
+                "original": "Friends",
+                "translation": "Друзья"
+            }
+        }
+    },
+    "challenge_button_challenge": {
+        "text": "Challenge",
+        "data": {
+            "ru": {
+                "original": "Challenge",
+                "translation": "Вызов"
+            }
+        }
+    },
+    "look_at_horse_info_level": {
+        "text": "Level",
+        "data": {
+            "ru": {
+                "original": "Level",
+                "translation": "Уровень"
+            }
+        }
+    },
+    "common_input_field_enter_text": {
+        "text": "Enter text",
+        "data": {
+            "ru": {
+                "original": "Enter text",
+                "translation": "Введите текст"
+            }
+        }
+    },
+    "guild_info": {
+        "text": "Club info",
+        "data": {
+            "ru": {
+                "original": "Club info",
+                "translation": "О клубе"
+            }
+        }
+    },
+    "guild_decline": {
+        "text": "Decline",
+        "data": {
+            "ru": {
+                "original": "Decline",
+                "translation": "Отклонить"
+            }
+        }
+    },
+    "guild_cancel": {
+        "text": "Cancel",
+        "data": {
+            "ru": {
+                "original": "Cancel",
+                "translation": "Отмена"
+            }
+        }
+    },
+    "challenge_button_accept": {
+        "text": "Accept",
+        "data": {
+            "ru": {
+                "original": "Accept",
+                "translation": "Принять"
+            }
+        }
+    },
+    "look_at_horse_info_rank": {
+        "text": "Rank",
+        "data": {
+            "ru": {
+                "original": "Rank",
+                "translation": "Ранг"
+            }
+        }
+    },
+    "guild_accept": {
+        "text": "Accept",
+        "data": {
+            "ru": {
+                "original": "Accept",
+                "translation": "Принять"
+            }
+        }
+    },
+    "guild_invited_by_player": {
+        "text": "Invited by",
+        "data": {
+            "ru": {
+                "original": "Invited by",
+                "translation": "Пригласил"
+            }
+        }
+    },
+    "guild_members": {
+        "text": "Members",
+        "data": {
+            "ru": {
+                "original": "Members",
+                "translation": "Участники"
+            }
+        }
+    },
+    "main_menu_guild_top": {
+        "text": "Top clubs",
+        "data": {
+            "ru": {
+                "original": "Top clubs",
+                "translation": "Лучшие клубы"
+            }
+        }
+    },
+    "friends_view_waiting": {
+        "text": "Waiting",
+        "data": {
+            "ru": {
+                "original": "Waiting",
+                "translation": "Ожидание"
+            }
+        }
+    },
+    "guild_short_name": {
+        "text": "Short name",
+        "data": {
+            "ru": {
+                "original": "Short name",
+                "translation": "Короткое имя"
+            }
+        }
+    },
+    "guild_news": {
+        "text": "News",
+        "data": {
+            "ru": {
+                "original": "News",
+                "translation": "Новости"
+            }
+        }
+    },
+    "look_at_horse_info_no_submited_courses": {
+        "text": "No courses yet",
+        "data": {
+            "ru": {
+                "original": "No courses yet",
+                "translation": "Пока нет трасс"
+            }
+        }
+    },
+    "guild_cancel_request": {
+        "text": "Cancel request",
+        "data": {
+            "ru": {
+                "original": "Cancel request",
+                "translation": "Отменить заявку"
+            }
+        }
+    },
+    "guild_manage": {
+        "text": "Manage",
+        "data": {
+            "ru": {
+                "original": "Manage",
+                "translation": "Управление"
+            }
+        }
+    },
+    "guild_name": {
+        "text": "Name",
+        "data": {
+            "ru": {
+                "original": "Name",
+                "translation": "Имя"
+            }
+        }
+    },
+    "guild_hide_offensive_news": {
+        "text": "Hide offensive news",
+        "data": {
+            "ru": {
+                "original": "Hide offensive news",
+                "translation": "Скрыть оскорбительные новости"
+            }
+        }
+    },
+    "guild_enable_join_request": {
+        "text": "Allow join requests",
+        "data": {
+            "ru": {
+                "original": "Allow join requests",
+                "translation": "Разрешить заявки"
+            }
+        }
+    },
+    "guild_hide_offensive_news_chat": {
+        "text": "Hide offensive chat",
+        "data": {
+            "ru": {
+                "original": "Hide offensive chat",
+                "translation": "Скрыть оскорбительный чат"
+            }
+        }
+    },
+    "common_create": {
+        "text": "Create",
+        "data": {
+            "ru": {
+                "original": "Create",
+                "translation": "Создать"
+            }
+        }
+    },
+    "look_at_horse_info_user_courses": {
+        "text": "Courses",
+        "data": {
+            "ru": {
+                "original": "Courses",
+                "translation": "Трассы"
+            }
+        }
+    },
+    "shop_category_toggle_all_tooltip": {
+        "text": "All items",
+        "data": {
+            "ru": {
+                "original": "All items",
+                "translation": "Все предметы"
+            }
+        }
+    },
+    "shop_category_toggle_helmet_tooltip": {
+        "text": "Helmets",
+        "data": {
+            "ru": {
+                "original": "Helmets",
+                "translation": "Шлемы"
+            }
+        }
+    },
+    "shop_category_toggle_blazer_tooltip": {
+        "text": "Jackets",
+        "data": {
+            "ru": {
+                "original": "Jackets",
+                "translation": "Куртки"
+            }
+        }
+    },
+    "shop_category_toggle_pants_tooltip": {
+        "text": "Breeches",
+        "data": {
+            "ru": {
+                "original": "Breeches",
+                "translation": "Бриджи"
+            }
+        }
+    },
+    "shop_category_toggle_boots_tooltip": {
+        "text": "Boots",
+        "data": {
+            "ru": {
+                "original": "Boots",
+                "translation": "Сапоги"
+            }
+        }
+    },
+    "shop_category_toggle_headgear_tooltip": {
+        "text": "Bridles",
+        "data": {
+            "ru": {
+                "original": "Bridles",
+                "translation": "Уздечки"
+            }
+        }
+    },
+    "shop_category_toggle_saddle_tooltip": {
+        "text": "Saddles",
+        "data": {
+            "ru": {
+                "original": "Saddles",
+                "translation": "Седла"
+            }
+        }
+    },
+    "shop_category_toggle_blanket_tooltip": {
+        "text": "Blankets",
+        "data": {
+            "ru": {
+                "original": "Blankets",
+                "translation": "Вальтрапы"
+            }
+        }
+    },
+    "shop_category_toggle_ankleboots_tooltip": {
+        "text": "Ankle boots",
+        "data": {
+            "ru": {
+                "original": "Ankle boots",
+                "translation": "Ногавки"
+            }
+        }
+    },
+    "shop_preview_tooltip": {
+        "text": "Preview",
+        "data": {
+            "ru": {
+                "original": "Preview",
+                "translation": "Примерка"
+            }
+        }
+    },
+    "avatar_creation_change_your_character": {
+        "text": "Change your character",
+        "data": {
+            "ru": {
+                "original": "Change your character",
+                "translation": "Измените персонажа"
+            }
+        }
+    },
+    "avatar_creation_welcome_change": {
+        "text": "Change how you look",
+        "data": {
+            "ru": {
+                "original": "Change how you look",
+                "translation": "Измените внешность"
+            }
+        }
+    },
+    "shop_buy_tooltip": {
+        "text": "Buy",
+        "data": {
+            "ru": {
+                "original": "Buy",
+                "translation": "Купить"
+            }
+        }
+    },
+    "shop_category_toggle_consumables_tooltip": {
+        "text": "Treats",
+        "data": {
+            "ru": {
+                "original": "Treats",
+                "translation": "Лакомства"
+            }
+        }
+    },
+    "shop_reset_preview_tooltip": {
+        "text": "Reset preview",
+        "data": {
+            "ru": {
+                "original": "Reset preview",
+                "translation": "Сбросить просмотр"
+            }
+        }
+    },
+    "premium_title": {
+        "text": "Pro Rider",
+        "data": {
+            "ru": {
+                "original": "Pro Rider",
+                "translation": "Про-наездник"
+            }
+        }
+    },
+    "premium_bow": {
+        "text": "Pro",
+        "data": {
+            "ru": {
+                "original": "Pro",
+                "translation": "Про"
+            }
+        }
+    },
+    "premium_item_0": {
+        "text": "Rides cost half the action points",
+        "data": {
+            "ru": {
+                "original": "Rides cost half the action points",
+                "translation": "Заезды тратят вдвое меньше очков действия"
+            }
+        }
+    },
+    "premium_item_1": {
+        "text": "Your name is shown in color",
+        "data": {
+            "ru": {
+                "original": "Your name is shown in color",
+                "translation": "Имя показывается цветным"
+            }
+        }
+    },
+    "premium_item_2": {
+        "text": "A larger daily reward",
+        "data": {
+            "ru": {
+                "original": "A larger daily reward",
+                "translation": "Больше ежедневная награда"
+            }
+        }
+    },
+    "premium_item_3": {
+        "text": "Shown as a Pro Rider in chat",
+        "data": {
+            "ru": {
+                "original": "Shown as a Pro Rider in chat",
+                "translation": "В чате видно, что вы про-наездник"
+            }
+        }
+    },
+    "main_menu_open_settings_dialog": {
+        "text": "Settings",
+        "data": {
+            "ru": {
+                "original": "Settings",
+                "translation": "Настройки"
+            }
+        }
+    },
+    "inmatch_menu_resume": {
+        "text": "Resume",
+        "data": {
+            "ru": {
+                "original": "Resume",
+                "translation": "Продолжить"
+            }
+        }
+    },
+    "inmatch_menu_help": {
+        "text": "Help",
+        "data": {
+            "ru": {
+                "original": "Help",
+                "translation": "Помощь"
+            }
+        }
+    },
+    "inmatch_menu_main_menu": {
+        "text": "Main menu",
+        "data": {
+            "ru": {
+                "original": "Main menu",
+                "translation": "Главное меню"
+            }
+        }
+    }
+}

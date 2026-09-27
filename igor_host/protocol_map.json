@@ -1,0 +1,1082 @@
+{
+  "25600": {
+    "emptyReply": false,
+    "function": 0,
+    "hasRpc": true,
+    "name": "Login",
+    "payloadKind": "readable",
+    "payloadType": "ReplyLogin",
+    "placeholder": "",
+    "service": 100
+  },
+  "25859": {
+    "emptyReply": false,
+    "function": 3,
+    "hasRpc": false,
+    "name": "Save",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 101
+  },
+  "26112": {
+    "emptyReply": false,
+    "function": 0,
+    "hasRpc": true,
+    "name": "Exec",
+    "payloadKind": "string",
+    "payloadType": "",
+    "placeholder": "Debug eval is not run on this server.",
+    "service": 102
+  },
+  "26113": {
+    "emptyReply": false,
+    "function": 1,
+    "hasRpc": true,
+    "name": "Eval",
+    "payloadKind": "string",
+    "payloadType": "",
+    "placeholder": "Debug eval is not run on this server.",
+    "service": 102
+  },
+  "26114": {
+    "emptyReply": false,
+    "function": 2,
+    "hasRpc": false,
+    "name": "LogError",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 102
+  },
+  "26116": {
+    "emptyReply": false,
+    "function": 4,
+    "hasRpc": true,
+    "name": "GetCourses",
+    "payloadKind": "list",
+    "payloadType": "DebugCourse",
+    "placeholder": "",
+    "service": 102
+  },
+  "26117": {
+    "emptyReply": true,
+    "function": 5,
+    "hasRpc": true,
+    "name": "SetCourseName",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 102
+  },
+  "26118": {
+    "emptyReply": true,
+    "function": 6,
+    "hasRpc": true,
+    "name": "SetCourseOwner",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 102
+  },
+  "26119": {
+    "emptyReply": true,
+    "function": 7,
+    "hasRpc": true,
+    "name": "SetCourseMinTime",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 102
+  },
+  "26120": {
+    "emptyReply": false,
+    "function": 8,
+    "hasRpc": false,
+    "name": "GiveReward",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 102
+  },
+  "26371": {
+    "emptyReply": false,
+    "function": 3,
+    "hasRpc": false,
+    "name": "SendPrivateMessage",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 103
+  },
+  "26374": {
+    "emptyReply": false,
+    "function": 6,
+    "hasRpc": false,
+    "name": "SendRoomMessage",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 103
+  },
+  "26380": {
+    "emptyReply": false,
+    "function": 12,
+    "hasRpc": false,
+    "name": "ComplainSpam",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 103
+  },
+  "26381": {
+    "emptyReply": false,
+    "function": 13,
+    "hasRpc": false,
+    "name": "ComplainAbuse",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 103
+  },
+  "26384": {
+    "emptyReply": false,
+    "function": 16,
+    "hasRpc": false,
+    "name": "Ignore",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 103
+  },
+  "26624": {
+    "emptyReply": true,
+    "function": 0,
+    "hasRpc": true,
+    "name": "StartPaddock",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 104
+  },
+  "26625": {
+    "emptyReply": false,
+    "function": 1,
+    "hasRpc": true,
+    "name": "PickupItem",
+    "payloadKind": "readable",
+    "payloadType": "LootItem",
+    "placeholder": "",
+    "service": 104
+  },
+  "26626": {
+    "emptyReply": false,
+    "function": 2,
+    "hasRpc": false,
+    "name": "EndPaddock",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 104
+  },
+  "26880": {
+    "emptyReply": false,
+    "function": 0,
+    "hasRpc": false,
+    "name": "BuyItem",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26881": {
+    "emptyReply": false,
+    "function": 1,
+    "hasRpc": true,
+    "name": "GetPlayerId",
+    "payloadKind": "uint",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26882": {
+    "emptyReply": false,
+    "function": 2,
+    "hasRpc": true,
+    "name": "GetAccount",
+    "payloadKind": "readable",
+    "payloadType": "Account",
+    "placeholder": "",
+    "service": 105
+  },
+  "26883": {
+    "emptyReply": false,
+    "function": 3,
+    "hasRpc": true,
+    "name": "GetPlayerInfo",
+    "payloadKind": "optional",
+    "payloadType": "string",
+    "placeholder": "",
+    "service": 105
+  },
+  "26884": {
+    "emptyReply": false,
+    "function": 4,
+    "hasRpc": true,
+    "name": "GetPlayerRank",
+    "payloadKind": "int",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26885": {
+    "emptyReply": false,
+    "function": 5,
+    "hasRpc": true,
+    "name": "GetPlayerGuild",
+    "payloadKind": "optional_uint",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26887": {
+    "emptyReply": false,
+    "function": 7,
+    "hasRpc": true,
+    "name": "FindPlayer",
+    "payloadKind": "list",
+    "payloadType": "uint",
+    "placeholder": "",
+    "service": 105
+  },
+  "26888": {
+    "emptyReply": false,
+    "function": 8,
+    "hasRpc": true,
+    "name": "IsOnline",
+    "payloadKind": "dict",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26889": {
+    "emptyReply": false,
+    "function": 9,
+    "hasRpc": false,
+    "name": "UpdateAccountInfo",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26890": {
+    "emptyReply": false,
+    "function": 10,
+    "hasRpc": true,
+    "name": "SteamMicroTxnInit",
+    "payloadKind": "optional",
+    "payloadType": "ulong",
+    "placeholder": "Steam checkout is not emulated. A success reply would ask Steam to charge a real wallet.",
+    "service": 105
+  },
+  "26891": {
+    "emptyReply": false,
+    "function": 11,
+    "hasRpc": false,
+    "name": "SteamMicroTxn",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "Steam checkout is not emulated. A success reply would ask Steam to charge a real wallet.",
+    "service": 105
+  },
+  "26894": {
+    "emptyReply": true,
+    "function": 14,
+    "hasRpc": true,
+    "name": "NoGuildCreateRequest",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26895": {
+    "emptyReply": true,
+    "function": 15,
+    "hasRpc": true,
+    "name": "NoGuildAcceptRequest",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26896": {
+    "emptyReply": true,
+    "function": 16,
+    "hasRpc": true,
+    "name": "NoGuildCancelRequest",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26897": {
+    "emptyReply": true,
+    "function": 17,
+    "hasRpc": true,
+    "name": "NoGuildChangeRequest",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26900": {
+    "emptyReply": true,
+    "function": 20,
+    "hasRpc": true,
+    "name": "GuildCreate",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26901": {
+    "emptyReply": true,
+    "function": 21,
+    "hasRpc": true,
+    "name": "GuildChangeName",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26902": {
+    "emptyReply": true,
+    "function": 22,
+    "hasRpc": true,
+    "name": "GuildChangeIcon",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26903": {
+    "emptyReply": true,
+    "function": 23,
+    "hasRpc": true,
+    "name": "GuildChangeDescription",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26904": {
+    "emptyReply": true,
+    "function": 24,
+    "hasRpc": true,
+    "name": "GuildChangeWelcome",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26905": {
+    "emptyReply": true,
+    "function": 25,
+    "hasRpc": true,
+    "name": "GuildChangeInvite",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26906": {
+    "emptyReply": true,
+    "function": 26,
+    "hasRpc": true,
+    "name": "GuildCreateRequest",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26907": {
+    "emptyReply": true,
+    "function": 27,
+    "hasRpc": true,
+    "name": "GuildCancelRequest",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26908": {
+    "emptyReply": true,
+    "function": 28,
+    "hasRpc": true,
+    "name": "GuildAcceptRequest",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26909": {
+    "emptyReply": true,
+    "function": 29,
+    "hasRpc": true,
+    "name": "GuildKickUser",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26910": {
+    "emptyReply": true,
+    "function": 30,
+    "hasRpc": true,
+    "name": "GuildRoleUser",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26911": {
+    "emptyReply": true,
+    "function": 31,
+    "hasRpc": true,
+    "name": "GuildLeave",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 105
+  },
+  "26912": {
+    "emptyReply": false,
+    "function": 32,
+    "hasRpc": true,
+    "name": "FindGuild",
+    "payloadKind": "optional",
+    "payloadType": "Guild",
+    "placeholder": "",
+    "service": 105
+  },
+  "26913": {
+    "emptyReply": false,
+    "function": 33,
+    "hasRpc": true,
+    "name": "FindGuildFull",
+    "payloadKind": "optional",
+    "payloadType": "GuildFull",
+    "placeholder": "",
+    "service": 105
+  },
+  "26914": {
+    "emptyReply": false,
+    "function": 34,
+    "hasRpc": true,
+    "name": "FindGuildsTop",
+    "payloadKind": "list",
+    "payloadType": "Guild",
+    "placeholder": "",
+    "service": 105
+  },
+  "26915": {
+    "emptyReply": false,
+    "function": 35,
+    "hasRpc": true,
+    "name": "FindGuildsByName",
+    "payloadKind": "list",
+    "payloadType": "Guild",
+    "placeholder": "",
+    "service": 105
+  },
+  "26916": {
+    "emptyReply": false,
+    "function": 36,
+    "hasRpc": true,
+    "name": "FindGuildsByShortName",
+    "payloadKind": "list",
+    "payloadType": "Guild",
+    "placeholder": "",
+    "service": 105
+  },
+  "27136": {
+    "emptyReply": false,
+    "function": 0,
+    "hasRpc": true,
+    "name": "BuySlot",
+    "payloadKind": "readable",
+    "payloadType": "CourseSlot",
+    "placeholder": "",
+    "service": 106
+  },
+  "27137": {
+    "emptyReply": false,
+    "function": 1,
+    "hasRpc": true,
+    "name": "GetSlots",
+    "payloadKind": "list",
+    "payloadType": "CourseSlot",
+    "placeholder": "",
+    "service": 106
+  },
+  "27138": {
+    "emptyReply": true,
+    "function": 2,
+    "hasRpc": true,
+    "name": "SaveSlot",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 106
+  },
+  "27139": {
+    "emptyReply": false,
+    "function": 3,
+    "hasRpc": true,
+    "name": "Submit",
+    "payloadKind": "uint",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 106
+  },
+  "27140": {
+    "emptyReply": false,
+    "function": 4,
+    "hasRpc": true,
+    "name": "GetCourse",
+    "payloadKind": "readable",
+    "payloadType": "Course",
+    "placeholder": "",
+    "service": 106
+  },
+  "27141": {
+    "emptyReply": false,
+    "function": 5,
+    "hasRpc": true,
+    "name": "GetCourseInfo",
+    "payloadKind": "list",
+    "payloadType": "CourseInfo",
+    "placeholder": "",
+    "service": 106
+  },
+  "27142": {
+    "emptyReply": false,
+    "function": 6,
+    "hasRpc": true,
+    "name": "GetCourseList",
+    "payloadKind": "list",
+    "payloadType": "uint",
+    "placeholder": "",
+    "service": 106
+  },
+  "27143": {
+    "emptyReply": false,
+    "function": 7,
+    "hasRpc": true,
+    "name": "GetUserCourses",
+    "payloadKind": "list",
+    "payloadType": "uint",
+    "placeholder": "",
+    "service": 106
+  },
+  "27144": {
+    "emptyReply": true,
+    "function": 8,
+    "hasRpc": true,
+    "name": "ReportCourse",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 106
+  },
+  "27145": {
+    "emptyReply": false,
+    "function": 9,
+    "hasRpc": true,
+    "name": "GetCourseChanges",
+    "payloadKind": "int",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 106
+  },
+  "27146": {
+    "emptyReply": false,
+    "function": 10,
+    "hasRpc": true,
+    "name": "FindCourses",
+    "payloadKind": "list",
+    "payloadType": "uint",
+    "placeholder": "",
+    "service": 106
+  },
+  "27147": {
+    "emptyReply": false,
+    "function": 11,
+    "hasRpc": true,
+    "name": "GetLikes",
+    "payloadKind": "list",
+    "payloadType": "uint",
+    "placeholder": "",
+    "service": 106
+  },
+  "27148": {
+    "emptyReply": false,
+    "function": 12,
+    "hasRpc": true,
+    "name": "Like",
+    "payloadKind": "int",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 106
+  },
+  "27149": {
+    "emptyReply": false,
+    "function": 13,
+    "hasRpc": true,
+    "name": "UnLike",
+    "payloadKind": "int",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 106
+  },
+  "27392": {
+    "emptyReply": true,
+    "function": 0,
+    "hasRpc": true,
+    "name": "StartPractice",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27393": {
+    "emptyReply": false,
+    "function": 1,
+    "hasRpc": true,
+    "name": "EndPractice",
+    "payloadKind": "readable",
+    "payloadType": "ReplyPracticeEnd",
+    "placeholder": "",
+    "service": 107
+  },
+  "27394": {
+    "emptyReply": false,
+    "function": 2,
+    "hasRpc": false,
+    "name": "SubscribeRmSearch",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27395": {
+    "emptyReply": false,
+    "function": 3,
+    "hasRpc": false,
+    "name": "UnSubscribeRmSearch",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27399": {
+    "emptyReply": false,
+    "function": 7,
+    "hasRpc": false,
+    "name": "RmEnd",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27400": {
+    "emptyReply": false,
+    "function": 8,
+    "hasRpc": true,
+    "name": "StartChallenge",
+    "payloadKind": "readable",
+    "payloadType": "Key",
+    "placeholder": "",
+    "service": 107
+  },
+  "27401": {
+    "emptyReply": false,
+    "function": 9,
+    "hasRpc": false,
+    "name": "ChallengeResult",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27402": {
+    "emptyReply": false,
+    "function": 10,
+    "hasRpc": true,
+    "name": "DsMenu",
+    "payloadKind": "readable",
+    "payloadType": "ReplyDsMenu",
+    "placeholder": "",
+    "service": 107
+  },
+  "27403": {
+    "emptyReply": false,
+    "function": 11,
+    "hasRpc": false,
+    "name": "StartDs",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27404": {
+    "emptyReply": false,
+    "function": 12,
+    "hasRpc": false,
+    "name": "SubmitDsResult",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27405": {
+    "emptyReply": false,
+    "function": 13,
+    "hasRpc": false,
+    "name": "DsGetFinalReward",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 107
+  },
+  "27406": {
+    "emptyReply": false,
+    "function": 14,
+    "hasRpc": true,
+    "name": "DsDayTable",
+    "payloadKind": "readable",
+    "payloadType": "DsResultsTable",
+    "placeholder": "",
+    "service": 107
+  },
+  "27407": {
+    "emptyReply": false,
+    "function": 15,
+    "hasRpc": true,
+    "name": "DsQualificationTable",
+    "payloadKind": "readable",
+    "payloadType": "DsQualification",
+    "placeholder": "",
+    "service": 107
+  },
+  "27408": {
+    "emptyReply": false,
+    "function": 16,
+    "hasRpc": true,
+    "name": "DsLastWeekTable",
+    "payloadKind": "readable",
+    "payloadType": "DsResultsTable",
+    "placeholder": "",
+    "service": 107
+  },
+  "27648": {
+    "emptyReply": false,
+    "function": 0,
+    "hasRpc": false,
+    "name": "Subscribe",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 108
+  },
+  "27649": {
+    "emptyReply": false,
+    "function": 1,
+    "hasRpc": true,
+    "name": "GetClassicLeaderboard",
+    "payloadKind": "readable",
+    "payloadType": "CourseScores",
+    "placeholder": "",
+    "service": 108
+  },
+  "27650": {
+    "emptyReply": false,
+    "function": 2,
+    "hasRpc": true,
+    "name": "GetCourseLeaderboard",
+    "payloadKind": "readable",
+    "payloadType": "CourseScores",
+    "placeholder": "",
+    "service": 108
+  },
+  "27651": {
+    "emptyReply": false,
+    "function": 3,
+    "hasRpc": true,
+    "name": "GetLadder",
+    "payloadKind": "list",
+    "payloadType": "LadderPlace",
+    "placeholder": "",
+    "service": 108
+  },
+  "27652": {
+    "emptyReply": false,
+    "function": 4,
+    "hasRpc": true,
+    "name": "GetFriendsLadder",
+    "payloadKind": "list",
+    "payloadType": "LadderPlace",
+    "placeholder": "",
+    "service": 108
+  },
+  "27653": {
+    "emptyReply": false,
+    "function": 5,
+    "hasRpc": true,
+    "name": "GetGuildLadder",
+    "payloadKind": "list",
+    "payloadType": "LadderPlace",
+    "placeholder": "",
+    "service": 108
+  },
+  "27654": {
+    "emptyReply": false,
+    "function": 6,
+    "hasRpc": true,
+    "name": "GetPlayersLadder",
+    "payloadKind": "list",
+    "payloadType": "LadderPlace",
+    "placeholder": "",
+    "service": 108
+  },
+  "27655": {
+    "emptyReply": true,
+    "function": 7,
+    "hasRpc": true,
+    "name": "StartTutorial",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 108
+  },
+  "27656": {
+    "emptyReply": false,
+    "function": 8,
+    "hasRpc": false,
+    "name": "TutorialFinished",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 108
+  },
+  "27657": {
+    "emptyReply": false,
+    "function": 9,
+    "hasRpc": true,
+    "name": "GetSpecialOffers",
+    "payloadKind": "readable",
+    "payloadType": "ReplySpecialOffers",
+    "placeholder": "",
+    "service": 108
+  },
+  "27658": {
+    "emptyReply": false,
+    "function": 10,
+    "hasRpc": false,
+    "name": "UpdateCounter",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 108
+  },
+  "27659": {
+    "emptyReply": false,
+    "function": 11,
+    "hasRpc": true,
+    "name": "GetPlayerProfile",
+    "payloadKind": "readable",
+    "payloadType": "PlayerProfile",
+    "placeholder": "",
+    "service": 108
+  },
+  "27668": {
+    "emptyReply": false,
+    "function": 20,
+    "hasRpc": true,
+    "name": "KickstarterInfo",
+    "payloadKind": "int",
+    "payloadType": "",
+    "placeholder": "The Kickstarter campaign is closed. There is no live pledge state to return.",
+    "service": 108
+  },
+  "27905": {
+    "emptyReply": false,
+    "function": 1,
+    "hasRpc": false,
+    "name": "AcceptDailyBonus",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27912": {
+    "emptyReply": false,
+    "function": 8,
+    "hasRpc": false,
+    "name": "SubscriptionChanged",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27914": {
+    "emptyReply": false,
+    "function": 10,
+    "hasRpc": false,
+    "name": "NotifyAccept",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27915": {
+    "emptyReply": false,
+    "function": 11,
+    "hasRpc": false,
+    "name": "SubscribeFriends",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27919": {
+    "emptyReply": false,
+    "function": 15,
+    "hasRpc": false,
+    "name": "EquipItem",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27920": {
+    "emptyReply": false,
+    "function": 16,
+    "hasRpc": false,
+    "name": "UseItem",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27921": {
+    "emptyReply": false,
+    "function": 17,
+    "hasRpc": false,
+    "name": "UpgradeInventoryItem",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27922": {
+    "emptyReply": false,
+    "function": 18,
+    "hasRpc": false,
+    "name": "UpgradeEquipmentItem",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27923": {
+    "emptyReply": false,
+    "function": 19,
+    "hasRpc": false,
+    "name": "ApplySkillPoints",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27924": {
+    "emptyReply": false,
+    "function": 20,
+    "hasRpc": false,
+    "name": "ApplyAvatar",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27927": {
+    "emptyReply": false,
+    "function": 23,
+    "hasRpc": false,
+    "name": "QuestConfirmed",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27928": {
+    "emptyReply": false,
+    "function": 24,
+    "hasRpc": false,
+    "name": "QuestDeclined",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27929": {
+    "emptyReply": false,
+    "function": 25,
+    "hasRpc": false,
+    "name": "StartGrooming",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27930": {
+    "emptyReply": false,
+    "function": 26,
+    "hasRpc": false,
+    "name": "UpdateGrooming",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27931": {
+    "emptyReply": false,
+    "function": 27,
+    "hasRpc": false,
+    "name": "FinishGrooming",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27932": {
+    "emptyReply": false,
+    "function": 28,
+    "hasRpc": false,
+    "name": "BuyGrooming",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  },
+  "27933": {
+    "emptyReply": false,
+    "function": 29,
+    "hasRpc": false,
+    "name": "PremiumGrooming",
+    "payloadKind": "none",
+    "payloadType": "",
+    "placeholder": "",
+    "service": 109
+  }
+}

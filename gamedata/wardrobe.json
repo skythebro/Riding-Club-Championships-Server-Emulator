@@ -1,0 +1,1241 @@
+{
+  "items": [
+    {
+      "id": "horse_headgear_01",
+      "name": "Bridle 01",
+      "description": "Bridle texture headgear_01.",
+      "price": 20,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 3590476992
+    },
+    {
+      "id": "horse_headgear_02",
+      "name": "Bridle 02",
+      "description": "Bridle texture headgear_02.",
+      "price": 20,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 1326122362
+    },
+    {
+      "id": "horse_headgear_03",
+      "name": "Bridle 03",
+      "description": "Bridle texture headgear_03.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 940324332
+    },
+    {
+      "id": "horse_headgear_04",
+      "name": "Bridle 04",
+      "description": "Bridle texture headgear_04.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 2791874639
+    },
+    {
+      "id": "horse_headgear_05",
+      "name": "Bridle 05",
+      "description": "Bridle texture headgear_05.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 3513749721
+    },
+    {
+      "id": "horse_headgear_06",
+      "name": "Bridle 06",
+      "description": "Bridle texture headgear_06.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 1214693731
+    },
+    {
+      "id": "horse_headgear_07",
+      "name": "Bridle 07",
+      "description": "Bridle texture headgear_07.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 1063383541
+    },
+    {
+      "id": "horse_headgear_babypink",
+      "name": "Bridle babypink",
+      "description": "Bridle texture headgear_babypink.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 3334195260
+    },
+    {
+      "id": "horse_headgear_ebony",
+      "name": "Bridle ebony",
+      "description": "Bridle texture headgear_ebony.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 3864024483
+    },
+    {
+      "id": "horse_headgear_imperial",
+      "name": "Bridle imperial",
+      "description": "Bridle texture headgear_imperial.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 76162794
+    },
+    {
+      "id": "horse_headgear_rainbow",
+      "name": "Bridle rainbow",
+      "description": "Bridle texture headgear_rainbow.",
+      "price": 45,
+      "gear": 1,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_headgear",
+      "hash": 1210598614
+    },
+    {
+      "id": "horse_saddle_01",
+      "name": "Saddle 01",
+      "description": "Saddle texture saddle_01.",
+      "price": 20,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 3766252702
+    },
+    {
+      "id": "horse_saddle_02",
+      "name": "Saddle 02",
+      "description": "Saddle texture saddle_02.",
+      "price": 20,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 2037720356
+    },
+    {
+      "id": "horse_saddle_03",
+      "name": "Saddle 03",
+      "description": "Saddle texture saddle_03.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 242357682
+    },
+    {
+      "id": "horse_saddle_04",
+      "name": "Saddle 04",
+      "description": "Saddle texture saddle_04.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 2417393681
+    },
+    {
+      "id": "horse_saddle_05",
+      "name": "Saddle 05",
+      "description": "Saddle texture saddle_05.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 3876696199
+    },
+    {
+      "id": "horse_saddle_06",
+      "name": "Saddle 06",
+      "description": "Saddle texture saddle_06.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 2115559741
+    },
+    {
+      "id": "horse_saddle_babypink",
+      "name": "Saddle babypink",
+      "description": "Saddle texture saddle_babypink.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 2599993394
+    },
+    {
+      "id": "horse_saddle_ebony",
+      "name": "Saddle ebony",
+      "description": "Saddle texture saddle_ebony.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 2722836150
+    },
+    {
+      "id": "horse_saddle_imperial",
+      "name": "Saddle imperial",
+      "description": "Saddle texture saddle_imperial.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 1489579748
+    },
+    {
+      "id": "horse_saddle_rainbow",
+      "name": "Saddle rainbow",
+      "description": "Saddle texture saddle_rainbow.",
+      "price": 45,
+      "gear": 2,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_saddle",
+      "hash": 3091877485
+    },
+    {
+      "id": "horse_blanket_01",
+      "name": "Blanket 01",
+      "description": "Blanket texture blanket_01.",
+      "price": 20,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 1906234608
+    },
+    {
+      "id": "horse_blanket_02",
+      "name": "Blanket 02",
+      "description": "Blanket texture blanket_02.",
+      "price": 20,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 3902244170
+    },
+    {
+      "id": "horse_blanket_03",
+      "name": "Blanket 03",
+      "description": "Blanket texture blanket_03.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 2677061084
+    },
+    {
+      "id": "horse_blanket_04",
+      "name": "Blanket 04",
+      "description": "Blanket texture blanket_04.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 32776319
+    },
+    {
+      "id": "horse_blanket_05",
+      "name": "Blanket 05",
+      "description": "Blanket texture blanket_05.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 1995641065
+    },
+    {
+      "id": "horse_blanket_06",
+      "name": "Blanket 06",
+      "description": "Blanket texture blanket_06.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 4026155347
+    },
+    {
+      "id": "horse_blanket_babypink",
+      "name": "Blanket babypink",
+      "description": "Blanket texture blanket_babypink.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 1485204218
+    },
+    {
+      "id": "horse_blanket_ebony",
+      "name": "Blanket ebony",
+      "description": "Blanket texture blanket_ebony.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 128944
+    },
+    {
+      "id": "horse_blanket_imperial",
+      "name": "Blanket imperial",
+      "description": "Blanket texture blanket_imperial.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 2595718188
+    },
+    {
+      "id": "horse_blanket_rainbow",
+      "name": "Blanket rainbow",
+      "description": "Blanket texture blanket_rainbow.",
+      "price": 45,
+      "gear": 3,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_blanket1",
+      "hash": 287252945
+    },
+    {
+      "id": "horse_ankleboots_01",
+      "name": "Ankle boots 01",
+      "description": "Ankle boots texture ankleboots_01.",
+      "price": 20,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 3648995946
+    },
+    {
+      "id": "horse_ankleboots_02",
+      "name": "Ankle boots 02",
+      "description": "Ankle boots texture ankleboots_02.",
+      "price": 20,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 1081480144
+    },
+    {
+      "id": "horse_ankleboots_03",
+      "name": "Ankle boots 03",
+      "description": "Ankle boots texture ankleboots_03.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 930161478
+    },
+    {
+      "id": "horse_ankleboots_04",
+      "name": "Ankle boots 04",
+      "description": "Ankle boots texture ankleboots_04.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 2836772581
+    },
+    {
+      "id": "horse_ankleboots_05",
+      "name": "Ankle boots 05",
+      "description": "Ankle boots texture ankleboots_05.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 3725756019
+    },
+    {
+      "id": "horse_ankleboots_06",
+      "name": "Ankle boots 06",
+      "description": "Ankle boots texture ankleboots_06.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 1193007049
+    },
+    {
+      "id": "horse_ankleboots_babypink",
+      "name": "Ankle boots babypink",
+      "description": "Ankle boots texture ankleboots_babypink.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 60139498
+    },
+    {
+      "id": "horse_ankleboots_ebony",
+      "name": "Ankle boots ebony",
+      "description": "Ankle boots texture ankleboots_ebony.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 9647436
+    },
+    {
+      "id": "horse_ankleboots_imperial",
+      "name": "Ankle boots imperial",
+      "description": "Ankle boots texture ankleboots_imperial.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 3248769340
+    },
+    {
+      "id": "horse_ankleboots_rainbow",
+      "name": "Ankle boots rainbow",
+      "description": "Ankle boots texture ankleboots_rainbow.",
+      "price": 45,
+      "gear": 4,
+      "player": 0,
+      "mesh": 0,
+      "material": "horse_ankleboots1",
+      "hash": 3699125358
+    },
+    {
+      "id": "rider_helmet_01",
+      "name": "Helmet 01",
+      "description": "Helmet texture helmet_01.",
+      "price": 20,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 273916496
+    },
+    {
+      "id": "rider_helmet_02",
+      "name": "Helmet 02",
+      "description": "Helmet texture helmet_02.",
+      "price": 20,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 2304439274
+    },
+    {
+      "id": "rider_helmet_03",
+      "name": "Helmet 03",
+      "description": "Helmet texture helmet_03.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 4267557756
+    },
+    {
+      "id": "rider_helmet_04",
+      "name": "Helmet 04",
+      "description": "Helmet texture helmet_04.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 1614370527
+    },
+    {
+      "id": "rider_helmet_05",
+      "name": "Helmet 05",
+      "description": "Helmet texture helmet_05.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 389965385
+    },
+    {
+      "id": "rider_helmet_06",
+      "name": "Helmet 06",
+      "description": "Helmet texture helmet_06.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 2385983475
+    },
+    {
+      "id": "rider_helmet_07",
+      "name": "Helmet 07",
+      "description": "Helmet texture helmet_07.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 4180674405
+    },
+    {
+      "id": "rider_helmet_08",
+      "name": "Helmet 08",
+      "description": "Helmet texture helmet_08.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 1770986228
+    },
+    {
+      "id": "rider_helmet_09",
+      "name": "Helmet 09",
+      "description": "Helmet texture helmet_09.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 512240226
+    },
+    {
+      "id": "rider_helmet_10",
+      "name": "Helmet 10",
+      "description": "Helmet texture helmet_10.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 2119148423
+    },
+    {
+      "id": "rider_helmet_elf",
+      "name": "Helmet elf",
+      "description": "Helmet texture helmet_elf.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 1,
+      "material": "rider_common_santa_hat",
+      "hash": 2026563316
+    },
+    {
+      "id": "rider_helmet_grasslands",
+      "name": "Helmet grasslands",
+      "description": "Helmet texture helmet_grasslands.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 2951140889
+    },
+    {
+      "id": "rider_helmet_imperial",
+      "name": "Helmet imperial",
+      "description": "Helmet texture helmet_imperial.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 940250977
+    },
+    {
+      "id": "rider_helmet_poppy",
+      "name": "Helmet poppy",
+      "description": "Helmet texture helmet_poppy.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 0,
+      "material": "rider_common_helmet",
+      "hash": 3701002609
+    },
+    {
+      "id": "rider_helmet_santa",
+      "name": "Helmet santa",
+      "description": "Helmet texture helmet_santa.",
+      "price": 45,
+      "gear": 0,
+      "player": 1,
+      "mesh": 1,
+      "material": "rider_common_santa_hat",
+      "hash": 442437562
+    },
+    {
+      "id": "rider_blazer_01",
+      "name": "Jacket 01",
+      "description": "Jacket texture blazer_01.",
+      "price": 20,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 3227336666
+    },
+    {
+      "id": "rider_blazer_02",
+      "name": "Jacket 02",
+      "description": "Jacket texture blazer_02.",
+      "price": 20,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 1498705504
+    },
+    {
+      "id": "rider_blazer_03",
+      "name": "Jacket 03",
+      "description": "Jacket texture blazer_03.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 777215734
+    },
+    {
+      "id": "rider_blazer_04",
+      "name": "Jacket 04",
+      "description": "Jacket texture blazer_04.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 2956446549
+    },
+    {
+      "id": "rider_blazer_05",
+      "name": "Jacket 05",
+      "description": "Jacket texture blazer_05.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 3341876163
+    },
+    {
+      "id": "rider_blazer_06",
+      "name": "Jacket 06",
+      "description": "Jacket texture blazer_06.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 1580837497
+    },
+    {
+      "id": "rider_blazer_07",
+      "name": "Jacket 07",
+      "description": "Jacket texture blazer_07.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 691968751
+    },
+    {
+      "id": "rider_blazer_08",
+      "name": "Jacket 08",
+      "description": "Jacket texture blazer_08.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 3112273790
+    },
+    {
+      "id": "rider_blazer_09",
+      "name": "Jacket 09",
+      "description": "Jacket texture blazer_09.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 3464935400
+    },
+    {
+      "id": "rider_blazer_10",
+      "name": "Jacket 10",
+      "description": "Jacket texture blazer_10.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 2923511309
+    },
+    {
+      "id": "rider_blazer_11",
+      "name": "Jacket 11",
+      "description": "Jacket texture blazer_11.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 3645247131
+    },
+    {
+      "id": "rider_blazer_grasslands",
+      "name": "Jacket grasslands",
+      "description": "Jacket texture blazer_grasslands.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 1358776030
+    },
+    {
+      "id": "rider_blazer_imperial",
+      "name": "Jacket imperial",
+      "description": "Jacket texture blazer_imperial.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 3286270333
+    },
+    {
+      "id": "rider_blazer_poppy",
+      "name": "Jacket poppy",
+      "description": "Jacket texture blazer_poppy.",
+      "price": 45,
+      "gear": 0,
+      "player": 2,
+      "mesh": 0,
+      "material": null,
+      "hash": 325949095
+    },
+    {
+      "id": "rider_pants_01",
+      "name": "Breeches 01",
+      "description": "Breeches texture pants_01.",
+      "price": 20,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 697550404
+    },
+    {
+      "id": "rider_pants_02",
+      "name": "Breeches 02",
+      "description": "Breeches texture pants_02.",
+      "price": 20,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 2962921470
+    },
+    {
+      "id": "rider_pants_03",
+      "name": "Breeches 03",
+      "description": "Breeches texture pants_03.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 3348997992
+    },
+    {
+      "id": "rider_pants_04",
+      "name": "Breeches 04",
+      "description": "Breeches texture pants_04.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 1509503691
+    },
+    {
+      "id": "rider_pants_05",
+      "name": "Breeches 05",
+      "description": "Breeches texture pants_05.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 788398685
+    },
+    {
+      "id": "rider_pants_06",
+      "name": "Breeches 06",
+      "description": "Breeches texture pants_06.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 3086439399
+    },
+    {
+      "id": "rider_pants_07",
+      "name": "Breeches 07",
+      "description": "Breeches texture pants_07.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 3236979569
+    },
+    {
+      "id": "rider_pants_08",
+      "name": "Breeches 08",
+      "description": "Breeches texture pants_08.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 1347387104
+    },
+    {
+      "id": "rider_pants_09",
+      "name": "Breeches 09",
+      "description": "Breeches texture pants_09.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 659050102
+    },
+    {
+      "id": "rider_pants_10",
+      "name": "Breeches 10",
+      "description": "Breeches texture pants_10.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 1200605075
+    },
+    {
+      "id": "rider_pants_11",
+      "name": "Breeches 11",
+      "description": "Breeches texture pants_11.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 814282501
+    },
+    {
+      "id": "rider_pants_grasslands",
+      "name": "Breeches grasslands",
+      "description": "Breeches texture pants_grasslands.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 2503427453
+    },
+    {
+      "id": "rider_pants_imperial",
+      "name": "Breeches imperial",
+      "description": "Breeches texture pants_imperial.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 2433332856
+    },
+    {
+      "id": "rider_pants_poppy",
+      "name": "Breeches poppy",
+      "description": "Breeches texture pants_poppy.",
+      "price": 45,
+      "gear": 0,
+      "player": 3,
+      "mesh": 0,
+      "material": null,
+      "hash": 1564653303
+    },
+    {
+      "id": "rider_boots_01",
+      "name": "Boots 01",
+      "description": "Boots texture boots_01.",
+      "price": 20,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 2356041962
+    },
+    {
+      "id": "rider_boots_02",
+      "name": "Boots 02",
+      "description": "Boots texture boots_02.",
+      "price": 20,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 359074128
+    },
+    {
+      "id": "rider_boots_03",
+      "name": "Boots 03",
+      "description": "Boots texture boots_03.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 1650473414
+    },
+    {
+      "id": "rider_boots_04",
+      "name": "Boots 04",
+      "description": "Boots texture boots_04.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 4228164709
+    },
+    {
+      "id": "rider_boots_05",
+      "name": "Boots 05",
+      "description": "Boots texture boots_05.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 2332269811
+    },
+    {
+      "id": "rider_boots_06",
+      "name": "Boots 06",
+      "description": "Boots texture boots_06.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 302697801
+    },
+    {
+      "id": "rider_boots_07",
+      "name": "Boots 07",
+      "description": "Boots texture boots_07.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 1695415775
+    },
+    {
+      "id": "rider_boots_08",
+      "name": "Boots 08",
+      "description": "Boots texture boots_08.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 4122140750
+    },
+    {
+      "id": "rider_boots_09",
+      "name": "Boots 09",
+      "description": "Boots texture boots_09.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 2192953560
+    },
+    {
+      "id": "rider_boots_grasslands",
+      "name": "Boots grasslands",
+      "description": "Boots texture boots_grasslands.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 2228004739
+    },
+    {
+      "id": "rider_boots_imperial",
+      "name": "Boots imperial",
+      "description": "Boots texture boots_imperial.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 2006322790
+    },
+    {
+      "id": "rider_boots_poppy",
+      "name": "Boots poppy",
+      "description": "Boots texture boots_poppy.",
+      "price": 45,
+      "gear": 0,
+      "player": 4,
+      "mesh": 0,
+      "material": null,
+      "hash": 2724917005
+    }
+  ],
+  "player_skins": [
+    "skin_1",
+    "skin_2",
+    "skin_3",
+    "skin_4",
+    "skin_5",
+    "skin_6",
+    "skin_7",
+    "skin_8",
+    "skin_9",
+    "skin_10",
+    "skin_11",
+    "skin_12"
+  ],
+  "horse_skins": [
+    "appy",
+    "appy_black",
+    "appy_brown",
+    "bay_blaze",
+    "bay_paint1",
+    "bay_paint2",
+    "baylight_blaze",
+    "baylight_paint",
+    "black_blaze",
+    "cherrybay_blaze",
+    "cherrybay_paint",
+    "chestnut_dark",
+    "chestnutdark_blaze",
+    "chestnutdark_paint1",
+    "chestnutdark_paint2",
+    "chocolate",
+    "chocolate_blaze",
+    "chocolate_paint1",
+    "chocolate_paint2",
+    "dapple-grey",
+    "dapple-greypaint",
+    "dun",
+    "dun_paint",
+    "dun_paint2",
+    "grey_blaze",
+    "grulla",
+    "grulla_blaze",
+    "grulla_paint",
+    "irongrey_blaze",
+    "irongrey_paint1",
+    "irongrey_paint2",
+    "overo_black1",
+    "overo_black2",
+    "palominodark_blaze",
+    "palominodark_paint",
+    "palominolight_blaze",
+    "palominolight_paint",
+    "palominolight_spotted",
+    "palominolight_spottedpaint",
+    "piebald_01",
+    "piebald_02",
+    "pinto_01",
+    "pinto_02",
+    "red_roan",
+    "red_roanpaint",
+    "red_roanpaint2",
+    "sheet_01",
+    "sheet_02",
+    "sheet_03",
+    "sheet_04",
+    "sheet_05",
+    "sheet_06",
+    "sheet_07",
+    "sheet_08",
+    "sheet_09",
+    "sheet_10",
+    "smokey_grey",
+    "smokey_light",
+    "smokeygrey_blaze",
+    "smokeygrey_paint1",
+    "smokeygrey_paint2",
+    "smokeylight_blaze",
+    "smokeylight_paint1",
+    "smokeylight_paint2",
+    "sorrel_blaze",
+    "sorrel_paint1",
+    "sorrel_paint2"
+  ],
+  "hair": [
+    {
+      "main": [
+        0.08,
+        0.05,
+        0.03
+      ],
+      "spec": [
+        0.15,
+        0.1,
+        0.06
+      ]
+    },
+    {
+      "main": [
+        0.35,
+        0.16,
+        0.06
+      ],
+      "spec": [
+        0.55,
+        0.28,
+        0.1
+      ]
+    },
+    {
+      "main": [
+        0.55,
+        0.28,
+        0.1
+      ],
+      "spec": [
+        0.75,
+        0.45,
+        0.18
+      ]
+    },
+    {
+      "main": [
+        0.85,
+        0.65,
+        0.25
+      ],
+      "spec": [
+        0.95,
+        0.8,
+        0.4
+      ]
+    },
+    {
+      "main": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "spec": [
+        0.92,
+        0.92,
+        0.92
+      ]
+    },
+    {
+      "main": [
+        0.95,
+        0.95,
+        0.95
+      ],
+      "spec": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "main": [
+        0.15,
+        0.15,
+        0.16
+      ],
+      "spec": [
+        0.3,
+        0.3,
+        0.32
+      ]
+    },
+    {
+      "main": [
+        0.45,
+        0.08,
+        0.06
+      ],
+      "spec": [
+        0.65,
+        0.15,
+        0.1
+      ]
+    }
+  ]
+}

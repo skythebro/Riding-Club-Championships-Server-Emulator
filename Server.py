@@ -4,8 +4,16 @@ Riding Club Championships Server Emulator
 A basic server emulator to handle the game's endpoints because the official servers are offline.
 """
 
+import json
 import logging
 import socket
+import sys
+
+try:
+    sys.stdout.reconfigure(errors="replace")
+    sys.stderr.reconfigure(errors="replace")
+except Exception:
+    pass
 import threading
 import struct
 import sqlite3
@@ -14,6 +22,9 @@ import zlib
 from pathlib import Path
 from typing import Dict, Any, Optional, Tuple
 from datetime import datetime
+
+from game_features import GameFeatures
+from igor_client import IgorClient
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request, HTTPException
@@ -125,6 +136,12 @@ class UserDatabase:
             # Create indexes for performance
             cursor.execute('CREATE INDEX IF NOT EXISTS idx_users_source ON users(source_type, source_id)')
             cursor.execute('CREATE INDEX IF NOT EXISTS idx_users_player_id ON users(player_id)')
+
+            for column, declaration in (("locale", "TEXT"), ("friend_ids", "TEXT")):
+                try:
+                    cursor.execute(f"ALTER TABLE player_data ADD COLUMN {column} {declaration}")
+                except sqlite3.OperationalError:
+                    pass
             
             conn.commit()
             logger.info("Database initialized successfully")
@@ -205,7 +222,7 @@ class UserDatabase:
                 values = []
                 
                 for key, value in kwargs.items():
-                    if key in ['name']:
+                    if key in ('name', 'locale', 'friend_ids'):
                         set_clauses.append(f"{key} = ?")
                         values.append(value)
                 
@@ -229,7 +246,7 @@ class UserDatabase:
                 cursor = conn.cursor()
                 cursor.execute('''
                     SELECT u.user_state, u.access_level, u.created_at, u.last_login,
-                           pd.name
+                           pd.name, pd.locale
                     FROM users u
                     LEFT JOIN player_data pd ON u.player_id = pd.player_id
                     WHERE u.player_id = ?
@@ -243,7 +260,8 @@ class UserDatabase:
                         'access_level': result[1],
                         'created_at': result[2],
                         'last_login': result[3],
-                        'name': result[4] or 'Player'
+                        'name': result[4] or 'Player',
+                        'locale': result[5] or ''
                     }
                 return None
                 
@@ -315,9 +333,15 @@ class RCCServerEmulator:
         self.app = FastAPI(title="RCC Server Emulator", version="1.0.0")
         self.connected_clients: Dict[str, WebSocket] = {}
         self.tcp_clients: Dict[str, socket.socket] = {}
+        self.client_players: Dict[str, int] = {}
+        self.pending_profile: Dict[str, dict] = {}
+        self.igor = IgorClient()
+        self.outbox = {}
         self.tcp_server_running = False
+        self.tcp_listen_socket = None
         self.policy_server_running = False
         self.database = UserDatabase()
+        self.features = GameFeatures(self)
         
         # Verify card hash calculations
         verify_card_hashes()
@@ -784,6 +808,7 @@ class RCCServerEmulator:
         def tcp_server():
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.tcp_listen_socket = server_socket
             
             try:
                 server_socket.bind((SERVER_CONFIG['host'], SERVER_CONFIG['tcp_port']))
@@ -857,70 +882,26 @@ class RCCServerEmulator:
                     if len(data) >= 4:
                         logger.info(f"First 8 bytes: {data[:8].hex()}")
                     
-                    # Process the received data
-                    response, service_id = self.process_tcp_message(data, client_id)
-                    
-                    if response:
+                    messages = self.igor.feed(client_id, data)
+                    replies = bytearray()
+                    for message in messages:
+                        reply = self.handle_igor_message(message, client_id)
+                        if message.get("name") == "Login" and reply:
+                            logged_in = True
+                            logger.info(f"Client {client_id} logged in as player {self.client_players.get(client_id)}")
+                            self.debug_log_tcp(f"LOGIN SUCCESS: {client_id} - Player={self.client_players.get(client_id)}")
+                        if reply:
+                            replies.extend(reply)
+                    if replies:
+                        response = bytes(replies)
                         logger.info(f"Sending response to {client_id}: {len(response)} bytes")
                         self.debug_log_tcp(f"SENDING: {client_id} - {len(response)} bytes")
-                        
-                        # Log outgoing binary data
                         self.debug_log_binary(response, "OUTGOING", client_id, "Response data sent")
-                        
-                        if len(response) <= 20:  # Log small responses completely
+                        if len(response) <= 40:
                             logger.info(f"Response bytes: {response.hex()}")
-                        
                         client_socket.send(response)
-                                                
-                        # Check if this was a login response
-                        # New format: VarInt length + [177, 2] + Function ID (0) + RPC ID (2 bytes) + Status (1 byte) + ReplyLogin data
-                        # We need to skip the VarInt prefix to check the actual message content
-                        if len(response) >= 7:  # Minimum: 1 byte VarInt + 6 bytes message content
-                            # Decode VarInt to find where the actual message starts
-                            varint_offset = 0
-                            while varint_offset < len(response) and (response[varint_offset] & 0x80) != 0:
-                                varint_offset += 1
-                            varint_offset += 1  # Include the final byte
-                            
-                            # Check if we have enough data after the VarInt
-                            # New format: VarInt + [Service_ID=100] + [Function_ID=0] + [RPC_ID] + [Status=0] + ReplyLogin data
-                            if len(response) >= varint_offset + 5:
-                                # Check the message content: [100, 0, RPC_ID_LOW, RPC_ID_HIGH, STATUS]
-                                message_start = varint_offset
-                                if (response[message_start] == 100 and  # Service ID = 100 (ServiceLogin)
-                                    response[message_start + 1] == 0 and  # Function ID = 0 (Login)
-                                    response[message_start + 4] == 0 and  # Status = 0 (Success)
-                                    service_id in [100, 177]):
-                                    
-                                    logged_in = True
-                                    logger.info(f"Client {client_id} successfully logged in via Service {service_id}")
-                                    self.debug_log_tcp(f"LOGIN SUCCESS: {client_id} - Service={service_id}")
-                                    
-                                    # Log the response format for debugging
-                                    rpc_id_from_response = struct.unpack('<H', response[message_start + 2:message_start + 4])[0]
-                                    status_from_response = response[message_start + 4]
-                                    logger.info(f"Login response format: VarInt + Service_ID=100 + Function_ID=0 + RPC_ID={rpc_id_from_response} + Status={status_from_response} + ReplyLogin data")
-                                    
-                                    # Don't send any additional data immediately after login
-                                    # Let the client make the next request when it's ready
-                                    logger.info(f"Login complete for {client_id}. Connection established, waiting for next client request...")
-                                    
-                                    # Cards data already sent upon initial connection for better efficiency
-                                    
-                                    # Log socket state after login
-                                    try:
-                                        # Check if socket is still connected
-                                        logger.info(f"Socket state after login: connected={client_socket.fileno() != -1}")
-                                        self.debug_log_tcp(f"SOCKET STATE: {client_id} - FD={client_socket.fileno()}, State=connected")
-                                    except Exception as sock_err:
-                                        logger.error(f"Error checking socket state: {sock_err}")
-                                        self.debug_log_tcp(f"SOCKET ERROR: {client_id} - {str(sock_err)}")
-                                
-                        elif len(response) >= 3 and response[2] == 0:
-                            logger.info(f"Service {service_id} responded successfully, but this was not a login")
-                            self.debug_log_tcp(f"SERVICE SUCCESS: {client_id} - Service={service_id} responded OK")
                     else:
-                        self.debug_log_tcp(f"NO RESPONSE: {client_id} - No response generated for received data")
+                        self.debug_log_tcp(f"NO RESPONSE: {client_id} - void call or incomplete frame")
                     
                 except socket.timeout:
                     # For logged in clients, just continue waiting for their next request
@@ -947,116 +928,86 @@ class RCCServerEmulator:
             
             if client_id in self.tcp_clients:
                 del self.tcp_clients[client_id]
+            self.client_players.pop(client_id, None)
+            self.pending_profile.pop(client_id, None)
+            try:
+                self.igor.drop(client_id)
+            except Exception:
+                pass
             
             logger.info(f"TCP Client {client_id} cleaned up")
             self.debug_log_tcp(f"CLEANUP: {client_id} - Connection closed and cleaned up")
     
-    def process_tcp_message(self, data: bytes, client_id: str) -> tuple[Optional[bytes], int]:
-        """Process TCP messages from the game client"""
-        try:
-            if len(data) < 3:
-                logger.info(f"TCP data too short from {client_id}: {len(data)} bytes")
-                self.debug_log_tcp(f"MESSAGE TOO SHORT: {client_id} - {len(data)} bytes")
-                return None, 0
-            
-            # Log the raw bytes for analysis
-            logger.info(f"Raw message bytes: {data[:16].hex()} (first 16 bytes)")
-            
-            # Try different interpretations of the message format
-            # Based on analysis: [177, 2, 100, ...] where 100 is the actual service ID
-            # It seems the first two bytes might be a header/length prefix
-            
-            # Try parsing as header + service_id format
-            potential_service_id = data[2] if len(data) > 2 else 0
-            
-            # Also check the first byte in case it's the standard format
-            first_byte_service_id = data[0]
-            
-            logger.info(f"Potential service IDs: first_byte={first_byte_service_id}, third_byte={potential_service_id}")
-            
-            # Determine which service ID to use based on known service IDs
-            service_id = first_byte_service_id
-            message_offset = 0  # Standard format: [service_id][rpc_id][data...]
-            
-            # Check if the third byte looks like a known service ID
-            if potential_service_id in [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]:
-                logger.info(f"Third byte ({potential_service_id}) looks like a valid service ID, using header format")
-                service_id = potential_service_id
-                message_offset = 2  # Header format: [header][header][service_id][rpc_id][data...]
-            elif first_byte_service_id in [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]:
-                logger.info(f"First byte ({first_byte_service_id}) looks like a valid service ID, using standard format")
-                service_id = first_byte_service_id
-                message_offset = 0
+    def handle_igor_message(self, message: dict, client_id: str) -> Optional[bytes]:
+        """Reply only when the client opened an RPC. Void calls stay silent."""
+        name = message.get("name")
+        logger.info(
+            "Igor %s from %s service=%s function=%s",
+            name, client_id, message.get("service"), message.get("function"),
+        )
+        self.debug_log_tcp(
+            f"IGOR: {client_id} - {name} service={message.get('service')} function={message.get('function')} rpc={message.get('rpc')}"
+        )
+        if name == "Login":
+            source_name = "Steam" if message.get("source") == 5 else f"source_{message.get('source')}"
+            player_id, user_data = self.database.get_or_create_user(
+                source_name, message["sourceId"], message.get("token") or ""
+            )
+            self.client_players[client_id] = player_id
+            pending = self.pending_profile.pop(client_id, None)
+            if pending:
+                self.database.update_player_data(player_id, **pending)
+            return self.igor.reply_login(
+                message["rpc"], player_id, user_data.get("user_state", 1), user_data.get("access_level", 0)
+            )
+        if name == "UpdateAccountInfo":
+            profile = {"name": message.get("playerName") or "Player", "locale": message.get("locale") or ""}
+            player_id = self.client_players.get(client_id)
+            if player_id:
+                self.database.update_player_data(player_id, **profile)
             else:
-                logger.info(f"Neither byte looks like a known service ID, defaulting to third byte: {potential_service_id}")
-                service_id = potential_service_id
-                message_offset = 2
-            
-            # The game uses service IDs starting from 100:
-            # ServiceLogin = 100, ServiceCards = 101, ServiceDebug = 102, etc.
-            service_name = "Unknown"
-            if service_id == 100:
-                service_name = "ServiceLogin"
-            elif service_id == 101:
-                service_name = "ServiceCards"
-            elif service_id == 102:
-                service_name = "ServiceDebug"
-            elif service_id == 103:
-                service_name = "ServiceChat"
-            elif service_id == 104:
-                service_name = "ServicePaddock"
-            elif service_id == 105:
-                service_name = "ServiceSocial"
-            elif service_id == 106:
-                service_name = "ServiceCourseEditor"
-            elif service_id == 107:
-                service_name = "ServiceMatch"
-            elif service_id == 108:
-                service_name = "ServiceGame"
-            elif service_id == 109:
-                service_name = "ServicePlayer"
-            
-            logger.info(f"Service ID {service_id} = {service_name}")
-            self.debug_log_tcp(f"SERVICE IDENTIFIED: {client_id} - Service={service_id} ({service_name})")
-            
-            # Standard format parsing accounting for message offset
-            rpc_id_offset = message_offset + 1  # Skip service_id
-            if len(data) >= rpc_id_offset + 2:
-                rpc_id = struct.unpack('<H', data[rpc_id_offset:rpc_id_offset+2])[0]
-            else:
-                rpc_id = 0
-            
-            logger.info(f"TCP Binary message from {client_id}: service={service_id}, rpc_id={rpc_id}, total_length={len(data)}")
-            self.debug_log_tcp(f"MESSAGE PARSED: {client_id} - Service={service_id}, RPC={rpc_id}, Length={len(data)}")
-            
-            # Handle different service types using correct service IDs
-            # Note: For responses, we don't include the service_id - the client's Recv method handles that
-            # Pass the data with the correct offset to account for the header
-            actual_data = data[message_offset:] if message_offset > 0 else data
-            
-            # Extract payload data (skip service_id and rpc_id)
-            payload_offset = 1 + 2  # service_id (1 byte) + rpc_id (2 bytes)
-            payload_data = actual_data[payload_offset:] if len(actual_data) > payload_offset else b''
-            
-            if service_id == 100:  # ServiceLogin
-                self.debug_log_tcp(f"HANDLING LOGIN SERVICE: {client_id}")
-                self.debug_log_binary(payload_data, "LOGIN_PAYLOAD", client_id, "Login payload data (ProtocolVersion + SteamID + AccessToken)")
-                return self.handle_login_service(payload_data, rpc_id, client_id), service_id
-            elif service_id == 108:  # ServiceGame
-                self.debug_log_tcp(f"HANDLING SERVICE GAME: {client_id}")
-                return self.handle_service_game(actual_data, client_id), service_id
-            elif service_id in [102, 103, 104, 105, 106, 107, 109]: # 101 is skipped as the client doesn't use it, 108 handled above
-                self.debug_log_tcp(f"HANDLING GENERIC SERVICE {service_id}: {client_id}")
-                return self.handle_generic_service(service_id, rpc_id, payload_data, client_id), service_id
-            else:
-                logger.info(f"Unknown service ID: {service_id}, responding with generic success")
-                self.debug_log_tcp(f"UNKNOWN SERVICE: {client_id} - Service={service_id}, using generic handler")
-                return self.handle_generic_service(service_id, rpc_id, payload_data, client_id), service_id
-                
-        except Exception as e:
-            logger.error(f"Error processing TCP message: {e}")
-            self.debug_log_tcp(f"PROCESSING ERROR: {client_id} - {str(e)}")
-            return None, 0
+                self.pending_profile[client_id] = profile
+            return None
+        if name == "SubscribeFriends":
+            player_id = self.client_players.get(client_id)
+            friend_ids = message.get("friendIds") or []
+            if player_id:
+                self.database.update_player_data(
+                    player_id, friend_ids=json.dumps(friend_ids)
+                )
+            self.features.push_known_friends(client_id, friend_ids)
+            if player_id:
+                guild_id = self.features._player_guild(player_id)
+                if guild_id:
+                    self.features._push_guild_to(client_id, guild_id)
+            return None
+        if name == "Subscribe":
+            return None
+        if name == "GetSpecialOffers":
+            return self.igor.reply_special_offers(message["rpc"])
+        if name == "GetLikes":
+            # Login.DailyLoginTask waits until this push sets Player.Me.DailyBonus.
+            # NeedAccept stays false so a Menu user is not sent to the daily-login scene.
+            return self.features.on_GetLikes(message, client_id, self.client_players.get(client_id))
+        handled = self.features.dispatch(message, client_id)
+        if handled is not None or name not in (None, "Unknown"):
+            if handled is None:
+                self.debug_log_tcp(f"NO REPLY: {client_id} - {name} rest={message.get('rest', '')[:80]}")
+            return handled
+        self.debug_log_tcp(f"NO REPLY: {client_id} - {name} rest={message.get('rest', '')[:80]}")
+        return None
+
+    def send_to(self, client_id, data: bytes):
+        """Deliver a server push to one connected client, or keep it for a test outbox."""
+        sock = self.tcp_clients.get(client_id)
+        if sock is not None:
+            try:
+                sock.send(data)
+                self.debug_log_tcp(f"PUSH: {client_id} - {len(data)} bytes")
+                return
+            except Exception as exc:
+                logger.error(f"Push to {client_id} failed: {exc}")
+        self.outbox.setdefault(client_id, bytearray()).extend(data)
     
     def handle_generic_service(self, service_id: int, rpc_id: int, data: bytes, client_id: str) -> bytes:
         """Handle generic service requests with basic success response"""
@@ -1627,6 +1578,13 @@ class RCCServerEmulator:
         try:
             logger.info(f"Sending cards data to ServiceCards for {client_id}")
             self.debug_log_tcp(f"SENDING CARDS TO SERVICE 101: {client_id}")
+            frame = self.igor.push_cards()
+            client_socket.send(frame)
+            self.debug_log_tcp(
+                f"CARDS TO SERVICE 101 SENT: {client_id} - {len(frame)} bytes from Card.Write"
+            )
+            logger.info(f"Sent Card.Write init to {client_id}: {len(frame)} bytes")
+            return
             
             # Create message content (without VarInt prefix first)
             message_content = bytearray()
@@ -2019,6 +1977,13 @@ class RCCServerEmulator:
     def stop_tcp_server(self):
         """Stop the TCP server"""
         self.tcp_server_running = False
+        listen = self.tcp_listen_socket
+        self.tcp_listen_socket = None
+        if listen is not None:
+            try:
+                listen.close()
+            except Exception:
+                pass
         
         # Close all client connections
         for client_id, client_socket in list(self.tcp_clients.items()):
@@ -2108,7 +2073,7 @@ def main():
     print("=" * 50)
     
     if DEBUG_MODE:
-        print("🔍 DEBUG MODE ENABLED")
+        print("DEBUG MODE ENABLED")
         print(f"Debug logs will be saved to: {DEBUG_DIR}")
         print("- TCP communication logs")
         print("- HTTP request/response logs") 

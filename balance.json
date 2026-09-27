@@ -1,0 +1,2103 @@
+{
+  "_about": "Prices and rewards for this server. Edit a number, save, and restart the server and the card host. Notes that start with _ are not used as prices. A value marked original matches a published help page. A value marked server choice was not published, so change it if you want a different game. Each shop and course-editor entry is under items: edit name and price there.",
+  "action_points": {
+    "_note": "Original: play-alone and ranked cost 20, or 10 with Pro Rider. The bar holds 200. Paddock and friend matches cost nothing.",
+    "max": 200,
+    "practice": 20,
+    "ranked": 20,
+    "paddock": 0,
+    "friend_match": 0
+  },
+  "gear": {
+    "_note": "Original: boots and breeches add action points, helmet and jacket add restore. Each step is 10 and stops at 50.",
+    "ap_per_level": 10,
+    "ap_cap": 50,
+    "restore_per_level": 0.1,
+    "restore_cap": 0.5
+  },
+  "grooming": {
+    "_note": "Original: a clean horse is +1 on every stat, and a fully dirty horse is -1. The coin price of an instant groom was not published. full_groom_coins is the price of cleaning a fully dirty horse. The client and the server both scale it by how dirty the horse is. Pro Rider's stable hand stays free.",
+    "clean_at": 0.8,
+    "dirty_at": 0.3,
+    "clean_buff": 1,
+    "dirty_debuff": -1,
+    "wear_per_ride": 0.05,
+    "full_groom_coins": 20
+  },
+  "practice": {
+    "_note": "Server choice. The original practice payout was not published.",
+    "coins": 25,
+    "horse_xp": 10
+  },
+  "ranked": {
+    "_note": "Server choice for the payout. The original winner rule is fewest faults, then the faster time. A quit pays nothing.",
+    "win_coins": 25,
+    "win_rating": 15,
+    "loss_coins": 0,
+    "loss_rating": 0
+  },
+  "showdown": {
+    "_note": "Original entry is level 10 and 150 skill tickets, and it does not cost action points. Original coins: 1st 2000, 2nd 500, 3rd 500, 4th-10th 250, 11th-100th 100. 2nd also gets item_apple_big and 200 horse XP. 3rd gets item_apple and 200 horse XP. The client names item_lucky_leaf, but that icon is not in the asset list, so places 4-10 do not grant it yet. The exclusive jacket and the apple slice have no item id in the client.",
+    "min_level": 10,
+    "skill_tickets": 150,
+    "prizes": [
+      {
+        "from": 1,
+        "to": 1,
+        "coins": 2000,
+        "xp": 0,
+        "item": ""
+      },
+      {
+        "from": 2,
+        "to": 2,
+        "coins": 500,
+        "xp": 200,
+        "item": "item_apple_big"
+      },
+      {
+        "from": 3,
+        "to": 3,
+        "coins": 500,
+        "xp": 200,
+        "item": "item_apple"
+      },
+      {
+        "from": 4,
+        "to": 10,
+        "coins": 250,
+        "xp": 0,
+        "item": ""
+      },
+      {
+        "from": 11,
+        "to": 100,
+        "coins": 100,
+        "xp": 0,
+        "item": ""
+      }
+    ]
+  },
+  "avatar_change_coins": 4000,
+  "course_editor": {
+    "_note": "The original game included one free show-jumping slot. The coin price for an extra slot, for submitting a course, and for one placed jump was never published. 0 means every slot is free. If you set slot_coins, the first slot stays free and the later ones cost that many coins. piece_coins is charged for every course-editor piece, because the item list has no per-jump price. Names and coin prices for each placed piece are under items. piece_coins is used only when that piece has no price.",
+    "slot_coins": 0,
+    "submit_coins": 0,
+    "piece_coins": 0
+  },
+  "club": {
+    "_note": "Original: 20 members, name 30, short name 10, description 400, welcome 100. A rename price was not published.",
+    "max_members": 20,
+    "name_length": 30,
+    "short_name_length": 10,
+    "description_length": 400,
+    "welcome_length": 100,
+    "rename_coins": 0
+  },
+  "daily": {
+    "_note": "Server choice. The original login gift ran for 200 days and that day-by-day list was not recovered. premium_coins is the larger gift shown for a Pro Rider. The server pays coins, not premium_coins.",
+    "coins": [
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40
+    ],
+    "premium_coins": [
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80
+    ]
+  },
+  "treats": {
+    "_note": "These match the item cards this server already sells.",
+    "carrot": {
+      "coins": 10,
+      "xp": 5,
+      "coins_on_use": 0
+    },
+    "clover": {
+      "coins": 15,
+      "xp": 8,
+      "coins_on_use": 0
+    },
+    "coinbag": {
+      "coins": 25,
+      "xp": 0,
+      "coins_on_use": 50
+    },
+    "unknown_item_coins": 10
+  },
+  "new_player": {
+    "_note": "Server choice for a brand new account. An existing save is not rewritten when you change these.",
+    "coins": 500,
+    "action_points": 200,
+    "skill_tickets": 5,
+    "rating": 1000
+  },
+  "xp_per_level": 100,
+  "starter": {
+    "_note": "Given once, when an account has no clothes and no tack. These are the plain pieces already in the shop. The mane is a hair color, not an item. An account that already owns gear is left alone.",
+    "rider": [
+      "rider_helmet_01",
+      "rider_blazer_01",
+      "rider_pants_01",
+      "rider_boots_01"
+    ],
+    "horse": [
+      "horse_headgear_01",
+      "horse_saddle_01",
+      "horse_blanket_01",
+      "horse_ankleboots_01"
+    ]
+  },
+  "items": {
+    "_note": "Shop and course-editor labels. name is the text the game shows. price is the coin cost. description is the shop line under the name. Change any of them and restart the server. Fences also get the height added, so a 1.10 m blue fence named Blue fence 1 shows as Blue fence 1 1.10m.",
+    "carrot": {
+      "name": "Carrot",
+      "description": "A carrot for your horse.",
+      "price": 10
+    },
+    "clover": {
+      "name": "Clover",
+      "description": "A lucky clover.",
+      "price": 15
+    },
+    "coinbag": {
+      "name": "Coin bag",
+      "description": "A small bag of coins.",
+      "price": 25
+    },
+    "item_apple": {
+      "name": "Apple",
+      "description": "An apple.",
+      "price": 0
+    },
+    "item_apple_big": {
+      "name": "Big apple",
+      "description": "A big apple.",
+      "price": 0
+    },
+    "horse_headgear_01": {
+      "name": "Plain bridle",
+      "description": "Plain bridle.",
+      "price": 20
+    },
+    "horse_headgear_02": {
+      "name": "Bridle 2",
+      "description": "Bridle 2.",
+      "price": 40
+    },
+    "horse_headgear_03": {
+      "name": "Bridle 3",
+      "description": "Bridle 3.",
+      "price": 45
+    },
+    "horse_headgear_04": {
+      "name": "Bridle 4",
+      "description": "Bridle 4.",
+      "price": 50
+    },
+    "horse_headgear_05": {
+      "name": "Bridle 5",
+      "description": "Bridle 5.",
+      "price": 55
+    },
+    "horse_headgear_06": {
+      "name": "Bridle 6",
+      "description": "Bridle 6.",
+      "price": 60
+    },
+    "horse_headgear_07": {
+      "name": "Bridle 7",
+      "description": "Bridle 7.",
+      "price": 65
+    },
+    "horse_headgear_babypink": {
+      "name": "Baby pink bridle",
+      "description": "Baby pink bridle.",
+      "price": 60
+    },
+    "horse_headgear_ebony": {
+      "name": "Ebony bridle",
+      "description": "Ebony bridle.",
+      "price": 60
+    },
+    "horse_headgear_imperial": {
+      "name": "Imperial bridle",
+      "description": "Imperial bridle.",
+      "price": 60
+    },
+    "horse_headgear_rainbow": {
+      "name": "Rainbow bridle",
+      "description": "Rainbow bridle.",
+      "price": 60
+    },
+    "horse_saddle_01": {
+      "name": "Plain saddle",
+      "description": "Plain saddle.",
+      "price": 20
+    },
+    "horse_saddle_02": {
+      "name": "Saddle 2",
+      "description": "Saddle 2.",
+      "price": 40
+    },
+    "horse_saddle_03": {
+      "name": "Saddle 3",
+      "description": "Saddle 3.",
+      "price": 45
+    },
+    "horse_saddle_04": {
+      "name": "Saddle 4",
+      "description": "Saddle 4.",
+      "price": 50
+    },
+    "horse_saddle_05": {
+      "name": "Saddle 5",
+      "description": "Saddle 5.",
+      "price": 55
+    },
+    "horse_saddle_06": {
+      "name": "Saddle 6",
+      "description": "Saddle 6.",
+      "price": 60
+    },
+    "horse_saddle_babypink": {
+      "name": "Baby pink saddle",
+      "description": "Baby pink saddle.",
+      "price": 60
+    },
+    "horse_saddle_ebony": {
+      "name": "Ebony saddle",
+      "description": "Ebony saddle.",
+      "price": 60
+    },
+    "horse_saddle_imperial": {
+      "name": "Imperial saddle",
+      "description": "Imperial saddle.",
+      "price": 60
+    },
+    "horse_saddle_rainbow": {
+      "name": "Rainbow saddle",
+      "description": "Rainbow saddle.",
+      "price": 60
+    },
+    "horse_blanket_01": {
+      "name": "Plain blanket",
+      "description": "Plain blanket.",
+      "price": 20
+    },
+    "horse_blanket_02": {
+      "name": "Blanket 2",
+      "description": "Blanket 2.",
+      "price": 40
+    },
+    "horse_blanket_03": {
+      "name": "Blanket 3",
+      "description": "Blanket 3.",
+      "price": 45
+    },
+    "horse_blanket_04": {
+      "name": "Blanket 4",
+      "description": "Blanket 4.",
+      "price": 50
+    },
+    "horse_blanket_05": {
+      "name": "Blanket 5",
+      "description": "Blanket 5.",
+      "price": 55
+    },
+    "horse_blanket_06": {
+      "name": "Blanket 6",
+      "description": "Blanket 6.",
+      "price": 60
+    },
+    "horse_blanket_babypink": {
+      "name": "Baby pink blanket",
+      "description": "Baby pink blanket.",
+      "price": 60
+    },
+    "horse_blanket_ebony": {
+      "name": "Ebony blanket",
+      "description": "Ebony blanket.",
+      "price": 60
+    },
+    "horse_blanket_imperial": {
+      "name": "Imperial blanket",
+      "description": "Imperial blanket.",
+      "price": 60
+    },
+    "horse_blanket_rainbow": {
+      "name": "Rainbow blanket",
+      "description": "Rainbow blanket.",
+      "price": 60
+    },
+    "horse_ankleboots_01": {
+      "name": "Plain ankle boots",
+      "description": "Plain ankle boots.",
+      "price": 20
+    },
+    "horse_ankleboots_02": {
+      "name": "Ankle boots 2",
+      "description": "Ankle boots 2.",
+      "price": 40
+    },
+    "horse_ankleboots_03": {
+      "name": "Ankle boots 3",
+      "description": "Ankle boots 3.",
+      "price": 45
+    },
+    "horse_ankleboots_04": {
+      "name": "Ankle boots 4",
+      "description": "Ankle boots 4.",
+      "price": 50
+    },
+    "horse_ankleboots_05": {
+      "name": "Ankle boots 5",
+      "description": "Ankle boots 5.",
+      "price": 55
+    },
+    "horse_ankleboots_06": {
+      "name": "Ankle boots 6",
+      "description": "Ankle boots 6.",
+      "price": 60
+    },
+    "horse_ankleboots_babypink": {
+      "name": "Baby pink ankle boots",
+      "description": "Baby pink ankle boots.",
+      "price": 60
+    },
+    "horse_ankleboots_ebony": {
+      "name": "Ebony ankle boots",
+      "description": "Ebony ankle boots.",
+      "price": 60
+    },
+    "horse_ankleboots_imperial": {
+      "name": "Imperial ankle boots",
+      "description": "Imperial ankle boots.",
+      "price": 60
+    },
+    "horse_ankleboots_rainbow": {
+      "name": "Rainbow ankle boots",
+      "description": "Rainbow ankle boots.",
+      "price": 60
+    },
+    "rider_helmet_01": {
+      "name": "Plain helmet",
+      "description": "Plain helmet.",
+      "price": 20
+    },
+    "rider_helmet_02": {
+      "name": "Helmet 2",
+      "description": "Helmet 2.",
+      "price": 40
+    },
+    "rider_helmet_03": {
+      "name": "Helmet 3",
+      "description": "Helmet 3.",
+      "price": 45
+    },
+    "rider_helmet_04": {
+      "name": "Helmet 4",
+      "description": "Helmet 4.",
+      "price": 50
+    },
+    "rider_helmet_05": {
+      "name": "Helmet 5",
+      "description": "Helmet 5.",
+      "price": 55
+    },
+    "rider_helmet_06": {
+      "name": "Helmet 6",
+      "description": "Helmet 6.",
+      "price": 60
+    },
+    "rider_helmet_07": {
+      "name": "Helmet 7",
+      "description": "Helmet 7.",
+      "price": 65
+    },
+    "rider_helmet_08": {
+      "name": "Helmet 8",
+      "description": "Helmet 8.",
+      "price": 70
+    },
+    "rider_helmet_09": {
+      "name": "Helmet 9",
+      "description": "Helmet 9.",
+      "price": 75
+    },
+    "rider_helmet_10": {
+      "name": "Helmet 10",
+      "description": "Helmet 10.",
+      "price": 80
+    },
+    "rider_helmet_elf": {
+      "name": "Elf hat",
+      "description": "Elf hat.",
+      "price": 80
+    },
+    "rider_helmet_grasslands": {
+      "name": "Grasslands helmet",
+      "description": "Grasslands helmet.",
+      "price": 60
+    },
+    "rider_helmet_imperial": {
+      "name": "Imperial helmet",
+      "description": "Imperial helmet.",
+      "price": 60
+    },
+    "rider_helmet_poppy": {
+      "name": "Poppy helmet",
+      "description": "Poppy helmet.",
+      "price": 60
+    },
+    "rider_helmet_santa": {
+      "name": "Santa hat",
+      "description": "Santa hat.",
+      "price": 80
+    },
+    "rider_blazer_01": {
+      "name": "Plain jacket",
+      "description": "Plain jacket.",
+      "price": 20
+    },
+    "rider_blazer_02": {
+      "name": "Jacket 2",
+      "description": "Jacket 2.",
+      "price": 40
+    },
+    "rider_blazer_03": {
+      "name": "Jacket 3",
+      "description": "Jacket 3.",
+      "price": 45
+    },
+    "rider_blazer_04": {
+      "name": "Jacket 4",
+      "description": "Jacket 4.",
+      "price": 50
+    },
+    "rider_blazer_05": {
+      "name": "Jacket 5",
+      "description": "Jacket 5.",
+      "price": 55
+    },
+    "rider_blazer_06": {
+      "name": "Jacket 6",
+      "description": "Jacket 6.",
+      "price": 60
+    },
+    "rider_blazer_07": {
+      "name": "Jacket 7",
+      "description": "Jacket 7.",
+      "price": 65
+    },
+    "rider_blazer_08": {
+      "name": "Jacket 8",
+      "description": "Jacket 8.",
+      "price": 70
+    },
+    "rider_blazer_09": {
+      "name": "Jacket 9",
+      "description": "Jacket 9.",
+      "price": 75
+    },
+    "rider_blazer_10": {
+      "name": "Jacket 10",
+      "description": "Jacket 10.",
+      "price": 80
+    },
+    "rider_blazer_11": {
+      "name": "Jacket 11",
+      "description": "Jacket 11.",
+      "price": 85
+    },
+    "rider_blazer_grasslands": {
+      "name": "Grasslands jacket",
+      "description": "Grasslands jacket.",
+      "price": 60
+    },
+    "rider_blazer_imperial": {
+      "name": "Imperial jacket",
+      "description": "Imperial jacket.",
+      "price": 60
+    },
+    "rider_blazer_poppy": {
+      "name": "Poppy jacket",
+      "description": "Poppy jacket.",
+      "price": 60
+    },
+    "rider_pants_01": {
+      "name": "Plain breeches",
+      "description": "Plain breeches.",
+      "price": 20
+    },
+    "rider_pants_02": {
+      "name": "Breeches 2",
+      "description": "Breeches 2.",
+      "price": 40
+    },
+    "rider_pants_03": {
+      "name": "Breeches 3",
+      "description": "Breeches 3.",
+      "price": 45
+    },
+    "rider_pants_04": {
+      "name": "Breeches 4",
+      "description": "Breeches 4.",
+      "price": 50
+    },
+    "rider_pants_05": {
+      "name": "Breeches 5",
+      "description": "Breeches 5.",
+      "price": 55
+    },
+    "rider_pants_06": {
+      "name": "Breeches 6",
+      "description": "Breeches 6.",
+      "price": 60
+    },
+    "rider_pants_07": {
+      "name": "Breeches 7",
+      "description": "Breeches 7.",
+      "price": 65
+    },
+    "rider_pants_08": {
+      "name": "Breeches 8",
+      "description": "Breeches 8.",
+      "price": 70
+    },
+    "rider_pants_09": {
+      "name": "Breeches 9",
+      "description": "Breeches 9.",
+      "price": 75
+    },
+    "rider_pants_10": {
+      "name": "Breeches 10",
+      "description": "Breeches 10.",
+      "price": 80
+    },
+    "rider_pants_11": {
+      "name": "Breeches 11",
+      "description": "Breeches 11.",
+      "price": 85
+    },
+    "rider_pants_grasslands": {
+      "name": "Grasslands breeches",
+      "description": "Grasslands breeches.",
+      "price": 60
+    },
+    "rider_pants_imperial": {
+      "name": "Imperial breeches",
+      "description": "Imperial breeches.",
+      "price": 60
+    },
+    "rider_pants_poppy": {
+      "name": "Poppy breeches",
+      "description": "Poppy breeches.",
+      "price": 60
+    },
+    "rider_boots_01": {
+      "name": "Plain boots",
+      "description": "Plain boots.",
+      "price": 20
+    },
+    "rider_boots_02": {
+      "name": "Boots 2",
+      "description": "Boots 2.",
+      "price": 40
+    },
+    "rider_boots_03": {
+      "name": "Boots 3",
+      "description": "Boots 3.",
+      "price": 45
+    },
+    "rider_boots_04": {
+      "name": "Boots 4",
+      "description": "Boots 4.",
+      "price": 50
+    },
+    "rider_boots_05": {
+      "name": "Boots 5",
+      "description": "Boots 5.",
+      "price": 55
+    },
+    "rider_boots_06": {
+      "name": "Boots 6",
+      "description": "Boots 6.",
+      "price": 60
+    },
+    "rider_boots_07": {
+      "name": "Boots 7",
+      "description": "Boots 7.",
+      "price": 65
+    },
+    "rider_boots_08": {
+      "name": "Boots 8",
+      "description": "Boots 8.",
+      "price": 70
+    },
+    "rider_boots_09": {
+      "name": "Boots 9",
+      "description": "Boots 9.",
+      "price": 75
+    },
+    "rider_boots_grasslands": {
+      "name": "Grasslands boots",
+      "description": "Grasslands boots.",
+      "price": 60
+    },
+    "rider_boots_imperial": {
+      "name": "Imperial boots",
+      "description": "Imperial boots.",
+      "price": 60
+    },
+    "rider_boots_poppy": {
+      "name": "Poppy boots",
+      "description": "Poppy boots.",
+      "price": 60
+    },
+    "paddock_terrain": {
+      "name": "Paddock",
+      "description": "Paddock.",
+      "price": 0
+    },
+    "winter_terrain": {
+      "name": "Winter",
+      "description": "Winter.",
+      "price": 0
+    },
+    "desert_terrain": {
+      "name": "Desert",
+      "description": "Desert.",
+      "price": 0
+    },
+    "stadium_terrain": {
+      "name": "Stadium",
+      "description": "Stadium.",
+      "price": 0
+    },
+    "tutorial_terrain": {
+      "name": "Tutorial",
+      "description": "Tutorial.",
+      "price": 0
+    },
+    "agility_checkpoint": {
+      "name": "Checkpoint",
+      "description": "Checkpoint.",
+      "price": 0
+    },
+    "jump_01_110_blue": {
+      "name": "Blue fence 1",
+      "description": "Blue fence 1.",
+      "price": 15
+    },
+    "jump_01_120_blue": {
+      "name": "Blue fence 1",
+      "description": "Blue fence 1.",
+      "price": 25
+    },
+    "jump_01_130_blue": {
+      "name": "Blue fence 1",
+      "description": "Blue fence 1.",
+      "price": 40
+    },
+    "jump_01_140_blue": {
+      "name": "Blue fence 1",
+      "description": "Blue fence 1.",
+      "price": 60
+    },
+    "jump_02_110_green": {
+      "name": "Green fence 2",
+      "description": "Green fence 2.",
+      "price": 15
+    },
+    "jump_02_120_green": {
+      "name": "Green fence 2",
+      "description": "Green fence 2.",
+      "price": 25
+    },
+    "jump_02_130_green": {
+      "name": "Green fence 2",
+      "description": "Green fence 2.",
+      "price": 40
+    },
+    "jump_02_140_green": {
+      "name": "Green fence 2",
+      "description": "Green fence 2.",
+      "price": 60
+    },
+    "jump_03_110_red": {
+      "name": "Red fence 3",
+      "description": "Red fence 3.",
+      "price": 15
+    },
+    "jump_03_120_red": {
+      "name": "Red fence 3",
+      "description": "Red fence 3.",
+      "price": 25
+    },
+    "jump_03_130_red": {
+      "name": "Red fence 3",
+      "description": "Red fence 3.",
+      "price": 40
+    },
+    "jump_03_140_red": {
+      "name": "Red fence 3",
+      "description": "Red fence 3.",
+      "price": 60
+    },
+    "jump_04_110_redblue": {
+      "name": "Redblue fence 4",
+      "description": "Redblue fence 4.",
+      "price": 15
+    },
+    "jump_04_120_redblue": {
+      "name": "Redblue fence 4",
+      "description": "Redblue fence 4.",
+      "price": 25
+    },
+    "jump_04_130_redblue": {
+      "name": "Redblue fence 4",
+      "description": "Redblue fence 4.",
+      "price": 40
+    },
+    "jump_04_140_redblue": {
+      "name": "Redblue fence 4",
+      "description": "Redblue fence 4.",
+      "price": 60
+    },
+    "jump_05_110_red": {
+      "name": "Red fence 5",
+      "description": "Red fence 5.",
+      "price": 15
+    },
+    "jump_05_120_red": {
+      "name": "Red fence 5",
+      "description": "Red fence 5.",
+      "price": 25
+    },
+    "jump_05_130_red": {
+      "name": "Red fence 5",
+      "description": "Red fence 5.",
+      "price": 40
+    },
+    "jump_05_140_red": {
+      "name": "Red fence 5",
+      "description": "Red fence 5.",
+      "price": 60
+    },
+    "jump_06_110_red": {
+      "name": "Red fence 6",
+      "description": "Red fence 6.",
+      "price": 15
+    },
+    "jump_06_120_red": {
+      "name": "Red fence 6",
+      "description": "Red fence 6.",
+      "price": 25
+    },
+    "jump_06_130_red": {
+      "name": "Red fence 6",
+      "description": "Red fence 6.",
+      "price": 40
+    },
+    "jump_06_140_red": {
+      "name": "Red fence 6",
+      "description": "Red fence 6.",
+      "price": 60
+    },
+    "jump_07_110_stone": {
+      "name": "Stone fence 7",
+      "description": "Stone fence 7.",
+      "price": 15
+    },
+    "jump_07_120_stone": {
+      "name": "Stone fence 7",
+      "description": "Stone fence 7.",
+      "price": 25
+    },
+    "jump_07_130_stone": {
+      "name": "Stone fence 7",
+      "description": "Stone fence 7.",
+      "price": 40
+    },
+    "jump_07_140_stone": {
+      "name": "Stone fence 7",
+      "description": "Stone fence 7.",
+      "price": 60
+    },
+    "jump_08_110_beige": {
+      "name": "Beige fence 8",
+      "description": "Beige fence 8.",
+      "price": 15
+    },
+    "jump_08_120_beige": {
+      "name": "Beige fence 8",
+      "description": "Beige fence 8.",
+      "price": 25
+    },
+    "jump_08_130_beige": {
+      "name": "Beige fence 8",
+      "description": "Beige fence 8.",
+      "price": 40
+    },
+    "jump_08_140_beige": {
+      "name": "Beige fence 8",
+      "description": "Beige fence 8.",
+      "price": 60
+    },
+    "jump_09_110_purple": {
+      "name": "Purple fence 9",
+      "description": "Purple fence 9.",
+      "price": 15
+    },
+    "jump_09_120_purple": {
+      "name": "Purple fence 9",
+      "description": "Purple fence 9.",
+      "price": 25
+    },
+    "jump_09_130_purple": {
+      "name": "Purple fence 9",
+      "description": "Purple fence 9.",
+      "price": 40
+    },
+    "jump_09_140_purple": {
+      "name": "Purple fence 9",
+      "description": "Purple fence 9.",
+      "price": 60
+    },
+    "jump_10_110_rainbow": {
+      "name": "Rainbow fence 10",
+      "description": "Rainbow fence 10.",
+      "price": 15
+    },
+    "jump_10_120_rainbow": {
+      "name": "Rainbow fence 10",
+      "description": "Rainbow fence 10.",
+      "price": 25
+    },
+    "jump_10_130_rainbow": {
+      "name": "Rainbow fence 10",
+      "description": "Rainbow fence 10.",
+      "price": 40
+    },
+    "jump_10_140_rainbow": {
+      "name": "Rainbow fence 10",
+      "description": "Rainbow fence 10.",
+      "price": 60
+    },
+    "jump_12_110_red": {
+      "name": "Red fence 12",
+      "description": "Red fence 12.",
+      "price": 15
+    },
+    "jump_12_120_red": {
+      "name": "Red fence 12",
+      "description": "Red fence 12.",
+      "price": 25
+    },
+    "jump_12_130_red": {
+      "name": "Red fence 12",
+      "description": "Red fence 12.",
+      "price": 40
+    },
+    "jump_12_140_red": {
+      "name": "Red fence 12",
+      "description": "Red fence 12.",
+      "price": 60
+    },
+    "jump_13_110_purple": {
+      "name": "Purple fence 13",
+      "description": "Purple fence 13.",
+      "price": 15
+    },
+    "jump_13_120_purple": {
+      "name": "Purple fence 13",
+      "description": "Purple fence 13.",
+      "price": 25
+    },
+    "jump_13_130_purple": {
+      "name": "Purple fence 13",
+      "description": "Purple fence 13.",
+      "price": 40
+    },
+    "jump_13_140_purple": {
+      "name": "Purple fence 13",
+      "description": "Purple fence 13.",
+      "price": 60
+    },
+    "jump_14_110_blackpink": {
+      "name": "Blackpink fence 14",
+      "description": "Blackpink fence 14.",
+      "price": 15
+    },
+    "jump_14_120_blackpink": {
+      "name": "Blackpink fence 14",
+      "description": "Blackpink fence 14.",
+      "price": 25
+    },
+    "jump_14_130_blackpink": {
+      "name": "Blackpink fence 14",
+      "description": "Blackpink fence 14.",
+      "price": 40
+    },
+    "jump_14_140_blackpink": {
+      "name": "Blackpink fence 14",
+      "description": "Blackpink fence 14.",
+      "price": 60
+    },
+    "jump_15_110_horse": {
+      "name": "Horse fence 15",
+      "description": "Horse fence 15.",
+      "price": 15
+    },
+    "jump_15_120_horse": {
+      "name": "Horse fence 15",
+      "description": "Horse fence 15.",
+      "price": 25
+    },
+    "jump_15_130_horse": {
+      "name": "Horse fence 15",
+      "description": "Horse fence 15.",
+      "price": 40
+    },
+    "jump_15_140_horse": {
+      "name": "Horse fence 15",
+      "description": "Horse fence 15.",
+      "price": 60
+    },
+    "jump_16_110_green": {
+      "name": "Green fence 16",
+      "description": "Green fence 16.",
+      "price": 15
+    },
+    "jump_16_120_green": {
+      "name": "Green fence 16",
+      "description": "Green fence 16.",
+      "price": 25
+    },
+    "jump_16_130_green": {
+      "name": "Green fence 16",
+      "description": "Green fence 16.",
+      "price": 40
+    },
+    "jump_16_140_green": {
+      "name": "Green fence 16",
+      "description": "Green fence 16.",
+      "price": 60
+    },
+    "jump_17_110_green": {
+      "name": "Green fence 17",
+      "description": "Green fence 17.",
+      "price": 15
+    },
+    "jump_17_120_green": {
+      "name": "Green fence 17",
+      "description": "Green fence 17.",
+      "price": 25
+    },
+    "jump_17_130_green": {
+      "name": "Green fence 17",
+      "description": "Green fence 17.",
+      "price": 40
+    },
+    "jump_17_140_green": {
+      "name": "Green fence 17",
+      "description": "Green fence 17.",
+      "price": 60
+    },
+    "jump_18_110_blue": {
+      "name": "Blue fence 18",
+      "description": "Blue fence 18.",
+      "price": 15
+    },
+    "jump_18_120_blue": {
+      "name": "Blue fence 18",
+      "description": "Blue fence 18.",
+      "price": 25
+    },
+    "jump_18_130_blue": {
+      "name": "Blue fence 18",
+      "description": "Blue fence 18.",
+      "price": 40
+    },
+    "jump_18_140_blue": {
+      "name": "Blue fence 18",
+      "description": "Blue fence 18.",
+      "price": 60
+    },
+    "jump_19_110_yellow": {
+      "name": "Yellow fence 19",
+      "description": "Yellow fence 19.",
+      "price": 15
+    },
+    "jump_19_120_yellow": {
+      "name": "Yellow fence 19",
+      "description": "Yellow fence 19.",
+      "price": 25
+    },
+    "jump_19_130_yellow": {
+      "name": "Yellow fence 19",
+      "description": "Yellow fence 19.",
+      "price": 40
+    },
+    "jump_19_140_yellow": {
+      "name": "Yellow fence 19",
+      "description": "Yellow fence 19.",
+      "price": 60
+    },
+    "jump_20_110_green": {
+      "name": "Green fence 20",
+      "description": "Green fence 20.",
+      "price": 15
+    },
+    "jump_20_120_green": {
+      "name": "Green fence 20",
+      "description": "Green fence 20.",
+      "price": 25
+    },
+    "jump_20_130_green": {
+      "name": "Green fence 20",
+      "description": "Green fence 20.",
+      "price": 40
+    },
+    "jump_20_140_green": {
+      "name": "Green fence 20",
+      "description": "Green fence 20.",
+      "price": 60
+    },
+    "jump_21_110_red": {
+      "name": "Red fence 21",
+      "description": "Red fence 21.",
+      "price": 15
+    },
+    "jump_21_120_red": {
+      "name": "Red fence 21",
+      "description": "Red fence 21.",
+      "price": 25
+    },
+    "jump_21_130_red": {
+      "name": "Red fence 21",
+      "description": "Red fence 21.",
+      "price": 40
+    },
+    "jump_21_140_red": {
+      "name": "Red fence 21",
+      "description": "Red fence 21.",
+      "price": 60
+    },
+    "jump_22_110_purple": {
+      "name": "Purple fence 22",
+      "description": "Purple fence 22.",
+      "price": 15
+    },
+    "jump_22_120_purple": {
+      "name": "Purple fence 22",
+      "description": "Purple fence 22.",
+      "price": 25
+    },
+    "jump_22_130_purple": {
+      "name": "Purple fence 22",
+      "description": "Purple fence 22.",
+      "price": 40
+    },
+    "jump_22_140_purple": {
+      "name": "Purple fence 22",
+      "description": "Purple fence 22.",
+      "price": 60
+    },
+    "jump_23_110_green": {
+      "name": "Green fence 23",
+      "description": "Green fence 23.",
+      "price": 15
+    },
+    "jump_23_120_green": {
+      "name": "Green fence 23",
+      "description": "Green fence 23.",
+      "price": 25
+    },
+    "jump_23_130_green": {
+      "name": "Green fence 23",
+      "description": "Green fence 23.",
+      "price": 40
+    },
+    "jump_23_140_green": {
+      "name": "Green fence 23",
+      "description": "Green fence 23.",
+      "price": 60
+    },
+    "jump_01_110": {
+      "name": "Fence 1",
+      "description": "Fence 1.",
+      "price": 15
+    },
+    "jump_01_120": {
+      "name": "Fence 1",
+      "description": "Fence 1.",
+      "price": 25
+    },
+    "jump_01_130": {
+      "name": "Fence 1",
+      "description": "Fence 1.",
+      "price": 40
+    },
+    "jump_01_140": {
+      "name": "Fence 1",
+      "description": "Fence 1.",
+      "price": 60
+    },
+    "jump_02_110": {
+      "name": "Fence 2",
+      "description": "Fence 2.",
+      "price": 15
+    },
+    "jump_02_120": {
+      "name": "Fence 2",
+      "description": "Fence 2.",
+      "price": 25
+    },
+    "jump_02_130": {
+      "name": "Fence 2",
+      "description": "Fence 2.",
+      "price": 40
+    },
+    "jump_02_140": {
+      "name": "Fence 2",
+      "description": "Fence 2.",
+      "price": 60
+    },
+    "jump_03_110": {
+      "name": "Fence 3",
+      "description": "Fence 3.",
+      "price": 15
+    },
+    "jump_03_120": {
+      "name": "Fence 3",
+      "description": "Fence 3.",
+      "price": 25
+    },
+    "jump_03_130": {
+      "name": "Fence 3",
+      "description": "Fence 3.",
+      "price": 40
+    },
+    "jump_03_140": {
+      "name": "Fence 3",
+      "description": "Fence 3.",
+      "price": 60
+    },
+    "jump_04_110": {
+      "name": "Fence 4",
+      "description": "Fence 4.",
+      "price": 15
+    },
+    "jump_04_120": {
+      "name": "Fence 4",
+      "description": "Fence 4.",
+      "price": 25
+    },
+    "jump_04_130": {
+      "name": "Fence 4",
+      "description": "Fence 4.",
+      "price": 40
+    },
+    "jump_04_140": {
+      "name": "Fence 4",
+      "description": "Fence 4.",
+      "price": 60
+    },
+    "jump_05_110": {
+      "name": "Fence 5",
+      "description": "Fence 5.",
+      "price": 15
+    },
+    "jump_05_120": {
+      "name": "Fence 5",
+      "description": "Fence 5.",
+      "price": 25
+    },
+    "jump_05_130": {
+      "name": "Fence 5",
+      "description": "Fence 5.",
+      "price": 40
+    },
+    "jump_05_140": {
+      "name": "Fence 5",
+      "description": "Fence 5.",
+      "price": 60
+    },
+    "jump_06_110": {
+      "name": "Fence 6",
+      "description": "Fence 6.",
+      "price": 15
+    },
+    "jump_06_120": {
+      "name": "Fence 6",
+      "description": "Fence 6.",
+      "price": 25
+    },
+    "jump_06_130": {
+      "name": "Fence 6",
+      "description": "Fence 6.",
+      "price": 40
+    },
+    "jump_06_140": {
+      "name": "Fence 6",
+      "description": "Fence 6.",
+      "price": 60
+    },
+    "jump_07_110": {
+      "name": "Fence 7",
+      "description": "Fence 7.",
+      "price": 15
+    },
+    "jump_07_120": {
+      "name": "Fence 7",
+      "description": "Fence 7.",
+      "price": 25
+    },
+    "jump_07_130": {
+      "name": "Fence 7",
+      "description": "Fence 7.",
+      "price": 40
+    },
+    "jump_07_140": {
+      "name": "Fence 7",
+      "description": "Fence 7.",
+      "price": 60
+    },
+    "jump_08_110": {
+      "name": "Fence 8",
+      "description": "Fence 8.",
+      "price": 15
+    },
+    "jump_08_120": {
+      "name": "Fence 8",
+      "description": "Fence 8.",
+      "price": 25
+    },
+    "jump_08_130": {
+      "name": "Fence 8",
+      "description": "Fence 8.",
+      "price": 40
+    },
+    "jump_08_140": {
+      "name": "Fence 8",
+      "description": "Fence 8.",
+      "price": 60
+    },
+    "jump_09_110": {
+      "name": "Fence 9",
+      "description": "Fence 9.",
+      "price": 15
+    },
+    "jump_09_120": {
+      "name": "Fence 9",
+      "description": "Fence 9.",
+      "price": 25
+    },
+    "jump_09_130": {
+      "name": "Fence 9",
+      "description": "Fence 9.",
+      "price": 40
+    },
+    "jump_09_140": {
+      "name": "Fence 9",
+      "description": "Fence 9.",
+      "price": 60
+    },
+    "jump_10_110": {
+      "name": "Fence 10",
+      "description": "Fence 10.",
+      "price": 15
+    },
+    "jump_10_120": {
+      "name": "Fence 10",
+      "description": "Fence 10.",
+      "price": 25
+    },
+    "jump_10_130": {
+      "name": "Fence 10",
+      "description": "Fence 10.",
+      "price": 40
+    },
+    "jump_10_140": {
+      "name": "Fence 10",
+      "description": "Fence 10.",
+      "price": 60
+    },
+    "jump_11_130": {
+      "name": "Fence 11",
+      "description": "Fence 11.",
+      "price": 40
+    },
+    "jump_12_110": {
+      "name": "Fence 12",
+      "description": "Fence 12.",
+      "price": 15
+    },
+    "jump_12_120": {
+      "name": "Fence 12",
+      "description": "Fence 12.",
+      "price": 25
+    },
+    "jump_12_130": {
+      "name": "Fence 12",
+      "description": "Fence 12.",
+      "price": 40
+    },
+    "jump_12_140": {
+      "name": "Fence 12",
+      "description": "Fence 12.",
+      "price": 60
+    },
+    "jump_13_110": {
+      "name": "Fence 13",
+      "description": "Fence 13.",
+      "price": 15
+    },
+    "jump_13_120": {
+      "name": "Fence 13",
+      "description": "Fence 13.",
+      "price": 25
+    },
+    "jump_13_130": {
+      "name": "Fence 13",
+      "description": "Fence 13.",
+      "price": 40
+    },
+    "jump_13_140": {
+      "name": "Fence 13",
+      "description": "Fence 13.",
+      "price": 60
+    },
+    "jump_14_110": {
+      "name": "Fence 14",
+      "description": "Fence 14.",
+      "price": 15
+    },
+    "jump_14_120": {
+      "name": "Fence 14",
+      "description": "Fence 14.",
+      "price": 25
+    },
+    "jump_14_130": {
+      "name": "Fence 14",
+      "description": "Fence 14.",
+      "price": 40
+    },
+    "jump_14_140": {
+      "name": "Fence 14",
+      "description": "Fence 14.",
+      "price": 60
+    },
+    "jump_15_110": {
+      "name": "Fence 15",
+      "description": "Fence 15.",
+      "price": 15
+    },
+    "jump_15_120": {
+      "name": "Fence 15",
+      "description": "Fence 15.",
+      "price": 25
+    },
+    "jump_15_130": {
+      "name": "Fence 15",
+      "description": "Fence 15.",
+      "price": 40
+    },
+    "jump_15_140": {
+      "name": "Fence 15",
+      "description": "Fence 15.",
+      "price": 60
+    },
+    "jump_16_110": {
+      "name": "Fence 16",
+      "description": "Fence 16.",
+      "price": 15
+    },
+    "jump_16_120": {
+      "name": "Fence 16",
+      "description": "Fence 16.",
+      "price": 25
+    },
+    "jump_16_130": {
+      "name": "Fence 16",
+      "description": "Fence 16.",
+      "price": 40
+    },
+    "jump_16_140": {
+      "name": "Fence 16",
+      "description": "Fence 16.",
+      "price": 60
+    },
+    "jump_17_110": {
+      "name": "Fence 17",
+      "description": "Fence 17.",
+      "price": 15
+    },
+    "jump_17_120": {
+      "name": "Fence 17",
+      "description": "Fence 17.",
+      "price": 25
+    },
+    "jump_17_130": {
+      "name": "Fence 17",
+      "description": "Fence 17.",
+      "price": 40
+    },
+    "jump_17_140": {
+      "name": "Fence 17",
+      "description": "Fence 17.",
+      "price": 60
+    },
+    "jump_18_110": {
+      "name": "Fence 18",
+      "description": "Fence 18.",
+      "price": 15
+    },
+    "jump_18_120": {
+      "name": "Fence 18",
+      "description": "Fence 18.",
+      "price": 25
+    },
+    "jump_18_130": {
+      "name": "Fence 18",
+      "description": "Fence 18.",
+      "price": 40
+    },
+    "jump_18_140": {
+      "name": "Fence 18",
+      "description": "Fence 18.",
+      "price": 60
+    },
+    "jump_19_110": {
+      "name": "Fence 19",
+      "description": "Fence 19.",
+      "price": 15
+    },
+    "jump_19_120": {
+      "name": "Fence 19",
+      "description": "Fence 19.",
+      "price": 25
+    },
+    "jump_19_130": {
+      "name": "Fence 19",
+      "description": "Fence 19.",
+      "price": 40
+    },
+    "jump_19_140": {
+      "name": "Fence 19",
+      "description": "Fence 19.",
+      "price": 60
+    },
+    "jump_20_110": {
+      "name": "Fence 20",
+      "description": "Fence 20.",
+      "price": 15
+    },
+    "jump_20_120": {
+      "name": "Fence 20",
+      "description": "Fence 20.",
+      "price": 25
+    },
+    "jump_20_130": {
+      "name": "Fence 20",
+      "description": "Fence 20.",
+      "price": 40
+    },
+    "jump_20_140": {
+      "name": "Fence 20",
+      "description": "Fence 20.",
+      "price": 60
+    },
+    "jump_21_110": {
+      "name": "Fence 21",
+      "description": "Fence 21.",
+      "price": 15
+    },
+    "jump_21_120": {
+      "name": "Fence 21",
+      "description": "Fence 21.",
+      "price": 25
+    },
+    "jump_21_130": {
+      "name": "Fence 21",
+      "description": "Fence 21.",
+      "price": 40
+    },
+    "jump_21_140": {
+      "name": "Fence 21",
+      "description": "Fence 21.",
+      "price": 60
+    },
+    "jump_22_110": {
+      "name": "Fence 22",
+      "description": "Fence 22.",
+      "price": 15
+    },
+    "jump_22_120": {
+      "name": "Fence 22",
+      "description": "Fence 22.",
+      "price": 25
+    },
+    "jump_22_130": {
+      "name": "Fence 22",
+      "description": "Fence 22.",
+      "price": 40
+    },
+    "jump_22_140": {
+      "name": "Fence 22",
+      "description": "Fence 22.",
+      "price": 60
+    },
+    "jump_23_110": {
+      "name": "Fence 23",
+      "description": "Fence 23.",
+      "price": 15
+    },
+    "jump_23_120": {
+      "name": "Fence 23",
+      "description": "Fence 23.",
+      "price": 25
+    },
+    "jump_23_130": {
+      "name": "Fence 23",
+      "description": "Fence 23.",
+      "price": 40
+    },
+    "jump_23_140": {
+      "name": "Fence 23",
+      "description": "Fence 23.",
+      "price": 60
+    },
+    "barrel_01": {
+      "name": "Barrel",
+      "description": "Barrel.",
+      "price": 5
+    },
+    "barrel_02": {
+      "name": "Barrel 2",
+      "description": "Barrel 2.",
+      "price": 5
+    },
+    "barrel_03": {
+      "name": "Barrel 3",
+      "description": "Barrel 3.",
+      "price": 5
+    },
+    "barrel_04": {
+      "name": "Barrel 4",
+      "description": "Barrel 4.",
+      "price": 5
+    },
+    "barrel_05": {
+      "name": "Barrel 5",
+      "description": "Barrel 5.",
+      "price": 5
+    },
+    "cone_01": {
+      "name": "Cone",
+      "description": "Cone.",
+      "price": 5
+    },
+    "cone_02": {
+      "name": "Cone 2",
+      "description": "Cone 2.",
+      "price": 5
+    },
+    "cone_03": {
+      "name": "Cone 3",
+      "description": "Cone 3.",
+      "price": 5
+    },
+    "cone_04": {
+      "name": "Cone 4",
+      "description": "Cone 4.",
+      "price": 5
+    },
+    "cone_05": {
+      "name": "Cone 5",
+      "description": "Cone 5.",
+      "price": 5
+    },
+    "haycube": {
+      "name": "Haycube",
+      "description": "Haycube.",
+      "price": 5
+    },
+    "highpole_01": {
+      "name": "Highpole",
+      "description": "Highpole.",
+      "price": 5
+    },
+    "highpole_02": {
+      "name": "Highpole 2",
+      "description": "Highpole 2.",
+      "price": 5
+    },
+    "highpole_03": {
+      "name": "Highpole 3",
+      "description": "Highpole 3.",
+      "price": 5
+    },
+    "highpole_04": {
+      "name": "Highpole 4",
+      "description": "Highpole 4.",
+      "price": 5
+    },
+    "highpole_05": {
+      "name": "Highpole 5",
+      "description": "Highpole 5.",
+      "price": 5
+    },
+    "pole_01": {
+      "name": "Pole",
+      "description": "Pole.",
+      "price": 5
+    },
+    "pole_02": {
+      "name": "Pole 2",
+      "description": "Pole 2.",
+      "price": 5
+    },
+    "pole_03": {
+      "name": "Pole 3",
+      "description": "Pole 3.",
+      "price": 5
+    },
+    "pole_04": {
+      "name": "Pole 4",
+      "description": "Pole 4.",
+      "price": 5
+    },
+    "pole_05": {
+      "name": "Pole 5",
+      "description": "Pole 5.",
+      "price": 5
+    },
+    "bridge_01": {
+      "name": "Bridge",
+      "description": "Bridge.",
+      "price": 5
+    },
+    "bridge_02": {
+      "name": "Bridge 2",
+      "description": "Bridge 2.",
+      "price": 5
+    },
+    "flowerpot_01": {
+      "name": "Flowerpot",
+      "description": "Flowerpot.",
+      "price": 5
+    },
+    "flowerpot_02": {
+      "name": "Flowerpot 2",
+      "description": "Flowerpot 2.",
+      "price": 5
+    },
+    "flowerpot_03": {
+      "name": "Flowerpot 3",
+      "description": "Flowerpot 3.",
+      "price": 5
+    },
+    "flowerpot_04": {
+      "name": "Flowerpot 4",
+      "description": "Flowerpot 4.",
+      "price": 5
+    },
+    "flowerpot_05": {
+      "name": "Flowerpot 5",
+      "description": "Flowerpot 5.",
+      "price": 5
+    },
+    "flowerpot_06": {
+      "name": "Flowerpot 6",
+      "description": "Flowerpot 6.",
+      "price": 5
+    },
+    "flowerpot_07": {
+      "name": "Flowerpot 7",
+      "description": "Flowerpot 7.",
+      "price": 5
+    },
+    "flowerpot_08": {
+      "name": "Flowerpot 8",
+      "description": "Flowerpot 8.",
+      "price": 5
+    },
+    "flowerpot_09": {
+      "name": "Flowerpot 9",
+      "description": "Flowerpot 9.",
+      "price": 5
+    },
+    "lamp": {
+      "name": "Lamp",
+      "description": "Lamp.",
+      "price": 5
+    },
+    "plantarc": {
+      "name": "Plantarc",
+      "description": "Plantarc.",
+      "price": 5
+    },
+    "plantshanged": {
+      "name": "Plantshanged",
+      "description": "Plantshanged.",
+      "price": 5
+    },
+    "plantspalm": {
+      "name": "Plantspalm",
+      "description": "Plantspalm.",
+      "price": 5
+    },
+    "rock": {
+      "name": "Rock",
+      "description": "Rock.",
+      "price": 5
+    },
+    "rock2": {
+      "name": "Rock2",
+      "description": "Rock2.",
+      "price": 5
+    },
+    "stonearc": {
+      "name": "Stonearc",
+      "description": "Stonearc.",
+      "price": 5
+    },
+    "vase1": {
+      "name": "Vase1",
+      "description": "Vase1.",
+      "price": 5
+    },
+    "vase2": {
+      "name": "Vase2",
+      "description": "Vase2.",
+      "price": 5
+    },
+    "vase3": {
+      "name": "Vase3",
+      "description": "Vase3.",
+      "price": 5
+    },
+    "vase4": {
+      "name": "Vase4",
+      "description": "Vase4.",
+      "price": 5
+    },
+    "vase5": {
+      "name": "Vase5",
+      "description": "Vase5.",
+      "price": 5
+    },
+    "alder": {
+      "name": "Alder",
+      "description": "Alder.",
+      "price": 8
+    },
+    "bamboo": {
+      "name": "Bamboo",
+      "description": "Bamboo.",
+      "price": 8
+    },
+    "banyan": {
+      "name": "Banyan",
+      "description": "Banyan.",
+      "price": 8
+    },
+    "hazelnut_3.0m": {
+      "name": "Hazelnut 3.0M",
+      "description": "Hazelnut 3.0M.",
+      "price": 8
+    },
+    "hazelnut_3.5m": {
+      "name": "Hazelnut 3.5M",
+      "description": "Hazelnut 3.5M.",
+      "price": 8
+    },
+    "hazelnut_4.0m_2": {
+      "name": "Hazelnut 4.0M 2",
+      "description": "Hazelnut 4.0M 2.",
+      "price": 8
+    },
+    "hazelnut_4.0m": {
+      "name": "Hazelnut 4.0M",
+      "description": "Hazelnut 4.0M.",
+      "price": 8
+    },
+    "hazelnut_4.8m": {
+      "name": "Hazelnut 4.8M",
+      "description": "Hazelnut 4.8M.",
+      "price": 8
+    },
+    "hazelnut_5.0m": {
+      "name": "Hazelnut 5.0M",
+      "description": "Hazelnut 5.0M.",
+      "price": 8
+    },
+    "hazelnut_6.0m": {
+      "name": "Hazelnut 6.0M",
+      "description": "Hazelnut 6.0M.",
+      "price": 8
+    },
+    "japanesemaple_x0.5": {
+      "name": "Japanesemaple X0.5",
+      "description": "Japanesemaple X0.5.",
+      "price": 8
+    },
+    "japanesemaple_x0.75": {
+      "name": "Japanesemaple X0.75",
+      "description": "Japanesemaple X0.75.",
+      "price": 8
+    },
+    "japanesemaple": {
+      "name": "Japanesemaple",
+      "description": "Japanesemaple.",
+      "price": 8
+    },
+    "mimosa": {
+      "name": "Mimosa",
+      "description": "Mimosa.",
+      "price": 8
+    },
+    "oak_14m": {
+      "name": "Oak 14M",
+      "description": "Oak 14M.",
+      "price": 8
+    },
+    "oak_20m_2": {
+      "name": "Oak 20M 2",
+      "description": "Oak 20M 2.",
+      "price": 8
+    },
+    "oak_20m_3": {
+      "name": "Oak 20M 3",
+      "description": "Oak 20M 3.",
+      "price": 8
+    },
+    "oak_20m_4": {
+      "name": "Oak 20M 4",
+      "description": "Oak 20M 4.",
+      "price": 8
+    },
+    "oak_20m_5": {
+      "name": "Oak 20M 5",
+      "description": "Oak 20M 5.",
+      "price": 8
+    },
+    "oak_20m": {
+      "name": "Oak 20M",
+      "description": "Oak 20M.",
+      "price": 8
+    },
+    "oak_21m": {
+      "name": "Oak 21M",
+      "description": "Oak 21M.",
+      "price": 8
+    },
+    "oak_22m": {
+      "name": "Oak 22M",
+      "description": "Oak 22M.",
+      "price": 8
+    },
+    "oak_6m": {
+      "name": "Oak 6M",
+      "description": "Oak 6M.",
+      "price": 8
+    },
+    "palm_2": {
+      "name": "Palm 2",
+      "description": "Palm 2.",
+      "price": 8
+    },
+    "palm": {
+      "name": "Palm",
+      "description": "Palm.",
+      "price": 8
+    },
+    "palmgroup": {
+      "name": "Palmgroup",
+      "description": "Palmgroup.",
+      "price": 8
+    },
+    "scotspine_2": {
+      "name": "Scotspine 2",
+      "description": "Scotspine 2.",
+      "price": 8
+    },
+    "scotspine": {
+      "name": "Scotspine",
+      "description": "Scotspine.",
+      "price": 8
+    },
+    "spruce_14m": {
+      "name": "Spruce 14M",
+      "description": "Spruce 14M.",
+      "price": 8
+    },
+    "spruce_16m": {
+      "name": "Spruce 16M",
+      "description": "Spruce 16M.",
+      "price": 8
+    },
+    "spruce_18m": {
+      "name": "Spruce 18M",
+      "description": "Spruce 18M.",
+      "price": 8
+    },
+    "spruce_19m_2": {
+      "name": "Spruce 19M 2",
+      "description": "Spruce 19M 2.",
+      "price": 8
+    },
+    "spruce_19m": {
+      "name": "Spruce 19M",
+      "description": "Spruce 19M.",
+      "price": 8
+    },
+    "spruce_8m": {
+      "name": "Spruce 8M",
+      "description": "Spruce 8M.",
+      "price": 8
+    },
+    "sycamore": {
+      "name": "Sycamore",
+      "description": "Sycamore.",
+      "price": 8
+    },
+    "willow_x0.5": {
+      "name": "Willow X0.5",
+      "description": "Willow X0.5.",
+      "price": 8
+    },
+    "willow_x0.75": {
+      "name": "Willow X0.75",
+      "description": "Willow X0.75.",
+      "price": 8
+    },
+    "willow": {
+      "name": "Willow",
+      "description": "Willow.",
+      "price": 8
+    },
+    "bananaplant": {
+      "name": "Bananaplant",
+      "description": "Bananaplant.",
+      "price": 5
+    },
+    "beach_plant": {
+      "name": "Beach Plant",
+      "description": "Beach Plant.",
+      "price": 5
+    },
+    "bush1": {
+      "name": "Bush1",
+      "description": "Bush1.",
+      "price": 5
+    },
+    "bush2": {
+      "name": "Bush2",
+      "description": "Bush2.",
+      "price": 5
+    },
+    "bush3": {
+      "name": "Bush3",
+      "description": "Bush3.",
+      "price": 5
+    },
+    "bush4": {
+      "name": "Bush4",
+      "description": "Bush4.",
+      "price": 5
+    },
+    "bush5": {
+      "name": "Bush5",
+      "description": "Bush5.",
+      "price": 5
+    },
+    "bush6": {
+      "name": "Bush6",
+      "description": "Bush6.",
+      "price": 5
+    },
+    "bush7": {
+      "name": "Bush7",
+      "description": "Bush7.",
+      "price": 5
+    },
+    "fern": {
+      "name": "Fern",
+      "description": "Fern.",
+      "price": 5
+    },
+    "fern2": {
+      "name": "Fern2",
+      "description": "Fern2.",
+      "price": 5
+    },
+    "forest_plant": {
+      "name": "Forest Plant",
+      "description": "Forest Plant.",
+      "price": 5
+    },
+    "forest_plant2": {
+      "name": "Forest Plant2",
+      "description": "Forest Plant2.",
+      "price": 5
+    },
+    "forest_plant3": {
+      "name": "Forest Plant3",
+      "description": "Forest Plant3.",
+      "price": 5
+    },
+    "forest_plant4": {
+      "name": "Forest Plant4",
+      "description": "Forest Plant4.",
+      "price": 5
+    },
+    "forest_plant5": {
+      "name": "Forest Plant5",
+      "description": "Forest Plant5.",
+      "price": 5
+    },
+    "forest_plant6": {
+      "name": "Forest Plant6",
+      "description": "Forest Plant6.",
+      "price": 5
+    },
+    "forest_plant7": {
+      "name": "Forest Plant7",
+      "description": "Forest Plant7.",
+      "price": 5
+    },
+    "grass1leaves": {
+      "name": "Grass1Leaves",
+      "description": "Grass1Leaves.",
+      "price": 5
+    },
+    "red_bush": {
+      "name": "Red Bush",
+      "description": "Red Bush.",
+      "price": 5
+    },
+    "thistel": {
+      "name": "Thistel",
+      "description": "Thistel.",
+      "price": 5
+    },
+    "weed": {
+      "name": "Weed",
+      "description": "Weed.",
+      "price": 5
+    }
+  }
+}
