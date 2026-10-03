@@ -9,6 +9,8 @@ import time
 import zlib
 from pathlib import Path
 
+from server_config import ride_is_plausible
+
 MAP_PATH = Path(__file__).resolve().parent / "igor_host" / "protocol_map.json"
 
 PROFILE_COLUMNS = (
@@ -38,6 +40,8 @@ class GameFeatures:
         self.emulator = emulator
         self.waiting = []
         self.opponents = {}
+        self.practice_open = set()
+        self.groom_at = {}
         self.slots = {}
         self.courses = {}
         self.likes = {}
@@ -606,11 +610,14 @@ class GameFeatures:
         )
 
     def on_StartPractice(self, message, client_id, player_id):
+        if player_id:
+            self.practice_open.add(player_id)
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
 
     def on_EndPractice(self, message, client_id, player_id):
         course_id = self._practice_course_id(message.get("rest") or "")
-        if course_id and course_id in self.courses:
+        started = player_id in self.practice_open
+        if started and course_id and course_id in self.courses:
             course = self.courses[course_id]
             course["played"] = int(course.get("played") or 0) + 1
             course["completed"] = int(course.get("completed") or 0) + 1
@@ -624,7 +631,14 @@ class GameFeatures:
         ap_cost = int(self.bal("action_points", "practice", default=20))
         wear = float(self.bal("grooming", "wear_per_ride", default=0.05))
         if player_id:
+            self.practice_open.discard(player_id)
+        if player_id and started:
             data = self.profile(player_id)
+            if int(data["action_points"] or 0) < ap_cost:
+                reward_coins = 0
+                reward_xp = 0
+                ap_cost = 0
+                wear = 0
             worn = max(0.0, float(data["grooming"] if data["grooming"] is not None else 1) - wear)
             self.save_profile(
                 player_id,
@@ -633,6 +647,9 @@ class GameFeatures:
                 action_points=max(0, data["action_points"] - ap_cost),
                 grooming=worn,
             )
+        else:
+            reward_coins = 0
+            reward_xp = 0
         return self.emulator.igor.reply_type(
             message["service"], message["function"], message["rpc"], "Protocol2.ReplyPracticeEnd",
             {
@@ -662,7 +679,8 @@ class GameFeatures:
         raw = bytes.fromhex(message.get("rest") or "")
         if len(raw) < 4:
             return None
-        value = max(0.0, min(1.0, struct.unpack_from("<f", raw)[0]))
+        reported = max(0.0, min(1.0, struct.unpack_from("<f", raw)[0]))
+        value = self._groom_value(player_id, reported)
         self.save_profile(player_id, grooming=value)
         self.emulator.debug_log_tcp("GROOM: %s value=%.2f" % (client_id, value))
         return None
@@ -671,8 +689,9 @@ class GameFeatures:
         return self._paid_groom(client_id, player_id, "BUY GROOM")
 
     def on_PremiumGrooming(self, message, client_id, player_id):
-        # The client only sends this for a Pro Rider. That stable hand is free.
-        return self._paid_groom(client_id, player_id, "PREMIUM GROOM", free=True)
+        # The real client sends this only for a Pro Rider. Anyone can send the
+        # packet, and this server does not sell Pro, so the groom still costs coins.
+        return self._paid_groom(client_id, player_id, "PREMIUM GROOM", free=False)
 
     def _paid_groom(self, client_id, player_id, label, free=False):
         if not player_id:
@@ -689,16 +708,47 @@ class GameFeatures:
         return self.session_push(player_id)
 
     def on_FinishGrooming(self, message, client_id, player_id):
-        if player_id:
-            self.save_profile(player_id, grooming=1)
-            return self.session_push(player_id)
-        return None
+        if not player_id:
+            return None
+        raw = bytes.fromhex(message.get("rest") or "")
+        reported = 1.0
+        if len(raw) >= 4:
+            reported = max(0.0, min(1.0, struct.unpack_from("<f", raw)[0]))
+        self.save_profile(player_id, grooming=self._groom_value(player_id, reported))
+        return self.session_push(player_id)
+
+    def _groom_value(self, player_id, reported):
+        """A brush report can raise cleanliness a little, and not twice in a few seconds."""
+        data = self.profile(player_id)
+        current = float(data["grooming"] if data["grooming"] is not None else 1)
+        if reported <= current:
+            return reported
+        now = time.time()
+        last = self.groom_at.get(player_id, 0)
+        if now - last < 20:
+            return current
+        self.groom_at[player_id] = now
+        return min(reported, current + 0.35)
+
+    def _min_ride(self):
+        config = getattr(self.emulator, "join_config", None) or {}
+        try:
+            return float(config.get("min_ride_seconds") or 8)
+        except (TypeError, ValueError):
+            return 8
+
+    def _data_file(self, name):
+        root = Path(__file__).resolve().parent
+        installed = root.parent / "UserData" / name
+        if installed.exists():
+            return installed
+        return root / "gamedata" / name
 
     def _gear_by_hash(self):
         cached = getattr(self, "_gear_index", None)
         if cached is not None:
             return cached
-        path = Path(__file__).resolve().parent.parent / "UserData" / "wardrobe.json"
+        path = self._data_file("wardrobe.json")
         index = {}
         if path.exists():
             document = json.loads(path.read_text(encoding="utf-8"))
@@ -955,7 +1005,7 @@ class GameFeatures:
                 name, _offset = self._read_igor_string(raw, 4)
             except (IndexError, UnicodeDecodeError):
                 name = ""
-        return self._update_course(message, client_id, course_id, name=name)
+        return self._update_course(message, client_id, player_id, course_id, name=name)
 
     def on_SetCourseOwner(self, message, client_id, player_id):
         raw = bytes.fromhex(message.get("rest") or "")
@@ -963,19 +1013,25 @@ class GameFeatures:
         owner = struct.unpack_from("<I", raw, 4)[0] if len(raw) >= 8 else 0
         if owner and not self._player_exists(owner):
             return self._missing_player(message, owner)
-        return self._update_course(message, client_id, course_id, owner=owner)
+        return self._update_course(message, client_id, player_id, course_id, owner=owner)
 
     def on_SetCourseMinTime(self, message, client_id, player_id):
         raw = bytes.fromhex(message.get("rest") or "")
         course_id = self._uint_from_rest(message.get("rest") or "")
         min_time = struct.unpack_from("<i", raw, 4)[0] if len(raw) >= 8 else 60
-        return self._update_course(message, client_id, course_id, min_time=min_time)
+        return self._update_course(message, client_id, player_id, course_id, min_time=min_time)
 
-    def _update_course(self, message, client_id, course_id, **values):
+    def _update_course(self, message, client_id, player_id, course_id, **values):
         course = self.courses.get(course_id)
         if course is None:
             return self.emulator.igor.reply_fail(
                 message["service"], message["function"], message["rpc"], "That course is not on this server."
+            )
+        owner = int(course.get("owner") or 0)
+        if not player_id or (owner and owner != player_id):
+            return self.emulator.igor.reply_fail(
+                message["service"], message["function"], message["rpc"],
+                "Only the rider who owns this course can change it.",
             )
         course.update(values)
         with self._connect() as conn:
@@ -1050,33 +1106,8 @@ class GameFeatures:
         return None
 
     def on_GiveReward(self, message, client_id, player_id):
-        raw = bytes.fromhex(message.get("rest") or "")
-        if len(raw) < 13:
-            return None
-        target = struct.unpack_from("<I", raw)[0]
-        offset = 4
-        has_money = raw[offset] & 0x80
-        offset += 1
-        coins = tickets = 0
-        if has_money and offset + 8 <= len(raw):
-            coins, tickets = struct.unpack_from("<ii", raw, offset)
-            offset += 8
-        xp = ap = 0
-        if offset + 8 <= len(raw):
-            xp, ap = struct.unpack_from("<ii", raw, offset)
-            offset += 8
-        if target and self._player_exists(target):
-            data = self.profile(target)
-            self.save_profile(
-                target,
-                coins=data["coins"] + coins,
-                skill_tickets=data["skill_tickets"] + tickets,
-                horse_xp=data["horse_xp"] + xp,
-                action_points=data["action_points"] + ap,
-            )
-            for other in self._clients_for(target):
-                self.emulator.send_to(other, self.session_push(target))
-        self.emulator.debug_log_tcp("REWARD: %s target=%s coins=%s" % (client_id, target, coins))
+        # ServiceDebug.GiveReward. The amount in the packet is whatever the sender typed.
+        self.emulator.debug_log_tcp("REWARD IGNORED: %s" % client_id)
         return None
 
     def on_GetCourseChanges(self, message, client_id, player_id):
@@ -1261,11 +1292,15 @@ class GameFeatures:
         my_penalty = int(result.get("penalty") or 0)
         opp_time = my_time + 1.5
         opp_penalty = 0
+        in_match = client_id in self.opponents
+        if in_match:
+            self.opponents.pop(client_id, None)
+        plausible = ride_is_plausible(my_time, my_penalty, self._min_ride())
         # Fewer faults wins. Equal faults, then the faster time.
-        won = bool(player_id) and not result.get("canceled") and (
+        won = bool(player_id) and in_match and plausible and not result.get("canceled") and (
             my_penalty < opp_penalty or (my_penalty == opp_penalty and my_time <= opp_time)
         )
-        if player_id and not result.get("canceled"):
+        if player_id and in_match and not result.get("canceled"):
             with self._connect() as conn:
                 conn.execute(
                     """UPDATE player_data
@@ -1400,7 +1435,28 @@ class GameFeatures:
         if len(raw) < 12 or not player_id:
             return None
         course_hash, time_s, penalty = struct.unpack_from("<IfI", raw)
+        if not ride_is_plausible(time_s, penalty, self._min_ride()):
+            self.emulator.debug_log_tcp(
+                "DS RESULT IGNORED: %s time=%.2f penalty=%s" % (client_id, time_s, penalty)
+            )
+            return None
+        data = self.profile(player_id)
+        needed_level = int(self.bal("showdown", "min_level", default=10))
+        ticket_cost = int(self.bal("showdown", "skill_tickets", default=150))
         with self._connect() as conn:
+            already = conn.execute(
+                """SELECT COUNT(*) FROM ds_results
+                   WHERE player_id = ? AND date(created_at) = date('now', 'localtime')""",
+                (player_id,),
+            ).fetchone()[0]
+            if not already:
+                if int(data.get("horse_level") or 1) < needed_level:
+                    self.emulator.debug_log_tcp("DS RESULT REFUSED: %s level" % client_id)
+                    return None
+                if int(data.get("skill_tickets") or 0) < ticket_cost:
+                    self.emulator.debug_log_tcp("DS RESULT REFUSED: %s tickets" % client_id)
+                    return None
+                self.save_profile(player_id, skill_tickets=int(data["skill_tickets"]) - ticket_cost)
             conn.execute(
                 "INSERT INTO ds_results (player_id, course_hash, time, penalty) VALUES (?, ?, ?, ?)",
                 (player_id, course_hash, time_s, penalty),
@@ -1490,9 +1546,14 @@ class GameFeatures:
         return {"coins": 0, "xp": 0, "item": ""}
 
     def on_DsGetFinalReward(self, message, client_id, player_id):
-        raw = bytes.fromhex(message.get("rest") or "")
-        place = struct.unpack_from("<I", raw, 1)[0] if len(raw) >= 5 else 1
-        prize = self._showdown_prize(int(place))
+        place = 0
+        for row in self._ds_board(True):
+            if row["PlayerId"] == (player_id or 0):
+                place = int(row["Place"])
+        if not place:
+            self.emulator.debug_log_tcp("DS REWARD REFUSED: %s no ride today" % client_id)
+            return None
+        prize = self._showdown_prize(place)
         coins = int(prize.get("coins") or 0)
         xp = int(prize.get("xp") or 0)
         item_id = prize.get("item") or ""

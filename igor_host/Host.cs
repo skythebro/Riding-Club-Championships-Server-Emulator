@@ -1204,7 +1204,7 @@ public static class Host
         Type localeType = Game.GetType("Protocol2.Locale");
         PropertyInfo stringsProperty = card.GetType().GetProperty("Strings");
         object strings = Activator.CreateInstance(stringsProperty.PropertyType);
-        string path = Path.GetFullPath(Path.Combine(ManagedDir, "..", "..", "UserData", "localization_extra.json"));
+        string path = DataFile("localization_extra.json");
         if (File.Exists(path))
         {
             var serializer = new JavaScriptSerializer();
@@ -1262,7 +1262,7 @@ public static class Host
     static Wardrobe LoadWardrobe()
     {
         var wardrobe = new Wardrobe();
-        string path = Path.GetFullPath(Path.Combine(ManagedDir, "..", "..", "UserData", "wardrobe.json"));
+        string path = DataFile("wardrobe.json");
         if (!File.Exists(path))
         {
             AddBuiltinGear(wardrobe);
@@ -1381,10 +1381,21 @@ public static class Host
         public bool Shop;
     }
 
+    static string DataFile(string name)
+    {
+        string installed = Path.GetFullPath(Path.Combine(ManagedDir, "..", "..", "UserData", name));
+        if (File.Exists(installed))
+            return installed;
+        string shipped = Path.GetFullPath(Path.Combine(ManagedDir, "..", "..", "ServerEmu", "gamedata", name));
+        if (File.Exists(shipped))
+            return shipped;
+        return installed;
+    }
+
     static List<CoursePiece> LoadCoursePieces()
     {
         var pieces = new List<CoursePiece>();
-        string path = Path.GetFullPath(Path.Combine(ManagedDir, "..", "..", "UserData", "course_items.json"));
+        string path = DataFile("course_items.json");
         if (!File.Exists(path))
         {
             AddBuiltinCoursePieces(pieces);

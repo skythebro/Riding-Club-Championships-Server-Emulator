@@ -1,6 +1,7 @@
 images/
 debug_logs/
 users.db
+server.json
 *.pyc
 __pycache__/
 igor_host/*.exe

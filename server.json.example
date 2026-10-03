@@ -1,0 +1,10 @@
+{
+  "_about": "Copy this file to server.json. Leave it out and the server stays on this PC only, and any Steam account can create a rider.",
+  "bind_host": "127.0.0.1",
+  "tcp_port": 27130,
+  "policy_port": 27132,
+  "http_port": 80,
+  "open_registration": true,
+  "allowed_steam_ids": [],
+  "min_ride_seconds": 8
+}

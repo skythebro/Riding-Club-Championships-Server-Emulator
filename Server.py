@@ -25,6 +25,7 @@ from datetime import datetime
 
 from game_features import GameFeatures
 from igor_client import IgorClient
+from server_config import load_config, login_decision
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request, HTTPException
@@ -70,12 +71,13 @@ except ImportError:
     DEBUG_ROTATE_AFTER_CONNECTIONS = 10
     DEBUG_DIR = Path(DEBUG_LOG_DIRECTORY)
 
-# Server configuration
+# server.json overrides these. The default is this machine only.
+JOIN_CONFIG = load_config()
 SERVER_CONFIG = {
-    "host": "127.0.0.1",  # localhost
-    "http_port": 80,      # Standard HTTP port
-    "tcp_port": 27130,    # TCP socket port from config
-    "policy_port": 27132  # Policy port from config
+    "host": JOIN_CONFIG["bind_host"],
+    "http_port": JOIN_CONFIG["http_port"],
+    "tcp_port": JOIN_CONFIG["tcp_port"],
+    "policy_port": JOIN_CONFIG["policy_port"],
 }
 
 def calculate_crc32_hash(text: str) -> int:
@@ -210,6 +212,14 @@ class UserDatabase:
                 conn.commit()
                 logger.info(f"New user created: {player_id} ({source_type}:{source_id})")
                 return player_id, user_data
+
+    def account_exists(self, source_type: str, source_id: str) -> bool:
+        with sqlite3.connect(self.db_path) as conn:
+            row = conn.execute(
+                "SELECT 1 FROM users WHERE source_type = ? AND source_id = ?",
+                (source_type, str(source_id)),
+            ).fetchone()
+        return row is not None
     
     def update_player_data(self, player_id: int, **kwargs) -> bool:
         """Update player data"""
@@ -341,6 +351,7 @@ class RCCServerEmulator:
         self.tcp_listen_socket = None
         self.policy_server_running = False
         self.database = UserDatabase()
+        self.join_config = JOIN_CONFIG
         self.features = GameFeatures(self)
         
         # Verify card hash calculations
@@ -1845,16 +1856,19 @@ class RCCServerEmulator:
                 source_id = f"steam_fallback_{steam_id}"
             
         except Exception as e:
-            # Fallback parsing for malformed data
             logger.error(f"Error parsing login data: {e}")
             self.debug_log_tcp(f"LOGIN PARSE ERROR: {client_id} - {str(e)}")
-            
-            source_type = "Steam"
-            source_id = f"steam_error_{client_id.split('_')[-1]}"
-            access_token = f"token_{hash(data) % 1000000000}"
-            
-            self.debug_log_tcp(f"LOGIN FALLBACK: {client_id} - Using fallback ID={source_id}")
-        
+            return self.create_login_error_response(rpc_id, "This server could not read that login.")
+
+        allowed, reason = login_decision(
+            source_id,
+            self.join_config,
+            self.database.account_exists(source_type, source_id),
+        )
+        if not allowed:
+            self.debug_log_tcp(f"LOGIN REFUSED: {client_id} - {source_id} {reason}")
+            return self.create_login_error_response(rpc_id, reason)
+
         try:
             # Get or create user in database
             player_id, user_data = self.database.get_or_create_user(source_type, source_id, access_token)

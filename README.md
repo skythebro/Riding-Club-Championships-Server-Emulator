@@ -41,7 +41,7 @@ python -m venv .venv
 pip install fastapi uvicorn websockets aiofiles python-multipart
 ```
 
-3. Copy `gamedata/wardrobe.json`, `gamedata/course_items.json`, and `gamedata/localization_extra.json` into the game's `UserData` folder, next to `rcc_Data`. The card host reads them from there.
+3. The card host reads `gamedata/wardrobe.json`, `gamedata/course_items.json`, and `gamedata/localization_extra.json` from this folder. If the game already has the same files in `UserData`, next to `rcc_Data`, those copies win.
 
 4. Build the card host from `igor_host` if `IgorHost.exe` is missing, then start the host before the server. It listens on `127.0.0.1:27141`.
 
@@ -57,7 +57,11 @@ Then, from this folder:
 python Server.py
 ```
 
-`start_server.bat` creates the virtual environment and starts `Server.py`. Start the card host first.
+`start_server.bat` creates the virtual environment, starts the card host, then starts `Server.py`. It looks for the game at `..\rcc_Data\Managed`. Pass another Managed folder if the game lives somewhere else:
+
+```bat
+start_server.bat "D:\Games\RidingClubChampionships\rcc_Data\Managed"
+```
 
 The client has to point at this machine. `AssetbundleEditServer.py` rewrites `resources.assets`. Replacing `servers.txt` alone is not enough, because the game reads the host from the asset bundle.
 
@@ -85,7 +89,21 @@ The client has to point at this machine. `AssetbundleEditServer.py` rewrites `re
 | 80 | HTTP and the legacy websocket |
 | 27141 | Card host, local only |
 
-Port 80 needs an administrator shell on Windows, or change the HTTP port.
+Port 80 needs an administrator shell on Windows, or change `http_port` in `server.json`.
+
+## Letting other people on
+
+Copy [`server.json.example`](server.json.example) to `server.json`.
+
+- `bind_host` is `127.0.0.1` until you set `0.0.0.0`. Only then can another computer reach the server. Put this machine's address in their client server list, not `127.0.0.1`.
+- `allowed_steam_ids` empty means any real Steam account can create a rider. Fill it with the Steam ids you want, and everyone else is refused.
+- `open_registration` false keeps accounts that already exist and refuses new ones.
+
+The stock client does not send a password. It sends a Steam id. This server cannot ask Valve whether that ticket is real, so a person who can reach the port and knows an id can claim it. Use the allow list, and do not leave `bind_host` open to the internet, if that matters to you.
+
+## What a modified client cannot do
+
+Coins, rating, action points, and showdown prizes are stored here. A debug "give reward" packet is ignored. A ranked result pays only after that client was actually paired, and only once. A showdown prize uses the place on today's board, not the place written in the packet. A ride shorter than `min_ride_seconds` (8 by default) is not stored and does not win. Grooming cannot jump to clean in one packet, and the Pro Rider groom packet still costs coins because this server does not sell Pro. Course edits are limited to the rider who owns the course. A login that is not a real Steam id does not create an account.
 
 `http://127.0.0.1:80/health` should answer while the server is up.
 
