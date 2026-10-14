@@ -2,6 +2,7 @@
 
 import atexit
 import json
+import shutil
 import socket
 import subprocess
 import sys
@@ -13,6 +14,18 @@ from paths import APP_DIR, managed_dir
 HOST_PORT = 27141
 EXE = APP_DIR / "igor_host" / "IgorHost.exe"
 HOST_LOG = APP_DIR / "igor_host" / "host.log"
+
+
+def _host_command(managed):
+    """The card host is a .NET exe. Linux runs it with Mono (apt install mono-runtime)."""
+    command = [str(EXE), str(managed), str(HOST_PORT), str(APP_DIR)]
+    return command if sys.platform == "win32" else ["mono", *command]
+
+
+def _die_with_parent():
+    """Linux: the kernel ends the card host when the server ends, however the server ends."""
+    import ctypes
+    ctypes.CDLL("libc.so.6", use_errno=True).prctl(1, 9)  # PR_SET_PDEATHSIG, SIGKILL
 
 
 def _tie_to_this_process(proc):
@@ -92,6 +105,8 @@ class IgorClient:
     def _start_process(self):
         if not EXE.exists():
             raise FileNotFoundError("The card host is missing: %s" % EXE)
+        if sys.platform != "win32" and shutil.which("mono") is None:
+            raise FileNotFoundError("Mono is not installed. On Debian or Ubuntu: sudo apt install mono-runtime libmono-system-web-extensions4.0-cil")
         managed = managed_dir(self.game_dir)
         if managed is None:
             raise FileNotFoundError(
@@ -101,11 +116,12 @@ class IgorClient:
         # A log file, not a pipe: nobody reads a pipe, and a full one would freeze the host.
         log = open(HOST_LOG, "ab")
         self.proc = subprocess.Popen(
-            [str(EXE), str(managed), str(HOST_PORT), str(APP_DIR)],
+            _host_command(managed),
             stdout=log,
             stderr=subprocess.STDOUT,
             cwd=str(EXE.parent),
-            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            **({"creationflags": subprocess.CREATE_NO_WINDOW} if sys.platform == "win32"
+               else {"preexec_fn": _die_with_parent}),
         )
         log.close()
         self._job = _tie_to_this_process(self.proc)

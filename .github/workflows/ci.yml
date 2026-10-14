@@ -19,3 +19,14 @@ jobs:
       - name: Card host compiles
         working-directory: igor_host
         run: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /target:exe /main:Host /r:System.Web.Extensions.dll /out:IgorHost.exe Host.cs
+
+  linux:
+    # The server also has to run on Linux. This does not run the card host, which needs the game's DLLs.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m unittest test_server_rules test_game_rules

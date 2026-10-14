@@ -5,11 +5,16 @@
 The zip holds RCCServer.exe (no Python needed), the card host, the editable
 config and data, and two shortcuts. It holds no game files: the card host
 loads them from the owner's own install at run time.
+
+It also builds RCCServer-linux-<version>.tar.gz: the Python source and the same
+card host, to run with Python 3 and Mono.
 """
 
+import io
 import shutil
 import subprocess
 import sys
+import tarfile
 import zipfile
 from pathlib import Path
 
@@ -43,8 +48,40 @@ QUICKSTART = """Riding Club Championships server
    They put it next to rcc.exe. Steam's "Verify integrity of game files"
    undoes it.
 
+Always on: open a command prompt as administrator here and run
+RCCServer.exe service install. It starts at boot and restarts if it stops.
+
 Admin: open a command prompt here and run  RCCServer.exe admin --help
 (list, ban, mute, coins, rename, reset, kick, backup).
+Prices, rewards, and the news panel: balance.json.
+Saves: users.db. Automatic copies go to backups/.
+Full guide: README.md.
+"""
+
+
+LINUX_START = """#!/bin/sh
+cd "$(dirname "$0")"
+[ -d .venv ] || python3 -m venv .venv
+.venv/bin/python -m pip install -q -r requirements.txt
+exec .venv/bin/python Server.py "$@"
+"""
+
+LINUX_QUICKSTART = """Riding Club Championships server on Linux
+
+You need Python 3.10 or newer and Mono, and the Managed folder of your own copy of the game.
+
+1. Install:  sudo apt install python3 python3-venv mono-runtime libmono-system-web-extensions4.0-cil
+2. Copy the game's rcc_Data/Managed folder from a Windows install to a folder
+   such as ~/rcc-game/rcc_Data/Managed. Then in server.json set "game_dir" to
+   that folder (~/rcc-game). Until server.json exists, ./start.sh --game-dir ~/rcc-game.
+3. Run ./start.sh. The first start creates server.json.
+4. Letting others join: in server.json set "bind_host": "0.0.0.0" and
+   "public_host" to your address. Open TCP port 27130 and HTTP 8080 on the firewall.
+   Then run ./start.sh join YOUR.ADDRESS and send players the servers.txt it writes.
+   They put it next to rcc.exe.
+5. Always on: sudo ./start.sh service install   (a systemd unit; logs: journalctl -u rcc-server -f)
+
+Admin: ./start.sh admin --help
 Prices, rewards, and the news panel: balance.json.
 Saves: users.db. Automatic copies go to backups/.
 Full guide: README.md.
@@ -85,6 +122,30 @@ def copy_files():
     (APP / "QUICKSTART.txt").write_text(QUICKSTART.replace("\n", "\r\n"), encoding="utf-8")
 
 
+def make_linux(version):
+    """A tar.gz of the source files the server runs, with the same prebuilt card host."""
+    skip = ("test_", "build_", "analyze_")
+    target = DIST / ("RCCServer-linux-%s.tar.gz" % version)
+    with tarfile.open(target, "w:gz") as archive:
+        def add_bytes(name, data, mode):
+            info = tarfile.TarInfo("RCCServer/" + name)
+            info.size, info.mode = len(data), mode
+            archive.addfile(info, io.BytesIO(data))
+
+        for file in sorted(ROOT.glob("*.py")):
+            if not file.name.startswith(skip):
+                archive.add(file, "RCCServer/" + file.name)
+        for name in ("requirements.txt", "balance.json", "server.json.example", "README.md", "STATUS.md"):
+            archive.add(ROOT / name, "RCCServer/" + name)
+        archive.add(ROOT / "gamedata", "RCCServer/gamedata")
+        for name in ("IgorHost.exe", "protocol_map.json"):
+            archive.add(ROOT / "igor_host" / name, "RCCServer/igor_host/" + name)
+        add_bytes("start.sh", LINUX_START.encode(), 0o755)
+        add_bytes("QUICKSTART.txt", LINUX_QUICKSTART.encode(), 0o644)
+    print("Built", target, "%.1f MB" % (target.stat().st_size / 1e6))
+    return target
+
+
 def make_zip(version):
     target = DIST / ("RCCServer-%s.zip" % version)
     with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as archive:
@@ -103,6 +164,7 @@ def main():
     build_exe()
     copy_files()
     make_zip(version)
+    make_linux(version)
 
 
 if __name__ == "__main__":

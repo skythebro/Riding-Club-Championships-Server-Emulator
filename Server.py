@@ -867,9 +867,13 @@ def main(argv=None):
     join = sub.add_parser("join", help="write the servers.txt players need to join this server")
     join.add_argument("host", nargs="?", help="address players use to reach this server")
     join.add_argument("--out", help="where to write servers.txt")
+    sub.add_parser("service", help="run at boot and restart on failure: service install|remove|status", add_help=False)
     sub.add_parser("admin", help="ban, mute, give coins, back up ... (admin --help)", add_help=False)
     args, rest = parser.parse_known_args(argv)
 
+    if args.command == "service":
+        import service
+        sys.exit(service.cli(rest))
     if args.command == "admin":
         import admin
         sys.exit(admin.cli(rest, str(ROOT / "users.db"), JOIN_CONFIG["http_port"]))

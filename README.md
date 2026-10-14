@@ -52,6 +52,30 @@ start_server.bat "D:\Games\RidingClubChampionships"
 
 The card host reads `gamedata/wardrobe.json`, `gamedata/course_items.json`, and `gamedata/localization_extra.json` from the server folder. A copy in the game's `UserData` folder is used only when the server has none.
 
+### Always on (Windows)
+
+Open a command prompt as administrator in the server folder and run:
+
+```bat
+RCCServer.exe service install
+```
+
+This makes a scheduled task named `RCC Server`. It starts at boot without anyone logged in, and starts again a minute after the server stops. It runs as SYSTEM, so install first saves the game folder in `server.json`. Output goes to `server.log` and is replaced at each start. `service status` shows it and `service remove` deletes it. Do not also keep a server window open, because both would want the same ports.
+
+### Hosting on Linux
+
+Download `RCCServer-linux-<version>.tar.gz`. It holds the Python source and the same card host, which runs under Mono. You still need your own copy of the game: copy its `rcc_Data/Managed` folder to the Linux machine, for example to `~/rcc-game/rcc_Data/Managed`.
+
+```sh
+sudo apt install python3 python3-venv mono-runtime libmono-system-web-extensions4.0-cil
+tar xzf RCCServer-linux-<version>.tar.gz && cd RCCServer
+./start.sh --game-dir ~/rcc-game
+```
+
+Set `game_dir` in `server.json` to that folder, so you do not need the flag. `./start.sh join <address>` and `./start.sh admin ...` work as on Windows. `sudo ./start.sh service install` makes a systemd unit named `rcc-server` that starts at boot and restarts on failure. Read its output with `journalctl -u rcc-server -f`. The card host ends with the server, even when the server is killed.
+
+The game itself only runs on Windows, so players still use a Windows `servers.txt`.
+
 ## Pointing the game at a server
 
 The game reads `servers.txt`, next to `rcc.exe`, before its built-in list, and uses the entry named `live`. That file is all a player needs. Nothing inside the game files changes, and Steam's "Verify integrity of game files" puts the original back.

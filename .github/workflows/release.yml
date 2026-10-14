@@ -20,5 +20,7 @@ jobs:
       - run: python build_release.py ${{ github.ref_name }}
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist/RCCServer-${{ github.ref_name }}.zip
+          files: |
+            dist/RCCServer-${{ github.ref_name }}.zip
+            dist/RCCServer-linux-${{ github.ref_name }}.tar.gz
           generate_release_notes: true

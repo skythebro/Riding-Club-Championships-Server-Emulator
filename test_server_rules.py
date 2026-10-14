@@ -717,3 +717,24 @@ class RideTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ServiceFileTests(unittest.TestCase):
+    def test_the_windows_task_is_valid_xml_that_restarts_and_starts_at_boot(self):
+        import xml.dom.minidom
+
+        import service
+        text = service.windows_task_xml()
+        document = xml.dom.minidom.parseString(text.split("?>", 1)[1])
+        self.assertTrue(document.getElementsByTagName("BootTrigger"))
+        self.assertTrue(document.getElementsByTagName("RestartOnFailure"))
+        arguments = document.getElementsByTagName("Arguments")[0].firstChild.data
+        self.assertIn("server.log", arguments)
+        self.assertTrue(arguments.startswith('/c "'))
+
+    def test_the_systemd_unit_restarts_and_stops_the_whole_group(self):
+        import service
+        unit = service.systemd_unit()
+        self.assertIn("Restart=always", unit)
+        self.assertIn("KillMode=control-group", unit)
+        self.assertIn("ExecStart=", unit)

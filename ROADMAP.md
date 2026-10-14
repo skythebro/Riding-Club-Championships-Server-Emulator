@@ -23,7 +23,7 @@ Measured on 14 October 2026 against the decompiled client:
 - [x] The first start writes `server.json`. Packet logs are off in the exe unless `debug_logs` is true.
 - [x] GitHub Actions: lint and tests on every push, and a release zip on every `v*` tag.
 - [x] Hosting steps in the README and `QUICKSTART.txt`.
-- [ ] A Windows service or scheduled-task option for always-on servers.
+- [x] `RCCServer.exe service install`: a boot-time scheduled task that restarts the server. The XML is checked by tests, but nobody has installed it from an administrator prompt yet.
 
 ## 3. Tools for server owners: done
 
@@ -52,6 +52,10 @@ Measured on 14 October 2026 against the decompiled client:
 - [ ] Numbered migrations in place of the `_ensure_columns` lists.
 - [x] Removed the legacy `/websocket` route. It was an echo toy, and the game plays over TCP.
 
-## 6. Later: Linux and Docker hosting
+## 6. Hosting on Linux
 
-- [ ] Run `IgorHost` under Mono with the owner's copy of `rcc_Data/Managed`, then publish a Docker image. The server still needs the owner's game files, because packets are encoded with the game's own types.
+- [x] The server and the card host run on Linux (Debian under WSL, Python 3.13, Mono 6.12): the server started, the card host ran under Mono, and the server was killed with no card host left behind. A systemd unit installed with `service install` ran.
+- [x] `RCCServer-linux-<version>.tar.gz` is built with the release zip.
+- [x] CI runs the rule tests on Ubuntu.
+- [ ] A real game client playing against a Linux server.
+- [ ] Docker image. Left out for now.
