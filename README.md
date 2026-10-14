@@ -6,7 +6,39 @@ Pick your path:
 
 - **I want to play on someone's server.** Read [Joining a server](#joining-a-server).
 - **I want to run a server.** Read [Hosting a server](#hosting-a-server). It works on Windows and Linux.
-- **I want to help.** Read [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **I want to help.** Read [what is not finished](#not-finished-and-where-help-is-wanted), then [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Not finished, and where help is wanted
+
+The server runs the whole game loop: log in, ride, shop, chat, clubs, ranked, and the weekly showdown. These parts are missing or unproven. Most of them need people who played the original, because the original numbers were never published. [`CONTRIBUTING.md`](CONTRIBUTING.md) says how to help with each.
+
+**Missing**
+
+| What | Why it is missing |
+| --- | --- |
+| Quests | The rules are known (three slots, one decline a day). The quests and their rewards are not. |
+| Item upgrades (up to level 6) | The costs and what each level gives are not known. The Upgrade button never shows. |
+| The showdown's Sunday Grand Final | The top 100 qualifiers got free entry, and the winner got a purple blazer. This server has no final, only the daily boards. |
+| The 60-level XP table | Every level is 100 XP here. The real numbers were never recovered. |
+| The 200-day login gifts | The list exists in `Rewards for all the daily logins.txt`, but several prizes have no item id, so the server pays a 7-day sheet. |
+| Steam checkout, Pro Rider, Kickstarter | Off on purpose. Coins and skill tickets come from the saved balance. |
+
+**Guessed, so a real number would replace it**
+
+- Level-ups give 100 action points. One fan site says so, and nothing else confirms it.
+- Treat prices, apple energy (100 and 500), paddock prize odds, and every club and course-editor price marked "server choice" in [`balance.json`](balance.json).
+- The ids of the showdown jacket, apple slice, and lucky leaf prizes.
+- The wording of the first-time "Create your character" screen. The change-look screen has its original text.
+- Any screen that shows a text key instead of a sentence. Only play-testing finds them.
+
+**Written but not tried yet**
+
+- Two real PCs on one server: chat, challenges, ranked between people, clubs, and the showdown board. Everything multi-player so far used one real client.
+- `service install` on Windows from an administrator prompt. Only the generated task has been checked.
+- The shop treats and the paddock prizes in the real client. The wire format is checked, the screens are not.
+- A Linux host with players on other distributions. The test was Debian under WSL.
+
+The full list of what is checked by hand is [`STATUS.md`](STATUS.md). What is planned is [`ROADMAP.md`](ROADMAP.md).
 
 ## Joining a server
 
@@ -137,13 +169,9 @@ RCCServer.exe admin backup
 
 Login, the horse and its stats, inventory, action points, the tutorial, grooming, the paddock, practice, ranked matches, friend challenges, the weekly showdown, ladders, global and club chat, clubs (create, join, roles, news), the shop, and the course editor with course slots. Level-ups pay a bonus and show the popup. The [checklist](STATUS.md) says what has been tried in the real client.
 
-## What does not
+## What does not work
 
-- **Steam checkout** (`SteamMicroTxnInit`) always fails, because a success would ask Steam to charge a real wallet. Coins and skill tickets come from the saved balance.
-- **Pro Rider, Kickstarter, and the debug `Exec` and `Eval` calls** stay failures on purpose.
-- **Item upgrades and quests.** The original upgrade tables and quest cards were never recorded, so there is nothing to offer.
-- **The original numbers** for the 60-level XP table (every level is 100 XP here), the 200-day login gifts, and a few showdown prizes (the jacket, apple slice, and lucky leaf).
-- **Two real PCs on one server** have not been tried. Everything multi-player was tested with one real client plus test connections.
+See [Not finished](#not-finished-and-where-help-is-wanted) at the top.
 
 ## What a modified client cannot do
 

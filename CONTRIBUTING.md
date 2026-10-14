@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping. This project keeps a dead game playable, and most of what is left needs people who played it.
+Thank you for helping. This project keeps a dead game playable, and most of what is left needs people who played it. The README lists [what is not finished](README.md#not-finished-and-where-help-is-wanted). This page says how to help with each part.
 
 ## Where help is most useful
 
@@ -8,8 +8,10 @@ Thank you for helping. This project keeps a dead game playable, and most of what
 
 - The XP needed for each of the 60 levels. Every level is 100 XP today.
 - The upgrade table for items (levels 2 to 6) and what each level gave.
-- The quest cards: what was offered, and the rewards.
-- The ids of the showdown jacket, the apple slice, and the lucky leaf.
+- The ids of the showdown jacket and the apple slice, and how much energy an apple gives.
+- The Sunday Grand Final: how it ran, and what the top 100 got.
+- The 200-day login gifts, as item ids.
+- The text of the first-time "Create your character" screen.
 - Quest cards: the rules are known from the fan site (three slots, one decline a day), but not the quests or their amounts.
 - Prices that `balance.json` marks as a server choice in its `_note`.
 
