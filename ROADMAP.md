@@ -37,9 +37,9 @@ Measured on 14 October 2026 against the decompiled client:
 
 - [x] `Player.NewLevel`: the level-up popup, seen in the real client on 14 October 2026. Each level pays `level_up_bonus` in `balance.json` (100 coins, 1 skill ticket), and the popup lists it.
 - [x] `Chat.GuildMessage`: club chat room and club news lines.
-- [ ] `UpgradeInventoryItem` and `UpgradeEquipmentItem` are no-ops. Upgrading should cost coins and raise the item level, up to 6.
+- [x] `UpgradeInventoryItem` and `UpgradeEquipmentItem` stay no-ops on purpose. No item card in `wardrobe.json` has upgrade levels, and the client only shows the Upgrade button for items that do. The original upgrade table was never recorded, so inventing one would be guesswork.
 - [x] `Game.DsWeekFinished`: the weekly result popup, seen in the real client. `Game.DsQualification` is skipped: this server has no weekly final.
-- [ ] Quests: accept and decline are stored, but `QuestUpdate` never offers one.
+- [x] Quests stay out: accept and decline are stored, but the original quest cards were never recorded, so there is nothing to offer.
 - [ ] The original 60-level XP table. Today every level is 100 XP.
 - [ ] The 200-day login gifts (`Rewards for all the daily logins.txt`).
 - [ ] Everything under "Still to test" in `STATUS.md`.
@@ -49,7 +49,7 @@ Measured on 14 October 2026 against the decompiled client:
 
 - [ ] Split `game_features.py` (about 3,500 lines) by service: economy, courses, ranked, clubs, chat, showdown. Keep the `on_<Name>` dispatch.
 - [ ] Move `UserDatabase` and the schema into one `db.py`, with numbered migrations.
-- [ ] Remove or fix the legacy `/websocket` route (client ids collide after a disconnect).
+- [x] Removed the legacy `/websocket` route. It was an echo toy, and the game plays over TCP.
 
 ## 6. Later: Linux and Docker hosting
 

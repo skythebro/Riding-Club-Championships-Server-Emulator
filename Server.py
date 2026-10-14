@@ -29,7 +29,7 @@ from storage import connect_db
 from paths import APP_DIR
 
 import uvicorn
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
+from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -354,7 +354,6 @@ class RCCServerEmulator:
     def __init__(self, db_path: Optional[str] = None, debug_logging: bool = DEBUG_MODE):
         self.debug_logging = debug_logging
         self.app = FastAPI(title="RCC Server Emulator", version="1.0.0")
-        self.connected_clients: Dict[str, WebSocket] = {}
         self.tcp_clients: Dict[str, socket.socket] = {}
         self.client_players: Dict[str, int] = {}
         self.pending_profile: Dict[str, dict] = {}
@@ -517,7 +516,7 @@ class RCCServerEmulator:
             return await call_next(request)
 
     def setup_routes(self):
-        """Setup all HTTP and WebSocket routes"""
+        """Set up the HTTP routes"""
         
         # Root endpoint
         @self.app.get("/")
@@ -722,106 +721,7 @@ class RCCServerEmulator:
             except Exception as e:
                 logger.error(f"Error calculating card hash: {e}")
                 return {"success": False, "error": str(e)}
-        
-        # WebSocket endpoint for real-time communication
-        @self.app.websocket("/websocket")
-        async def websocket_endpoint(websocket: WebSocket):
-            await self.handle_websocket(websocket)
-    
-    async def handle_websocket(self, websocket: WebSocket):
-        """Handle WebSocket connections"""
-        client_id = f"client_{len(self.connected_clients)}"
-        await websocket.accept()
-        self.connected_clients[client_id] = websocket
-        
-        logger.info(f"Client {client_id} connected. Total clients: {len(self.connected_clients)}")
-        
-        try:
-            # Send welcome message
-            await websocket.send_json({
-                "type": "welcome",
-                "client_id": client_id,
-                "message": "Connected to RCC Server Emulator"
-            })
-            
-            # Listen for messages
-            while True:
-                try:
-                    data = await websocket.receive_json()
-                    logger.info(f"Received from {client_id}: {data}")
-                    
-                    # Echo back or handle specific message types
-                    await self.handle_websocket_message(client_id, data, websocket)
-                    
-                except Exception as e:
-                    logger.error(f"Error handling WebSocket message: {e}")
-                    break
-                    
-        except WebSocketDisconnect:
-            logger.info(f"Client {client_id} disconnected")
-        except Exception as e:
-            logger.error(f"WebSocket error: {e}")
-        finally:
-            if client_id in self.connected_clients:
-                del self.connected_clients[client_id]
-            logger.info(f"Client {client_id} removed. Total clients: {len(self.connected_clients)}")
-    
-    async def handle_websocket_message(self, client_id: str, data: dict, websocket: WebSocket):
-        """Handle specific WebSocket message types"""
-        message_type = data.get("type", "unknown")
-        
-        if message_type == "ping":
-            await websocket.send_json({"type": "pong", "timestamp": data.get("timestamp")})
-        
-        elif message_type == "game_action":
-            # Handle game-specific actions
-            action = data.get("action")
-            logger.info(f"Game action from {client_id}: {action}")
-            
-            # Send response based on action
-            response = {
-                "type": "game_response",
-                "action": action,
-                "success": True,
-                "data": {"message": f"Action {action} processed"}
-            }
-            await websocket.send_json(response)
-        
-        elif message_type == "chat":
-            # Broadcast chat messages to all connected clients
-            message = data.get("message", "")
-            broadcast_data = {
-                "type": "chat",
-                "client_id": client_id,
-                "message": message
-            }
-            await self.broadcast_message(broadcast_data, exclude_client=client_id)
-        
-        else:
-            # Echo unknown messages
-            await websocket.send_json({
-                "type": "echo",
-                "original": data,
-                "message": f"Echoing message type: {message_type}"
-            })
-    
-    async def broadcast_message(self, message: dict, exclude_client: Optional[str] = None):
-        """Broadcast message to all connected clients"""
-        disconnected_clients = []
-        
-        for client_id, websocket in self.connected_clients.items():
-            if exclude_client and client_id == exclude_client:
-                continue
-                
-            try:
-                await websocket.send_json(message)
-            except:
-                disconnected_clients.append(client_id)
-        
-        # Clean up disconnected clients
-        for client_id in disconnected_clients:
-            del self.connected_clients[client_id]
-    
+
     def start_tcp_server(self):
         """Start the TCP socket server for game connections"""
         def tcp_server():
@@ -1184,7 +1084,6 @@ class RCCServerEmulator:
         logger.info(f"HTTP Server will run on http://{SERVER_CONFIG['host']}:{SERVER_CONFIG['http_port']}")
         logger.info(f"TCP Server will run on {SERVER_CONFIG['host']}:{SERVER_CONFIG['tcp_port']}")
         logger.info(f"Policy Server will run on {SERVER_CONFIG['host']}:{SERVER_CONFIG['policy_port']}")
-        logger.info(f"WebSocket available at ws://{SERVER_CONFIG['host']}:{SERVER_CONFIG['http_port']}/websocket")
         
         # Start TCP server in background
         self.start_tcp_server()
@@ -1194,7 +1093,7 @@ class RCCServerEmulator:
         self.start_housekeeping()
         
         try:
-            # Run the HTTP/WebSocket server (this blocks)
+            # Run the HTTP server (this blocks)
             uvicorn.run(
                 self.app, 
                 host=SERVER_CONFIG['host'], 
