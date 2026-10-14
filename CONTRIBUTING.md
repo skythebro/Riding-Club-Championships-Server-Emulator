@@ -7,11 +7,10 @@ Thank you for helping. This project keeps a dead game playable, and most of what
 **1. Memories and captures of the original game.** The server could not recover some numbers, so it uses a choice of its own. Anything real replaces a guess. Screenshots, videos, old notes, and packet captures all count.
 
 - The XP needed for each of the 60 levels. Every level is 100 XP today.
-- The level-up reward. The server pays 100 coins and 1 skill ticket. The original is unknown.
-- The starting stats of a new horse. They start at 0.
 - The upgrade table for items (levels 2 to 6) and what each level gave.
 - The quest cards: what was offered, and the rewards.
 - The ids of the showdown jacket, the apple slice, and the lucky leaf.
+- Quest cards: the rules are known from the fan site (three slots, one decline a day), but not the quests or their amounts.
 - Prices that `balance.json` marks as a server choice in its `_note`.
 
 **2. Testing in the real client.** The unchecked lines in [`STATUS.md`](STATUS.md) are things nobody has tried. The most valuable test is two real PCs on one server: chat, challenges, ranked between humans, clubs, and the showdown board. Try a Linux host on other distributions, and on a Raspberry Pi if you have one.

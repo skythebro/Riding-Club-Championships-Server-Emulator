@@ -207,11 +207,12 @@ class ShowdownMixin:
                 data = self.profile(player_id)
                 level, xp_left, points = self._apply_xp(data, xp)
                 level_frame = self._level_up_frame(data["horse_level"], level)
-                bonus_coins, bonus_tickets = self._level_bonus(data["horse_level"], level)
+                bonus_coins, bonus_tickets, bonus_ap = self._level_bonus(data["horse_level"], level)
                 self.save_profile(
                     player_id,
                     coins=data["coins"] + coins + bonus_coins,
                     skill_tickets=data["skill_tickets"] + bonus_tickets,
+                    action_points=data["action_points"] + bonus_ap,
                     horse_level=level,
                     horse_xp=xp_left,
                     skill_points=points,

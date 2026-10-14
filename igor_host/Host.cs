@@ -1548,10 +1548,12 @@ public static class Host
                     bonus = Activator.CreateInstance(bonusProperty.PropertyType);
                     bonusProperty.SetValue(card, bonus, null);
                 }
-                SetPriceCoins(bonus, "Money", BalInt(100, "level_up_bonus", "coins"));
+                SetPriceCoins(bonus, "Money", BalInt(0, "level_up_bonus", "coins"));
+                PropertyInfo apProperty = bonus.GetType().GetProperty("Ap");
+                apProperty.SetValue(bonus, Convert.ChangeType(BalInt(100, "level_up_bonus", "ap"), apProperty.PropertyType), null);
                 object bonusMoney = bonus.GetType().GetProperty("Money").GetValue(bonus, null);
                 PropertyInfo ticketProperty = bonusMoney.GetType().GetProperty("SkillTickets");
-                ticketProperty.SetValue(bonusMoney, Convert.ChangeType(BalInt(1, "level_up_bonus", "skill_tickets"), ticketProperty.PropertyType), null);
+                ticketProperty.SetValue(bonusMoney, Convert.ChangeType(BalInt(0, "level_up_bonus", "skill_tickets"), ticketProperty.PropertyType), null);
                 PropertyInfo levels = mainType.GetProperty("LevelsXp");
                 object list = levels.GetValue(card, null);
                 if (list == null)

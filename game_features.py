@@ -672,7 +672,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
             worn = max(0.0, float(data["grooming"] if data["grooming"] is not None else 1) - wear)
             level, xp, points = self._apply_xp(data, reward_xp)
             level_frame = self._level_up_frame(data["horse_level"], level)
-            bonus_coins, bonus_tickets = self._level_bonus(data["horse_level"], level)
+            bonus_coins, bonus_tickets, bonus_ap = self._level_bonus(data["horse_level"], level)
             self.save_profile(
                 player_id,
                 coins=data["coins"] + reward_coins + bonus_coins,
@@ -680,7 +680,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                 horse_level=level,
                 horse_xp=xp,
                 skill_points=points,
-                action_points=max(0, data["action_points"] - ap_cost),
+                action_points=max(0, data["action_points"] - ap_cost) + bonus_ap,
                 grooming=worn,
             )
         else:
@@ -773,10 +773,11 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         return self._push_frame(109, 4, struct.pack("<i", int(new_level)))
 
     def _level_bonus(self, old_level, new_level):
-        """Coins and skill tickets for the levels just gained (balance.json level_up_bonus)."""
+        """Coins, skill tickets, and action points for the levels just gained (balance.json level_up_bonus)."""
         gained = max(0, int(new_level) - int(old_level or 1))
-        return (gained * int(self.bal("level_up_bonus", "coins", default=100)),
-                gained * int(self.bal("level_up_bonus", "skill_tickets", default=1)))
+        return (gained * int(self.bal("level_up_bonus", "coins", default=0)),
+                gained * int(self.bal("level_up_bonus", "skill_tickets", default=0)),
+                gained * int(self.bal("level_up_bonus", "ap", default=100)))
 
     def _apply_xp(self, data, gain):
         """Turn horse XP into levels. Each level grants the skill points on the main card."""
@@ -924,13 +925,14 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                 coins_gain = int(self.bal("treats", "coinbag", "coins_on_use", default=50)) if item_hash == 1965560022 else 0
                 level, xp, points = self._apply_xp(data, xp_gain)
                 level_frame = self._level_up_frame(data["horse_level"], level)
-                bonus_coins, bonus_tickets = self._level_bonus(data["horse_level"], level)
+                bonus_coins, bonus_tickets, bonus_ap = self._level_bonus(data["horse_level"], level)
                 self.save_profile(
                     player_id,
                     horse_level=level,
                     horse_xp=xp,
                     skill_points=points,
                     skill_tickets=data["skill_tickets"] + bonus_tickets,
+                    action_points=data["action_points"] + bonus_ap,
                     coins=data["coins"] + coins_gain + bonus_coins,
                 )
                 self.emulator.debug_log_tcp("USE ITEM: %s hash=%s" % (client_id, item_hash))

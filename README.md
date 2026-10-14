@@ -95,8 +95,8 @@ The first start writes `server.json`. All keys are optional.
 Edit [`balance.json`](balance.json), then restart the server. Each block has a `_note` that says whether the number is from the original game or a choice this server made, because the original was never published.
 
 - New riders start with `new_player` (coins, action points, skill tickets, rating). An existing save is not changed.
-- `level_up_bonus` is paid for every level gained, and the level-up popup lists it.
-- `horse_stats.start` is the number every horse stat starts at. The default is 0.
+- `level_up_bonus` is paid for every level gained, and the level-up popup lists it. It is 100 action points, as in the original. Coins and skill tickets are 0 until you set them.
+- `horse_stats.start` is the number every horse stat starts at. The default is 0, as in the original.
 - `showdown`, `club`, `ranked`, `treats`, and `avatar_change_coins` hold those prices and payouts.
 - Course slots, course submits, and each placed piece cost 0 until you set `course_editor`.
 - `news` is the message in the main menu's news panel.

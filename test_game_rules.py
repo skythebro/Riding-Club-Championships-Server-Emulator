@@ -433,11 +433,15 @@ class LevelUpTests(Harness):
         self.assertTrue(self.features._level_up_frame(data["horse_level"], level))
 
     def test_each_level_gained_pays_the_bonus(self):
-        self.features.balance["level_up_bonus"] = {"coins": 100, "skill_tickets": 1}
-        self.assertEqual(self.features._level_bonus(1, 4), (300, 3))
-        self.assertEqual(self.features._level_bonus(4, 4), (0, 0))
-        self.features.balance["level_up_bonus"] = {"coins": 0, "skill_tickets": 0}
-        self.assertEqual(self.features._level_bonus(1, 4), (0, 0))
+        self.features.balance["level_up_bonus"] = {"ap": 100, "coins": 5, "skill_tickets": 1}
+        self.assertEqual(self.features._level_bonus(1, 4), (15, 3, 300))
+        self.assertEqual(self.features._level_bonus(4, 4), (0, 0, 0))
+        self.features.balance["level_up_bonus"] = {"ap": 0, "coins": 0, "skill_tickets": 0}
+        self.assertEqual(self.features._level_bonus(1, 4), (0, 0, 0))
+
+    def test_the_default_bonus_is_100_action_points_a_level(self):
+        self.features.balance.pop("level_up_bonus", None)
+        self.assertEqual(self.features._level_bonus(2, 3), (0, 0, 100))
 
 
 class ClubChatTests(Harness):

@@ -35,7 +35,7 @@ Measured on 14 October 2026 against the decompiled client:
 
 ## 4. Gameplay gaps
 
-- [x] `Player.NewLevel`: the level-up popup, seen in the real client on 14 October 2026. Each level pays `level_up_bonus` in `balance.json` (100 coins, 1 skill ticket), and the popup lists it.
+- [x] `Player.NewLevel`: the level-up popup, seen in the real client on 14 October 2026. Each level pays `level_up_bonus` in `balance.json`: 100 action points, as the fan site ridingclubchampionships.weebly.com says the original did.
 - [x] `Chat.GuildMessage`: club chat room and club news lines.
 - [x] `UpgradeInventoryItem` and `UpgradeEquipmentItem` stay no-ops on purpose. No item card in `wardrobe.json` has upgrade levels, and the client only shows the Upgrade button for items that do. The original upgrade table was never recorded, so inventing one would be guesswork.
 - [x] `Game.DsWeekFinished`: the weekly result popup, seen in the real client. `Game.DsQualification` is skipped: this server has no weekly final.
@@ -43,6 +43,14 @@ Measured on 14 October 2026 against the decompiled client:
 - [ ] The original 60-level XP table. Today every level is 100 XP.
 - [ ] The 200-day login gifts (`Rewards for all the daily logins.txt`).
 - [ ] Everything under "Still to test" in `STATUS.md`.
+- Found on the fan sites, not built yet:
+  - The weekly showdown had a Sunday Grand Final. The top 100 qualifiers got free entry, and the winner got a light purple blazer. This server has no final.
+  - Shop treats: Golden Apple (2000 action points), Sugar Cube (+1 on every stat for 1 hour), Lucky Four Leaf Clover (paddock prizes 4 times as often for 15 minutes), and XP Book (double XP for 24 hours).
+  - Paddock prizes: 2 or 6 coins, and 20, 60, or 150 XP. The server's `PickupItem` gives nothing yet.
+  - Energy above 50% gives +1 on every stat.
+  - Quests: three slots, a new one with the daily login if a slot is free, one decline a day. Amounts are unknown.
+  - Item upgrades: level 6 maximum, filled with XP (still earned after level 60). Costs and bonuses are unknown.
+  - Daily gifts have extra prizes on days 10, 25, 50, 75, and 100 (or every 50 days, by one source).
 - Left out on purpose: Steam checkout, Pro Rider (`Premium*`), Kickstarter, and debug `Exec` / `Eval`.
 
 ## 5. Code health

@@ -154,13 +154,14 @@
   "max_level": 60,
   "skill_points_per_level": 1,
   "level_up_bonus": {
-    "_note": "Paid for every level gained, and listed in the client's level-up popup. Set both to 0 for no bonus.",
-    "coins": 100,
-    "skill_tickets": 1
+    "_note": "Original: every level-up gives 100 action points, even when the bar is already full (80 becomes 180, 170 becomes 270). Source: the fan site ridingclubchampionships.weebly.com. Coins and skill tickets are a server choice, 0 by default. Paid for every level gained, and listed in the client's level-up popup.",
+    "ap": 100,
+    "coins": 0,
+    "skill_tickets": 0
   },
   "stat_cap": 10,
   "horse_stats": {
-    "_note": "Server choice. The original starting stats were not recorded. The client caps a stat at stat_cap (10) on the skill screen, and 60 levels at one skill point each fill all six, so 0 matches that design. Use one number for every stat, or one per stat: {\"strength\": 2, \"timing\": 2, \"speed\": 2, \"acceleration\": 2, \"stamina\": 2, \"obedience\": 2}. Starting stats count toward stat_cap. Saved skill points are kept when this changes.",
+    "_note": "Server choice. The original start was 0 in every stat (ridingclubchampionships.weebly.com). The client caps a stat at stat_cap (10) on the skill screen, and 60 levels at one skill point each fill all six, so 0 matches that design. Use one number for every stat, or one per stat: {\"strength\": 2, \"timing\": 2, \"speed\": 2, \"acceleration\": 2, \"stamina\": 2, \"obedience\": 2}. Starting stats count toward stat_cap. Saved skill points are kept when this changes.",
     "start": 0
   },
   "starter": {
