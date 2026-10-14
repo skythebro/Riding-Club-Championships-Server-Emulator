@@ -31,6 +31,10 @@ The server runs the whole game loop: log in, ride, shop, chat, clubs, ranked, an
 - The wording of the first-time "Create your character" screen. The change-look screen has its original text.
 - Any screen that shows a text key instead of a sentence. Only play-testing finds them.
 
+**Open problem: Steam**
+
+- Some players report that Steam no longer connects to the game. One report shows a Steam popup, "Missing interface ... STEAMUNIFIEDMESSAGES_INTERFACE_VERSION001 ... GetISteamController". The cause is not confirmed. The game needs a working Steam login before it ever reaches a server, so this server cannot fix it. If you see it, see [Steam problems](#steam-problems) and send the details asked for there.
+
 **Written but not tried yet**
 
 - Two real PCs on one server: chat, challenges, ranked between people, clubs, and the showdown board. Everything multi-player so far used one real client.
@@ -194,6 +198,18 @@ The server decides coins, rating, action points, and prizes from its own state. 
 - **"Mono is not installed" (Linux).** Run the `apt install` line above.
 - **A port is already in use.** Another copy of the server is running. Stop it, or change the port in `server.json` and run `join` again.
 - **The client drops.** The newest file in `debug_logs/` names the last call. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+### Steam problems
+
+The game checks Steam before it talks to any server. It needs Steam running, signed in, and online. It also needs to be started by Steam. Run from `rcc.exe` directly, it hands over to Steam and quits, which looks like the game closing at once.
+
+1. Start Steam, sign in, and start the game from your library (Play).
+2. The game shows "Steam did not start" or "Log in to Steam first" if Steam is closed or offline. Fix that first.
+3. A Steam popup "Missing interface" comes from the game's old Steam files asking for something the current Steam client no longer offers. Please report what happens after you press OK: does the game reach the login, and what does the screen say?
+
+To help, send the last lines of `rcc_Data/output_log.txt` (look for "Steam Manager disabled" or "SteamAPI_Init() failed"), your Steam version (Steam menu, Help, About), and whether you use the Steam beta. Open an issue on GitHub.
+
+This project does not replace or fake Steam. The game uses it to check you own the game, and that stays.
 
 ## Legal
 

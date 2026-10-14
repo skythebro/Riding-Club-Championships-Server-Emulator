@@ -17,18 +17,20 @@ Thank you for helping. This project keeps a dead game playable, and most of what
 
 **2. Testing in the real client.** The unchecked lines in [`STATUS.md`](STATUS.md) are things nobody has tried. The most valuable test is two real PCs on one server: chat, challenges, ranked between humans, clubs, and the showdown board. Try a Linux host on other distributions, and on a Raspberry Pi if you have one.
 
-**3. The Windows always-on option.** Run `RCCServer.exe service install` from an administrator prompt, reboot, and report whether the server came up. It is tested only as generated XML so far.
+**3. Steam reports.** Some players say Steam no longer connects to the game. If you can reproduce it, send the details listed under Steam problems in the README. A confirmed cause is worth more than any code.
 
-**4. Missing text.** Some screens show a text key instead of a sentence, such as `daily login claim reward message` before it was fixed. Walk through the game, note any, and add the key to `gamedata/localization_extra.json`. Keys in scene prefabs do not appear in the code, so only play finds them.
+**4. The Windows always-on option.** Run `RCCServer.exe service install` from an administrator prompt, reboot, and report whether the server came up. It is tested only as generated XML so far.
 
-**5. Code.**
+**5. Missing text.** Some screens show a text key instead of a sentence, such as `daily login claim reward message` before it was fixed. Walk through the game, note any, and add the key to `gamedata/localization_extra.json`. Keys in scene prefabs do not appear in the code, so only play finds them.
+
+**6. Code.**
 
 - A Docker image (left out of the first release).
 - Moving the practice, shop, and profile handlers out of `game_features.py` into area files, as clubs and chat are.
 - More tests for handlers that only the real client has exercised.
 - A friendlier setup tool: a small window that writes `server.json`, forwards a port, and makes `servers.txt`.
 
-**6. Words.** Screenshots or a short video of setup for the README, and a translation of the setup guide.
+**7. Words.** Screenshots or a short video of setup for the README, and a translation of the setup guide.
 
 ## Not wanted
 
