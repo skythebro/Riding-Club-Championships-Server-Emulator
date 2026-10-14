@@ -166,4 +166,4 @@ The server decides coins, rating, action points, and prizes from its own state. 
 
 ## Legal
 
-Educational and preservation use. Own a copy of the game. This software is provided as-is.
+The server code is under the [MIT licence](LICENSE). The game, its code, and its art belong to their original owners, and this repo contains none of them. Use it for education and preservation, and own a copy of the game.

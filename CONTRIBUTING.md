@@ -70,4 +70,4 @@ Pushing a tag that starts with `v` builds `RCCServer-<version>.zip` and `RCCServ
 
 ## Licence
 
-The repo has no licence file yet, so the code is all rights reserved by default. If you plan a large contribution, ask the owner to add one first.
+The code is under the [MIT licence](LICENSE). By sending a contribution you agree it is shared under the same licence.

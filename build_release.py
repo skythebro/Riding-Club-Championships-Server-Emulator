@@ -109,7 +109,7 @@ def build_exe():
 
 
 def copy_files():
-    for name in ("balance.json", "server.json.example", "README.md", "STATUS.md",
+    for name in ("balance.json", "server.json.example", "README.md", "STATUS.md", "LICENSE",
                  "Rewards for all the daily logins.txt"):
         shutil.copy2(ROOT / name, APP / name)
     shutil.copytree(ROOT / "gamedata", APP / "gamedata", dirs_exist_ok=True)
@@ -135,7 +135,7 @@ def make_linux(version):
         for file in sorted(ROOT.glob("*.py")):
             if not file.name.startswith(skip):
                 archive.add(file, "RCCServer/" + file.name)
-        for name in ("requirements.txt", "balance.json", "server.json.example", "README.md", "STATUS.md"):
+        for name in ("requirements.txt", "balance.json", "server.json.example", "README.md", "STATUS.md", "LICENSE"):
             archive.add(ROOT / name, "RCCServer/" + name)
         archive.add(ROOT / "gamedata", "RCCServer/gamedata")
         for name in ("IgorHost.exe", "protocol_map.json"):
