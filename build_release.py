@@ -76,7 +76,7 @@ You need Python 3.10 or newer and Mono, and the Managed folder of your own copy 
    that folder (~/rcc-game). Until server.json exists, ./start.sh --game-dir ~/rcc-game.
 3. Run ./start.sh. The first start creates server.json.
 4. Letting others join: in server.json set "bind_host": "0.0.0.0" and
-   "public_host" to your address. Open TCP port 27130 and HTTP 8080 on the firewall.
+   "public_host" to your address. Open TCP port 27130 on the firewall.
    Then run ./start.sh join YOUR.ADDRESS and send players the servers.txt it writes.
    They put it next to rcc.exe.
 5. Always on: sudo ./start.sh service install   (a systemd unit; logs: journalctl -u rcc-server -f)

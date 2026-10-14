@@ -2,7 +2,7 @@
 
 Private server for Riding Club Championships, a Unity (Mono) game whose official servers shut down on 26 July 2025. This repo is `ServerEmu/`, inside the game's install folder. The game itself (`../rcc.exe`, `../rcc_Data/`) is not in git.
 
-Read [`README.md`](README.md) for hosting, [`STATUS.md`](STATUS.md) for what is tested, and [`ROADMAP.md`](ROADMAP.md) for what comes next. The unchecked items in `STATUS.md` are the open work.
+Read [`README.md`](README.md) for hosting, [`STATUS.md`](STATUS.md) for what is tested, and [`ROADMAP.md`](ROADMAP.md) for what comes next. The unchecked items in `STATUS.md` are the open work, and [`CONTRIBUTING.md`](CONTRIBUTING.md) lists where help is wanted.
 
 ## Commands
 
