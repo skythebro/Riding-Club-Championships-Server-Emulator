@@ -57,5 +57,5 @@ Measured on 14 October 2026 against the decompiled client:
 - [x] The server and the card host run on Linux (Debian under WSL, Python 3.13, Mono 6.12): the server started, the card host ran under Mono, and the server was killed with no card host left behind. A systemd unit installed with `service install` ran.
 - [x] `RCCServer-linux-<version>.tar.gz` is built with the release zip.
 - [x] CI runs the rule tests on Ubuntu.
-- [ ] A real game client playing against a Linux server.
+- [x] The real game client against a Linux server (Debian under WSL, Mono card host), 14 October 2026: login, avatar creation, main menu, the daily gift, and the shop with 201 items. Ranked, showdown and club play were not repeated there.
 - [ ] Docker image. Left out for now.
