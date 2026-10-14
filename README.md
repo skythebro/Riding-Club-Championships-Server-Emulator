@@ -6,7 +6,25 @@ Pick your path:
 
 - **I want to play on someone's server.** Read [Joining a server](#joining-a-server).
 - **I want to run a server.** Read [Hosting a server](#hosting-a-server). It works on Windows and Linux.
+- **Something broke.** Read [Reporting a bug](#reporting-a-bug).
 - **I want to help.** Read [what is not finished](#not-finished-and-where-help-is-wanted), then [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Reporting a bug
+
+Send the logs while it is fresh. Logs let a bug be fixed without guessing, and they are the most useful thing you can attach to a [GitHub issue](https://github.com/skythebro/Riding-Club-Championships-Server-Emulator/issues).
+
+**If you play on someone's server:** right after it happens, and before you restart the game, copy `rcc_Data/output_log.txt` from the game folder. The game replaces that file every time it starts. Say what you pressed and what you expected. Send both to the server's owner, or attach them to an issue.
+
+**If you run the server:** double-click `Collect logs.bat` in the server folder (`RCCServer.exe logs`, or `./start.sh logs` on Linux). It makes `rcc-logs-<time>.zip` with:
+
+- the server log (`logs/server.log`: the build, your settings, each login, refusals, warnings, and any crash with its traceback),
+- the newest packet logs,
+- the game's own log, if the game is on the same PC,
+- your settings with the public address and Steam id lists hidden.
+
+It never includes `users.db`, so no saves leave your PC. Attach the zip to the issue, and say who was playing and what they did.
+
+When several people report the same thing, that is the signal to fix it.
 
 ## Not finished, and where help is wanted
 
@@ -33,7 +51,7 @@ The server runs the whole game loop: log in, ride, shop, chat, clubs, ranked, an
 
 **Written but not tried yet**
 
-- Two real PCs on one server: chat, challenges, ranked between people, clubs, and the showdown board. Everything multi-player so far used one real client.
+- More than two people on one server. Two real PCs have tried clubs, challenges, chat, and online status. Ranked between people and the showdown board with a crowd are not yet proven.
 - `service install` on Windows from an administrator prompt. Only the generated task has been checked.
 - The shop treats and the paddock prizes in the real client. The wire format is checked, the screens are not.
 - A Linux host with players on other distributions. The test was Debian under WSL.
@@ -196,15 +214,11 @@ The server decides coins, rating, action points, and prizes from its own state. 
 - **The game cannot connect.** Check that `servers.txt` is next to `rcc.exe`, that the server is running, and that its address matches `public_host`. For other players, check that port 27130 is open and forwarded.
 - **"Mono is not installed" (Linux).** Run the `apt install` line above.
 - **A port is already in use.** Another copy of the server is running. Stop it, or change the port in `server.json` and run `join` again.
-- **The client drops.** Collect the logs (see below) and send them. The newest file in `debug_logs/` names the last call. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **The client drops.** Collect the logs (see [Reporting a bug](#reporting-a-bug)) and send them. The newest file in `debug_logs/` names the last call. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ### Reporting a problem
 
-The server writes `logs/server.log` next to `RCCServer.exe` (2 MB each, the last 5 kept). It records the build, your settings, each login, refusals, warnings, and any crash with its traceback.
-
-To ask for help, double-click `Collect logs.bat` (or run `RCCServer.exe logs`). It makes `rcc-logs-<time>.zip` with the server log, the newest packet logs, the game's own log (`rcc_Data/output_log.txt`), and your settings with the public address and Steam id lists hidden. It never includes `users.db`. Attach that zip to the issue.
-
-The game's own log is replaced each time the game starts, so collect the zip before you restart the game.
+See [Reporting a bug](#reporting-a-bug). It covers the server log, `Collect logs.bat`, and the game's own log.
 
 ### Steam
 
