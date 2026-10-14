@@ -86,3 +86,6 @@ Steam checkout, Kickstarter, and debug Exec and Eval. A checkout would charge a 
 - The +1 on every stat above half energy. The stats panel should show it, and it should go away at half energy or below.
 - Showdown places 4 to 10 getting a lucky four leaf clover.
 - A second rider pressing Join on a club. Their button should become a pending request. The club owner and managers should see the rider under Requests, with a count on the club menu, and Accept should put the rider in the club. Cancelling should clear it on both screens.
+- Claiming the daily gift. "Open reward" and the red ball should go away at once, without a restart.
+- Making a horse in the avatar screen. The client should show the coat that was picked, not the default one.
+- Steam achievements. The server now lists all 67 (`gamedata/steam_achievements.json`) and the client grants them through Steam. Clear a 1.10m course, groom the horse, or feed an apple, and the Steam pop-up should appear. The thresholds for each are inferred from the achievement names, so check that the counts match their text.

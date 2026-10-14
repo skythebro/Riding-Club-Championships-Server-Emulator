@@ -99,6 +99,18 @@ class SessionAvatarTest(unittest.TestCase):
         self.assertEqual(reply["split"], {"playerSkin": 4, "playerGender": 1, "horseSkin": 7, "horseGender": 2})
 
 
+class SteamAchievementCardTest(unittest.TestCase):
+    def test_the_catalogue_lists_every_steam_achievement(self):
+        import json
+        from pathlib import Path
+        from igor_client import IgorClient
+        rows = json.loads((Path(__file__).parent / "gamedata" / "steam_achievements.json").read_text("utf8"))["achievements"]
+        self.assertEqual(len(rows), 67)
+        frame = bytes.fromhex(IgorClient()._request({"op": "push", "kind": "cards"})["hex"])
+        for row in rows:
+            self.assertIn(row["id"].encode(), frame, row["id"])
+
+
 class LoginBurstServerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

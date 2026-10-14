@@ -1274,6 +1274,57 @@ public static class Host
         cardType.GetMethod("WriteVariant").Invoke(null, new object[] { writer, card });
     }
 
+    // The client checks these against its own Steam stats and grants the achievement through Steam.
+    static void AddSteamAchievements(object card)
+    {
+        string path = DataFile("steam_achievements.json");
+        PropertyInfo listProperty = card.GetType().GetProperty("Achivments");
+        object list = Activator.CreateInstance(listProperty.PropertyType);
+        if (File.Exists(path))
+        {
+            Json.MaxJsonLength = int.MaxValue;
+            var root = Json.Deserialize<Dictionary<string, object>>(File.ReadAllText(path));
+            var rows = root.ContainsKey("achievements") ? root["achievements"] as System.Collections.IList : null;
+            Type achievementType = Game.GetType("Protocol2.SteamAchivment");
+            Type statType = Game.GetType("Protocol2.SteamAchivmentStat");
+            if (rows != null)
+            {
+                foreach (object row in rows)
+                {
+                    var fields = row as Dictionary<string, object>;
+                    if (fields == null || !fields.ContainsKey("id"))
+                        continue;
+                    object achievement = Activator.CreateInstance(achievementType);
+                    achievementType.GetProperty("AchivmentId").SetValue(achievement, Convert.ToString(fields["id"]), null);
+                    PropertyInfo statsProperty = achievementType.GetProperty("Stats");
+                    object stats = Activator.CreateInstance(statsProperty.PropertyType);
+                    var statRows = fields.ContainsKey("stats") ? fields["stats"] as System.Collections.IList : null;
+                    if (statRows != null)
+                    {
+                        foreach (object statRow in statRows)
+                        {
+                            var statFields = statRow as Dictionary<string, object>;
+                            if (statFields == null || !statFields.ContainsKey("stat"))
+                                continue;
+                            object stat = Activator.CreateInstance(statType);
+                            statType.GetProperty("StatId").SetValue(stat, Convert.ToString(statFields["stat"]), null);
+                            foreach (string pair in new string[] { "int_min:IntMin", "int_max:IntMax", "float_min:FloatMin", "float_max:FloatMax" })
+                            {
+                                string[] names = pair.Split(':');
+                                if (statFields.ContainsKey(names[0]))
+                                    statType.GetProperty(names[1]).SetValue(stat, Convert.ToInt32(statFields[names[0]]), null);
+                            }
+                            stats.GetType().GetMethod("Add").Invoke(stats, new object[] { stat });
+                        }
+                    }
+                    statsProperty.SetValue(achievement, stats, null);
+                    list.GetType().GetMethod("Add").Invoke(list, new object[] { achievement });
+                }
+            }
+        }
+        listProperty.SetValue(card, list, null);
+    }
+
     sealed class GearPiece
     {
         public string Id;
@@ -1661,6 +1712,8 @@ public static class Host
                     add.Invoke(keys, new object[] { Activator.CreateInstance(Game.GetType("Key"), new object[] { "daily_reward_" + day }) });
                 listProperty.SetValue(card, keys, null);
             }
+            if (parts[1] == "logic_steam")
+                AddSteamAchievements(card);
             if (parts[1] == "skins")
                 ApplyWardrobeSkins(card, wardrobe);
             if (parts[1] == "logic_items")

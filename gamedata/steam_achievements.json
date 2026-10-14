@@ -1,0 +1,620 @@
+{
+ "_note": "Rebuilt from the game's Steam stats schema (appid 509420): ids and names come from Steam, the stat thresholds from each achievement's name and text. Rank and place achievements for 1 to 3 are exact; the others are top N.",
+ "achievements": [
+  {
+   "id": "achivment_course_110_clear",
+   "stats": [
+    {
+     "stat": "int_course_110_clear",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_120_clear",
+   "stats": [
+    {
+     "stat": "int_course_120_clear",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_130_clear",
+   "stats": [
+    {
+     "stat": "int_course_130_clear",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_140_clear",
+   "stats": [
+    {
+     "stat": "int_course_140_clear",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_agility_clear",
+   "stats": [
+    {
+     "stat": "int_agility_clear",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_ce_create_course",
+   "stats": [
+    {
+     "stat": "int_ce_create_course",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_ce_create_agility",
+   "stats": [
+    {
+     "stat": "int_ce_create_agility",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_won_ranked_match_1",
+   "stats": [
+    {
+     "stat": "int_won_ranked_match",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_won_ranked_match_10",
+   "stats": [
+    {
+     "stat": "int_won_ranked_match",
+     "int_min": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_won_ranked_match_50",
+   "stats": [
+    {
+     "stat": "int_won_ranked_match",
+     "int_min": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_won_ranked_match_100",
+   "stats": [
+    {
+     "stat": "int_won_ranked_match",
+     "int_min": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_won_ranked_match_250",
+   "stats": [
+    {
+     "stat": "int_won_ranked_match",
+     "int_min": 250
+    }
+   ]
+  },
+  {
+   "id": "achivment_won_ranked_match_500",
+   "stats": [
+    {
+     "stat": "int_won_ranked_match",
+     "int_min": 500
+    }
+   ]
+  },
+  {
+   "id": "achivment_won_ranked_match_1000",
+   "stats": [
+    {
+     "stat": "int_won_ranked_match",
+     "int_min": 1000
+    }
+   ]
+  },
+  {
+   "id": "achivment_groomed_horse",
+   "stats": [
+    {
+     "stat": "int_groomed_horse",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_daily_login_10",
+   "stats": [
+    {
+     "stat": "int_daily_login",
+     "int_min": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_daily_login_50",
+   "stats": [
+    {
+     "stat": "int_daily_login",
+     "int_min": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_daily_login_100",
+   "stats": [
+    {
+     "stat": "int_daily_login",
+     "int_min": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_qualifying",
+   "stats": [
+    {
+     "stat": "int_ws_qualifying",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_final",
+   "stats": [
+    {
+     "stat": "int_ws_final",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_place_100",
+   "stats": [
+    {
+     "stat": "int_ws_place",
+     "int_min": 1,
+     "int_max": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_place_50",
+   "stats": [
+    {
+     "stat": "int_ws_place",
+     "int_min": 1,
+     "int_max": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_place_10",
+   "stats": [
+    {
+     "stat": "int_ws_place",
+     "int_min": 1,
+     "int_max": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_place_1",
+   "stats": [
+    {
+     "stat": "int_ws_place",
+     "int_min": 1,
+     "int_max": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_place_2",
+   "stats": [
+    {
+     "stat": "int_ws_place",
+     "int_min": 2,
+     "int_max": 2
+    }
+   ]
+  },
+  {
+   "id": "achivment_ws_place_3",
+   "stats": [
+    {
+     "stat": "int_ws_place",
+     "int_min": 3,
+     "int_max": 3
+    }
+   ]
+  },
+  {
+   "id": "achivment_paddock_stars_10",
+   "stats": [
+    {
+     "stat": "int_paddock_stars",
+     "int_min": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_paddock_stars_50",
+   "stats": [
+    {
+     "stat": "int_paddock_stars",
+     "int_min": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_paddock_stars_100",
+   "stats": [
+    {
+     "stat": "int_paddock_stars",
+     "int_min": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_paddock_presents_10",
+   "stats": [
+    {
+     "stat": "int_paddock_presents",
+     "int_min": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_paddock_presents_50",
+   "stats": [
+    {
+     "stat": "int_paddock_presents",
+     "int_min": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_paddock_presents_100",
+   "stats": [
+    {
+     "stat": "int_paddock_presents",
+     "int_min": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_level_10",
+   "stats": [
+    {
+     "stat": "int_level",
+     "int_min": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_level_20",
+   "stats": [
+    {
+     "stat": "int_level",
+     "int_min": 20
+    }
+   ]
+  },
+  {
+   "id": "achivment_level_30",
+   "stats": [
+    {
+     "stat": "int_level",
+     "int_min": 30
+    }
+   ]
+  },
+  {
+   "id": "achivment_level_40",
+   "stats": [
+    {
+     "stat": "int_level",
+     "int_min": 40
+    }
+   ]
+  },
+  {
+   "id": "achivment_level_50",
+   "stats": [
+    {
+     "stat": "int_level",
+     "int_min": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_level_60",
+   "stats": [
+    {
+     "stat": "int_level",
+     "int_min": 60
+    }
+   ]
+  },
+  {
+   "id": "achivment_friend_challenge",
+   "stats": [
+    {
+     "stat": "int_friend_challenge",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_rank_1",
+   "stats": [
+    {
+     "stat": "int_rank",
+     "int_min": 1,
+     "int_max": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_rank_2",
+   "stats": [
+    {
+     "stat": "int_rank",
+     "int_min": 2,
+     "int_max": 2
+    }
+   ]
+  },
+  {
+   "id": "achivment_rank_3",
+   "stats": [
+    {
+     "stat": "int_rank",
+     "int_min": 3,
+     "int_max": 3
+    }
+   ]
+  },
+  {
+   "id": "achivment_rank_10",
+   "stats": [
+    {
+     "stat": "int_rank",
+     "int_min": 1,
+     "int_max": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_rank_50",
+   "stats": [
+    {
+     "stat": "int_rank",
+     "int_min": 1,
+     "int_max": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_rank_100",
+   "stats": [
+    {
+     "stat": "int_rank",
+     "int_min": 1,
+     "int_max": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_clear_10",
+   "stats": [
+    {
+     "stat": "int_course_clear",
+     "int_min": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_clear_25",
+   "stats": [
+    {
+     "stat": "int_course_clear",
+     "int_min": 25
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_clear_50",
+   "stats": [
+    {
+     "stat": "int_course_clear",
+     "int_min": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_clear_100",
+   "stats": [
+    {
+     "stat": "int_course_clear",
+     "int_min": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_clear_150",
+   "stats": [
+    {
+     "stat": "int_course_clear",
+     "int_min": 150
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_clear_250",
+   "stats": [
+    {
+     "stat": "int_course_clear",
+     "int_min": 250
+    }
+   ]
+  },
+  {
+   "id": "achivment_course_clear_500",
+   "stats": [
+    {
+     "stat": "int_course_clear",
+     "int_min": 500
+    }
+   ]
+  },
+  {
+   "id": "achivment_obstacle_clear_10",
+   "stats": [
+    {
+     "stat": "int_obstacle_clear",
+     "int_min": 10
+    }
+   ]
+  },
+  {
+   "id": "achivment_obstacle_clear_25",
+   "stats": [
+    {
+     "stat": "int_obstacle_clear",
+     "int_min": 25
+    }
+   ]
+  },
+  {
+   "id": "achivment_obstacle_clear_50",
+   "stats": [
+    {
+     "stat": "int_obstacle_clear",
+     "int_min": 50
+    }
+   ]
+  },
+  {
+   "id": "achivment_obstacle_clear_100",
+   "stats": [
+    {
+     "stat": "int_obstacle_clear",
+     "int_min": 100
+    }
+   ]
+  },
+  {
+   "id": "achivment_obstacle_clear_150",
+   "stats": [
+    {
+     "stat": "int_obstacle_clear",
+     "int_min": 150
+    }
+   ]
+  },
+  {
+   "id": "achivment_travel_distance_1000",
+   "stats": [
+    {
+     "stat": "float_travel_distance",
+     "float_min": 1000
+    }
+   ]
+  },
+  {
+   "id": "achivment_travel_distance_5000",
+   "stats": [
+    {
+     "stat": "float_travel_distance",
+     "float_min": 5000
+    }
+   ]
+  },
+  {
+   "id": "achivment_travel_distance_10000",
+   "stats": [
+    {
+     "stat": "float_travel_distance",
+     "float_min": 10000
+    }
+   ]
+  },
+  {
+   "id": "achivment_feed_apple",
+   "stats": [
+    {
+     "stat": "int_feed_apple",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_feed_sugar_cube",
+   "stats": [
+    {
+     "stat": "int_feed_sugar_cube",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_feed_golden_apple",
+   "stats": [
+    {
+     "stat": "int_feed_golden_apple",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_buy_rider_gear",
+   "stats": [
+    {
+     "stat": "int_buy_rider_gear",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_buy_horse_gear",
+   "stats": [
+    {
+     "stat": "int_buy_horse_gear",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_use_lucky_leaf",
+   "stats": [
+    {
+     "stat": "int_use_lucky_leaf",
+     "int_min": 1
+    }
+   ]
+  },
+  {
+   "id": "achivment_feed_big_apple",
+   "stats": [
+    {
+     "stat": "int_feed_big_apple",
+     "int_min": 1
+    }
+   ]
+  }
+ ]
+}
