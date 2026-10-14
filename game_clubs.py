@@ -341,6 +341,8 @@ class ClubsMixin:
         if guild_id:
             with self._connect() as conn:
                 conn.execute("UPDATE guilds SET invite = ? WHERE guild_id = ?", (allow, guild_id))
+            # The client sends the opposite of what it last heard, so it must hear the new state.
+            self._push_guild_members(guild_id)
         self.emulator.debug_log_tcp("GUILD INVITE: %s open=%s" % (client_id, allow))
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
 

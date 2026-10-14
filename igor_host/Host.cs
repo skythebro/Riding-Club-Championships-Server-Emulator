@@ -821,6 +821,12 @@ public static class Host
             if (!property.CanWrite)
                 continue;
             object raw = fields[key];
+            // An optional field sent as null stays null. It must not become 0.
+            if (raw == null && Nullable.GetUnderlyingType(property.PropertyType) != null)
+            {
+                property.SetValue(value, null, null);
+                continue;
+            }
             Type keyType = Game.GetType("Key");
             if (property.PropertyType == keyType && !(raw is Dictionary<string, object>))
             {

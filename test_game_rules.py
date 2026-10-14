@@ -878,3 +878,12 @@ class DefaultCourseTests(Harness):
         for jump in course["Obstacles"]:
             self.assertEqual(jump["Position"]["Rotation"], {"x": 0, "y": 1, "z": 0, "w": 0})
             self.assertGreater(jump["Position"]["Position"]["z"], course["Horse"]["Position"]["z"])
+
+class ClubOpenToggleTests(Harness):
+    def test_changing_allow_join_requests_tells_the_club(self):
+        owner = self.rider(1, "owner")
+        guild_id = self.make_club(owner)
+        self.emu.igor.pushed.clear()
+        self.features.on_GuildChangeInvite(self.message(25, bytes([0])), "owner", owner)
+        self.assertEqual(self.sql("SELECT invite FROM guilds WHERE guild_id = ?", (guild_id,)), [(0,)])
+        self.assertFalse(self.emu.igor.pushed[-1][1]["AllowInvite"])

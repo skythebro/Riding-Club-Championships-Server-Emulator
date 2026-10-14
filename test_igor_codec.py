@@ -125,6 +125,20 @@ class DefaultCourseCodecTest(unittest.TestCase):
         self.assertIn(struct.pack("<f", 50.0), frame)
 
 
+class OptionalFieldCodecTest(unittest.TestCase):
+    def test_a_join_request_has_no_actor_on_the_wire(self):
+        from igor_client import IgorClient
+        row = {"PlayerId": 2, "ActorId": None, "CreatedTime": 5}
+        frame = bytes.fromhex(IgorClient()._request({
+            "op": "push", "kind": "object", "service": 105, "function": 18, "type": "Protocol2.GuildUpdate",
+            "fields": {"GuildId": 1, "Requests": [row, dict(row, PlayerId=3, ActorId=9)]},
+        })["hex"])
+        # Bit 0 clear: no ActorId follows. The owner's client then shows Accept and Decline.
+        self.assertIn(struct.pack("<BIQ", 0x00, 2, 5), frame)
+        # Bit 0 set: the actor follows. That row is an invite, so the owner can only cancel it.
+        self.assertIn(struct.pack("<BIIQ", 0x80, 3, 9, 5), frame)
+
+
 class LoginBurstServerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
