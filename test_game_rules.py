@@ -539,3 +539,25 @@ class ClientConfigTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MigrationTests(Harness):
+    def test_a_new_save_ends_on_the_latest_version(self):
+        import migrations
+        with self.features._connect() as conn:
+            version = conn.execute("PRAGMA user_version").fetchone()[0]
+        self.assertEqual(version, migrations.MIGRATIONS[-1][0])
+
+    def test_an_old_save_without_a_version_is_brought_up_to_date(self):
+        import migrations
+        with self.features._connect() as conn:
+            conn.execute("PRAGMA user_version = 0")
+            conn.execute("DROP TABLE course_likes")
+        self.features._ensure_columns()
+        with self.features._connect() as conn:
+            self.assertEqual(conn.execute("PRAGMA user_version").fetchone()[0], migrations.MIGRATIONS[-1][0])
+            conn.execute("SELECT 1 FROM course_likes")
+
+    def test_versions_count_up_without_gaps(self):
+        import migrations
+        self.assertEqual([m[0] for m in migrations.MIGRATIONS], list(range(1, len(migrations.MIGRATIONS) + 1)))

@@ -46,6 +46,7 @@ Rules that keep the client connected:
 | `db.py` | `UserDatabase`: accounts, profiles, and the base tables |
 | `game_features.py` | `GameFeatures`: dispatch, profile, inventory, practice, shop, and the shared frame helpers. It inherits the area files below. |
 | `game_clubs.py`, `game_chat.py`, `game_ranked.py`, `game_showdown.py`, `game_courses.py` | Mixins with the `on_*` handlers for that area. Put new handlers in the matching file. |
+| `migrations.py` | Numbered save migrations, run once each at start (SQLite `user_version`) |
 | `storage.py` | `connect_db(path)`: the only way to open SQLite. It commits, closes, and waits on a busy lock. |
 | `server_config.py` | `server.json` loading, login allow list, `ride_is_plausible` |
 | `admin.py` | Owner commands (`Admin.run`), bans and mutes, and the client moderation frames. `/admin/<command>` on the server and `RCCServer.exe admin` both call `Admin.run`. |
@@ -65,7 +66,7 @@ Rules that keep the client connected:
 - Club calls refuse with `_guild_error(message, GUILD_ERR_*)`, the client's own `EGuildError`. Check roles with `_guild_allowed`.
 - The server decides coins, rating, XP, and prizes from its own state. It never takes them from the packet. Check affordability, then deduct, inside the handler. Keep `ride_is_plausible` and the anti-cheat rules in the README true.
 - `SteamMicroTxnInit`, Kickstarter, and debug `Exec` / `Eval` stay failures on purpose.
-- Schema changes go in `GameFeatures._ensure_columns` (`ALTER TABLE ... ADD COLUMN` inside try) so existing saves migrate.
+- Schema changes are a new numbered step in `migrations.py` (a function plus a line in `MIGRATIONS`). Never edit an old step. A new profile column goes in `PROFILE_COLUMNS` and gets its own step.
 - New behaviour gets a test, and a checklist line in `STATUS.md` until someone has tried it in the real client.
 - Docs use short, plain sentences, like README and STATUS.
 

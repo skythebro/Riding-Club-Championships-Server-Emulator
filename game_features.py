@@ -2,7 +2,6 @@
 
 import datetime
 import json
-import sqlite3
 import struct
 import threading
 import time
@@ -14,32 +13,10 @@ from game_showdown import ShowdownMixin
 from game_courses import CoursesMixin
 from paths import APP_DIR
 from server_config import ride_is_plausible
+from migrations import PROFILE_COLUMNS, migrate
 from storage import connect_db
 
 MAP_PATH = APP_DIR / "igor_host" / "protocol_map.json"
-
-PROFILE_COLUMNS = (
-    ("horse_name", "TEXT"),
-    ("horse_gender", "INTEGER DEFAULT 0"),
-    ("player_gender", "INTEGER DEFAULT 0"),
-    ("player_skin", "INTEGER DEFAULT 0"),
-    ("horse_skin", "INTEGER DEFAULT 0"),
-    ("tail_skin", "INTEGER DEFAULT 0"),
-    ("coins", "INTEGER DEFAULT 500"),
-    ("skill_tickets", "INTEGER DEFAULT 5"),
-    ("action_points", "INTEGER DEFAULT 100"),
-    ("horse_level", "INTEGER DEFAULT 1"),
-    ("horse_xp", "INTEGER DEFAULT 0"),
-    ("grooming", "REAL DEFAULT 1"),
-    ("inventory", "TEXT DEFAULT '[]'"),
-    ("rating", "INTEGER DEFAULT 1000"),
-    ("guild_open", "INTEGER DEFAULT 1"),
-    ("skill_points", "INTEGER DEFAULT 0"),
-    ("skills", "TEXT DEFAULT '[]'"),
-    ("ds_claimed", "INTEGER DEFAULT 0"),
-    # YYYYMMDD of the Monday of the last week whose result popup this rider has been shown.
-    ("ds_week_seen", "INTEGER DEFAULT 0"),
-)
 
 
 class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMixin):
@@ -91,37 +68,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
 
     def _ensure_columns(self):
         with self._connect() as conn:
-            for name, declaration in PROFILE_COLUMNS + (
-                ("equipment", "TEXT"),
-                ("rider_equipment", "TEXT"),
-                ("daily_claim", "TEXT"),
-                ("daily_day", "INTEGER DEFAULT 1"),
-            ):
-                try:
-                    conn.execute("ALTER TABLE player_data ADD COLUMN %s %s" % (name, declaration))
-                except sqlite3.OperationalError:
-                    pass
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS courses (
-                    course_id INTEGER PRIMARY KEY,
-                    owner_id INTEGER,
-                    name TEXT,
-                    body TEXT
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS course_slots (
-                    player_id INTEGER,
-                    slot_id INTEGER,
-                    body TEXT,
-                    PRIMARY KEY (player_id, slot_id)
-                )"""
-            )
-            for name in ("min_time INTEGER DEFAULT 60", "played INTEGER DEFAULT 0", "completed INTEGER DEFAULT 0"):
-                try:
-                    conn.execute("ALTER TABLE courses ADD COLUMN %s" % name)
-                except sqlite3.OperationalError:
-                    pass
+            migrate(conn)
             for row in conn.execute(
                 "SELECT course_id, owner_id, name, body, min_time, played, completed FROM courses"
             ):
@@ -136,98 +83,6 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
             self._ensure_rival(conn)
             for row in conn.execute("SELECT player_id, body FROM course_slots ORDER BY slot_id"):
                 self.slots.setdefault(row[0], []).append(row[1] or "")
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS course_reports (
-                    player_id INTEGER,
-                    course_id INTEGER,
-                    comment TEXT,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS course_likes (
-                    player_id INTEGER,
-                    course_id INTEGER,
-                    PRIMARY KEY (player_id, course_id)
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS guilds (
-                    guild_id INTEGER PRIMARY KEY,
-                    name TEXT,
-                    owner_id INTEGER,
-                    description TEXT,
-                    welcome TEXT
-                )"""
-            )
-            for name, declaration in (("short_name", "TEXT"), ("icon", "TEXT"), ("invite", "INTEGER DEFAULT 1")):
-                try:
-                    conn.execute("ALTER TABLE guilds ADD COLUMN %s %s" % (name, declaration))
-                except sqlite3.OperationalError:
-                    pass
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS guild_requests (
-                    guild_id INTEGER,
-                    player_id INTEGER,
-                    kind TEXT,
-                    PRIMARY KEY (guild_id, player_id, kind)
-                )"""
-            )
-            for name, declaration in (("actor_id", "INTEGER"), ("created_at", "INTEGER")):
-                try:
-                    conn.execute("ALTER TABLE guild_requests ADD COLUMN %s %s" % (name, declaration))
-                except sqlite3.OperationalError:
-                    pass
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS guild_members (
-                    guild_id INTEGER,
-                    player_id INTEGER,
-                    role INTEGER,
-                    PRIMARY KEY (guild_id, player_id)
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS player_reports (
-                    reporter_id INTEGER,
-                    target_id INTEGER,
-                    kind TEXT,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS quest_flags (
-                    player_id INTEGER,
-                    quest_id INTEGER,
-                    status TEXT,
-                    PRIMARY KEY (player_id, quest_id)
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS ignored_players (
-                    player_id INTEGER,
-                    target_id INTEGER,
-                    ignored INTEGER,
-                    PRIMARY KEY (player_id, target_id)
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS ds_results (
-                    player_id INTEGER,
-                    course_hash INTEGER,
-                    time REAL,
-                    penalty INTEGER,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )"""
-            )
-            conn.execute(
-                """CREATE TABLE IF NOT EXISTS course_scores (
-                    player_id INTEGER,
-                    course_id INTEGER,
-                    time REAL,
-                    penalty INTEGER,
-                    PRIMARY KEY (player_id, course_id)
-                )"""
-            )
 
     def profile(self, player_id):
         with self._connect() as conn:
