@@ -89,6 +89,16 @@ class IgorCodecTest(unittest.TestCase):
         self.igor.drop("login")
 
 
+class SessionAvatarTest(unittest.TestCase):
+    def test_the_horse_and_the_rider_keep_their_own_skin_and_gender(self):
+        from igor_client import IgorClient
+        igor = IgorClient()
+        reply = igor._request({"op": "push", "kind": "session", "fields": {
+            "Name": "Cleo", "Gender": 2, "SkinId": 7, "TailSkinId": 3, "PlayerGender": 1, "PlayerSkinId": 4,
+        }})
+        self.assertEqual(reply["split"], {"playerSkin": 4, "playerGender": 1, "horseSkin": 7, "horseGender": 2})
+
+
 class LoginBurstServerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

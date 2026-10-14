@@ -163,9 +163,12 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         data = self.profile(player_id)
         fields = {
             "Name": data["horse_name"],
+            # Horse: Gender, SkinId, TailSkinId. Rider: PlayerGender, PlayerSkinId (the card host splits them).
             "Gender": data["horse_gender"],
-            "SkinId": data["player_skin"],
+            "SkinId": data["horse_skin"],
             "TailSkinId": data["tail_skin"],
+            "PlayerGender": data["player_gender"],
+            "PlayerSkinId": data["player_skin"],
             "GroomingState": data["grooming"],
             "SkillPoints": data["skill_points"],
             "ActionPoints": data["action_points"],
@@ -667,6 +670,13 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                         (paid, today, next_day, player_id),
                     )
                 self.emulator.send_to(client_id, self.session_push(player_id))
+            # The menu shows "Open reward" while the client's DailyBonus says NeedAccept. Tell it the gift is taken.
+            day_now, _claimed = self._daily_state(player_id)
+            self.emulator.send_to(client_id, self.emulator.igor.push_daily_bonus(
+                day=day_now,
+                need_accept=False,
+                time_left=self._seconds_until_midnight(datetime.datetime.now()),
+            ))
         self.emulator.debug_log_tcp("DAILY BONUS ACCEPTED: %s paid=%s" % (client_id, paid))
         return None
 

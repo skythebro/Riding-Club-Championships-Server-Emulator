@@ -717,3 +717,18 @@ class ClubJoinRequestTests(Harness):
         self.emu.igor.pushed.clear()
         self.features.on_NoGuildCancelRequest(self.message(11, struct.pack("<I", guild_id)), "guest", guest)
         self.assertEqual(self.guild_updates()[-1]["Requests"], [])
+
+
+class DailyGiftTests(Harness):
+    def test_claiming_tells_the_client_the_gift_is_taken(self):
+        player = self.rider(1, "me")
+        self.features.on_AcceptDailyBonus(self.message(2, service=109), "me", player)
+        self.assertIn(("me", b"daily"), self.emu.sent)
+        self.assertEqual(self.features._daily_state(player)[1], True)
+
+    def test_the_session_names_the_horse_skin_apart_from_the_rider_skin(self):
+        player = self.rider(1, "me")
+        self.features.save_profile(player, horse_skin=7, player_skin=4, horse_gender=2, player_gender=1)
+        fields = self.features.session_fields(player)
+        self.assertEqual((fields["SkinId"], fields["PlayerSkinId"]), (7, 4))
+        self.assertEqual((fields["Gender"], fields["PlayerGender"]), (2, 1))

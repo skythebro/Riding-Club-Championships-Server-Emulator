@@ -390,6 +390,7 @@ public static class Host
     {
         string kind = Convert.ToString(request["kind"]);
         byte[] frame;
+        Dictionary<string, object> split = null;
         if (kind == "daily_bonus")
         {
             bool needAccept = request.ContainsKey("needAccept") && Convert.ToBoolean(request["needAccept"]);
@@ -402,9 +403,16 @@ public static class Host
             Dictionary<string, object> fields = Fields(request);
             object inventory = request.ContainsKey("inventory") ? request["inventory"] : null;
             byte[] player = ServerPush(109, 2, WritePlayerStats(fields, inventory));
-            if (fields.ContainsKey("RiderEquipment"))
-                fields.Remove("RiderEquipment");
-            byte[] horse = ServerPush(109, 3, WriteFilled("Protocol2.HorseStats", fields));
+            Dictionary<string, object> playerSplit;
+            Dictionary<string, object> horseFields;
+            SplitAvatar(fields, out playerSplit, out horseFields);
+            horseFields.Remove("RiderEquipment");
+            byte[] horse = ServerPush(109, 3, WriteFilled("Protocol2.HorseStats", horseFields));
+            split = new Dictionary<string, object> {
+                { "playerSkin", playerSplit.ContainsKey("SkinId") ? playerSplit["SkinId"] : null },
+                { "playerGender", playerSplit.ContainsKey("Gender") ? playerSplit["Gender"] : null },
+                { "horseSkin", horseFields.ContainsKey("SkinId") ? horseFields["SkinId"] : null },
+                { "horseGender", horseFields.ContainsKey("Gender") ? horseFields["Gender"] : null } };
             frame = new byte[player.Length + horse.Length];
             Buffer.BlockCopy(player, 0, frame, 0, player.Length);
             Buffer.BlockCopy(horse, 0, frame, player.Length, horse.Length);
@@ -415,7 +423,10 @@ public static class Host
             frame = ServerPush(Convert.ToByte(request["service"]), Convert.ToByte(request["function"]), WriteFilled(Convert.ToString(request["type"]), Fields(request)));
         else
             throw new InvalidOperationException("unknown push kind " + kind);
-        return new Dictionary<string, object> { { "ok", true }, { "hex", ToHex(frame) } };
+        var pushed = new Dictionary<string, object> { { "ok", true }, { "hex", ToHex(frame) } };
+        if (split != null)
+            pushed["split"] = split;
+        return pushed;
     }
 
     static byte[] WriteDailyBonus(bool isPremium, int day, int rewardIndex, bool needAccept, float timeLeft)
@@ -617,12 +628,33 @@ public static class Host
         return new Dictionary<string, object> { { "ok", true }, { "hex", ToHex(written) }, { "values", seen } };
     }
 
+    // PlayerStats and HorseStats both have SkinId and Gender, with different meanings. The server sends the
+    // rider's as PlayerSkinId and PlayerGender, and the horse's as SkinId and Gender.
+    static void SplitAvatar(Dictionary<string, object> fields, out Dictionary<string, object> player, out Dictionary<string, object> horse)
+    {
+        player = new Dictionary<string, object>(fields);
+        horse = new Dictionary<string, object>(fields);
+        player.Remove("SkinId");
+        player.Remove("Gender");
+        if (fields.ContainsKey("PlayerSkinId"))
+            player["SkinId"] = fields["PlayerSkinId"];
+        if (fields.ContainsKey("PlayerGender"))
+            player["Gender"] = fields["PlayerGender"];
+        foreach (string name in new string[] { "PlayerSkinId", "PlayerGender" })
+        {
+            player.Remove(name);
+            horse.Remove(name);
+        }
+    }
+
     static byte[] WritePlayerStats(Dictionary<string, object> fields, object inventory)
     {
         Type type = Game.GetType("Protocol2.PlayerStats");
         object value = Activator.CreateInstance(type);
         Fill(value, 0);
-        Dictionary<string, object> playerFields = new Dictionary<string, object>(fields);
+        Dictionary<string, object> playerFields;
+        Dictionary<string, object> unusedHorse;
+        SplitAvatar(fields, out playerFields, out unusedHorse);
         object riderEquipment = null;
         if (playerFields.ContainsKey("RiderEquipment"))
         {
