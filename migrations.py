@@ -156,9 +156,27 @@ def _baseline(conn):
     )
 
 
+# Timed item effects. Each holds the Unix time the effect ends, 0 for none.
+BOOST_COLUMNS = (
+    ("xp_boost_until", "INTEGER DEFAULT 0"),
+    ("loot_boost_until", "INTEGER DEFAULT 0"),
+    ("stat_boost_until", "INTEGER DEFAULT 0"),
+)
+
+
+def _item_effects(conn):
+    """Columns for the XP book, the lucky leaf, and the sugar cubes."""
+    for name, declaration in BOOST_COLUMNS:
+        try:
+            conn.execute("ALTER TABLE player_data ADD COLUMN %s %s" % (name, declaration))
+        except sqlite3.OperationalError:
+            pass
+
+
 # (version, what it does, function(conn)). Versions count up from 1 with no gaps.
 MIGRATIONS = (
     (1, "tables and columns up to the first numbered release", _baseline),
+    (2, "timed item effects", _item_effects),
 )
 
 

@@ -2,6 +2,8 @@
 
 import datetime
 import struct
+import time
+import zlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -23,6 +25,7 @@ class FakeIgor:
         return b"fail:" + text.encode("utf-8")
 
     def reply_type(self, service, function, rpc, type_name, fields=None):
+        self.last_reply = (type_name, fields)
         return b"type"
 
     def reply_uints(self, service, function, rpc, ids):
@@ -565,3 +568,111 @@ class MigrationTests(Harness):
     def test_versions_count_up_without_gaps(self):
         import migrations
         self.assertEqual([m[0] for m in migrations.MIGRATIONS], list(range(1, len(migrations.MIGRATIONS) + 1)))
+
+
+TREATS = {
+    "item_lucky_leaf": {"coins": 15, "effect": "loot", "rate": 0.75, "minutes": 15},
+    "item_apple_gold": {"coins": 200, "ap": 2000},
+    "item_sugarcubes": {"coins": 40, "effect": "stats", "value": 1, "minutes": 60},
+    "item_book": {"coins": 100, "effect": "xp", "rate": 1.0, "minutes": 1440},
+}
+
+
+class TreatTests(Harness):
+    def use(self, player, treat_id):
+        item_hash = zlib.crc32(treat_id.encode("utf-8")) & 0xffffffff
+        self.features.balance["treats"] = TREATS
+        self.features.add_item(player, item_hash, 1)
+        self.features.on_UseItem(self.message(4, struct.pack("<I", item_hash)), "c%s" % player, player)
+
+    def test_the_golden_apple_adds_2000_action_points_past_the_bar(self):
+        player = self.rider(1, "me")
+        self.features.save_profile(player, action_points=150)
+        self.use(player, "item_apple_gold")
+        self.assertEqual(self.features.profile(player)["action_points"], 2150)
+
+    def test_the_old_clover_hash_is_the_lucky_leaf(self):
+        self.features.balance["treats"] = TREATS
+        self.assertEqual(self.features._treats()[4141365854], "item_lucky_leaf")
+
+    def test_the_lucky_leaf_speeds_up_prizes_for_fifteen_minutes(self):
+        player = self.rider(1, "me")
+        self.use(player, "item_lucky_leaf")
+        left = self.features.profile(player)["loot_boost_until"] - time.time()
+        self.assertTrue(14 * 60 < left <= 15 * 60)
+        self.assertEqual(self.features._gear_bonuses(player)["LootRate"], 0.75)
+
+    def test_a_second_use_adds_to_the_time_left(self):
+        player = self.rider(1, "me")
+        self.use(player, "item_sugarcubes")
+        self.use(player, "item_sugarcubes")
+        left = self.features.profile(player)["stat_boost_until"] - time.time()
+        self.assertTrue(119 * 60 < left <= 120 * 60)
+
+    def test_the_xp_book_doubles_xp_until_it_runs_out(self):
+        player = self.rider(1, "me")
+        self.features.balance["treats"] = TREATS
+        data = self.features.profile(player)
+        self.assertEqual(self.features._boost_xp(data, 20), 20)
+        self.use(player, "item_book")
+        data = self.features.profile(player)
+        self.assertEqual(self.features._boost_xp(data, 20), 40)
+        data["xp_boost_until"] = int(time.time()) - 1
+        self.assertEqual(self.features._boost_xp(data, 20), 20)
+
+    def test_sugar_cubes_and_energy_each_add_one_to_every_stat(self):
+        player = self.rider(1, "me")
+        self.features.balance["treats"] = TREATS
+        self.features.balance["energy_buff"] = {"above": 0.5, "value": 1}
+        self.features.balance["action_points"] = {"max": 200}
+        self.features.save_profile(player, grooming=0.5, action_points=50)
+        self.assertEqual({row["Buff"] for row in self.features._attributes(player)}, {0})
+        self.features.save_profile(player, action_points=150)
+        self.assertEqual({row["Buff"] for row in self.features._attributes(player)}, {1})
+        self.features.save_profile(player, stat_boost_until=int(time.time()) + 600)
+        self.assertEqual({row["Buff"] for row in self.features._attributes(player)}, {2})
+        self.features.balance["energy_buff"]["value"] = 0
+        self.assertEqual({row["Buff"] for row in self.features._attributes(player)}, {1})
+
+
+class PaddockTests(Harness):
+    def pickup(self, player):
+        self.features.on_PickupItem(self.message(1, service=104), "c%s" % player, player)
+        return self.emu.igor.last_reply[1]["Reward"]
+
+    def test_no_prize_before_the_paddock_is_open(self):
+        player = self.rider(1, "me")
+        self.assertEqual(self.features._paddock_prize(player), {})
+
+    def test_a_prize_is_coins_or_xp_from_the_table(self):
+        player = self.rider(1, "me")
+        self.features.paddock_open.add(player)
+        self.features.balance["paddock"] = {"max_per_minute": 99, "prizes": [{"coins": 6, "weight": 1}]}
+        self.assertEqual(self.features._paddock_prize(player), {"coins": 6, "xp": 0})
+        self.features.balance["paddock"]["prizes"] = [{"xp": 60, "weight": 1}]
+        self.assertEqual(self.features._paddock_prize(player), {"coins": 0, "xp": 60})
+
+    def test_a_coin_prize_pays_and_carries_money(self):
+        player = self.rider(1, "me")
+        self.features.paddock_open.add(player)
+        self.features.balance["paddock"] = {"max_per_minute": 99, "prizes": [{"coins": 6, "weight": 1}]}
+        before = self.features.profile(player)["coins"]
+        reward = self.pickup(player)
+        self.assertEqual(reward["Money"], {"Coins": 6, "SkillTickets": 0})
+        self.assertEqual(self.features.profile(player)["coins"], before + 6)
+
+    def test_an_xp_prize_carries_no_money_so_the_popup_shows_xp(self):
+        player = self.rider(1, "me")
+        self.features.paddock_open.add(player)
+        self.features.balance["paddock"] = {"max_per_minute": 99, "prizes": [{"xp": 20, "weight": 1}]}
+        reward = self.pickup(player)
+        self.assertIsNone(reward["Money"])
+        self.assertEqual(reward["Xp"], 20)
+        self.assertEqual(self.features.profile(player)["horse_xp"], 20)
+
+    def test_pickups_are_limited_per_minute(self):
+        player = self.rider(1, "me")
+        self.features.paddock_open.add(player)
+        self.features.balance["paddock"] = {"max_per_minute": 2, "prizes": [{"coins": 2, "weight": 1}]}
+        paid = [bool(self.features._paddock_prize(player)) for _ in range(4)]
+        self.assertEqual(paid, [True, True, False, False])

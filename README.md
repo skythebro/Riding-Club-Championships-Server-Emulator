@@ -98,6 +98,9 @@ Edit [`balance.json`](balance.json), then restart the server. Each block has a `
 - `level_up_bonus` is paid for every level gained, and the level-up popup lists it. It is 100 action points, as in the original. Coins and skill tickets are 0 until you set them.
 - `horse_stats.start` is the number every horse stat starts at. The default is 0, as in the original.
 - `showdown`, `club`, `ranked`, `treats`, and `avatar_change_coins` hold those prices and payouts.
+- `treats` are the shop items for the horse: the golden apple (2000 action points), sugar cubes (+1 on every stat for an hour), the lucky four leaf clover (paddock prizes four times as often for 15 minutes), and the XP book (double XP for 24 hours). Those effects are from the original. The prices are this server's choice.
+- `paddock` sets the prizes for collecting stars and presents in the paddock (2 or 6 coins, 20, 60, or 150 XP), and how many a minute count.
+- `energy_buff` is the +1 on every stat while a horse has more than half its action points. Set `value` to 0 to turn it off.
 - Course slots, course submits, and each placed piece cost 0 until you set `course_editor`.
 - `news` is the message in the main menu's news panel.
 - The daily gift is a 7-day sheet. The original ran 200 days. That list is in `Rewards for all the daily logins.txt` and is not in use.

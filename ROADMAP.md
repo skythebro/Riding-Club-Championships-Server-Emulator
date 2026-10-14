@@ -43,11 +43,9 @@ Measured on 14 October 2026 against the decompiled client:
 - [ ] The original 60-level XP table. Today every level is 100 XP.
 - [ ] The 200-day login gifts (`Rewards for all the daily logins.txt`).
 - [ ] Everything under "Still to test" in `STATUS.md`.
+- [x] From the fan sites (ridingclubchampionships.weebly.com and the Artplant tips post): the golden apple, sugar cubes, lucky four leaf clover, and XP book, with the original effects. Paddock prizes of 2 or 6 coins and 20, 60, or 150 XP. The +1 on every stat above half energy. The showdown's lucky leaf for places 4 to 10. Checked on the wire with the real card host. Not yet seen in the shop or the paddock of the real client.
 - Found on the fan sites, not built yet:
   - The weekly showdown had a Sunday Grand Final. The top 100 qualifiers got free entry, and the winner got a light purple blazer. This server has no final.
-  - Shop treats: Golden Apple (2000 action points), Sugar Cube (+1 on every stat for 1 hour), Lucky Four Leaf Clover (paddock prizes 4 times as often for 15 minutes), and XP Book (double XP for 24 hours).
-  - Paddock prizes: 2 or 6 coins, and 20, 60, or 150 XP. The server's `PickupItem` gives nothing yet.
-  - Energy above 50% gives +1 on every stat.
   - Quests: three slots, a new one with the daily login if a slot is free, one decline a day. Amounts are unknown.
   - Item upgrades: level 6 maximum, filled with XP (still earned after level 60). Costs and bonuses are unknown.
   - Daily gifts have extra prizes on days 10, 25, 50, 75, and 100 (or every 50 days, by one source).

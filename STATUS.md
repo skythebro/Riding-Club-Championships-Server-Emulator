@@ -80,3 +80,8 @@ Showdown pays 2000, then 500, 500, 250, and 100 coins. Second place also gets a 
 ## Left as errors on purpose
 
 Steam checkout, Kickstarter, and debug Exec and Eval. A checkout would charge a real wallet, the Kickstarter campaign is over, and debug commands are not run.
+- The shop treats: golden apple, sugar cubes, lucky four leaf clover, and XP book. Each should show in the shop with its own icon. Using one should show its effect: 2000 more action points, +1 on every stat for an hour, paddock prizes about every 5 seconds for 15 minutes, and double XP for 24 hours. The effect ends when the timer does, shown after the next screen change.
+- Paddock prizes. A star or present should show 2 or 6 coins, or 20, 60, or 150 XP, and pay it. Prizes should stop for a minute after 12 in a minute.
+- A level-up should give 100 action points.
+- The +1 on every stat above half energy. The stats panel should show it, and it should go away at half energy or below.
+- Showdown places 4 to 10 getting a lucky four leaf clover.

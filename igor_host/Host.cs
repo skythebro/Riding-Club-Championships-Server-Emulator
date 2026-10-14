@@ -1493,12 +1493,15 @@ public static class Host
         var writer = new BinaryWriter(body);
         Wardrobe wardrobe = LoadWardrobe();
         List<CoursePiece> coursePieces = LoadCoursePieces();
-        Call("Igor.Write", "Size", writer, specs.Length + 11 + dailyCoins.Length + wardrobe.Items.Count + coursePieces.Count);
+        Call("Igor.Write", "Size", writer, specs.Length + 14 + dailyCoins.Length + wardrobe.Items.Count + coursePieces.Count);
         WriteLocalesCard(writer);
         WriteStringsCard(writer);
         WriteTutorialMission(writer);
         WriteItemCard(writer, "carrot", BalString("Carrot", "items", "carrot", "name"), BalString("A carrot for your horse", "items", "carrot", "description"), ItemPrice("carrot", BalInt(10, "treats", "carrot", "coins")), BalInt(5, "treats", "carrot", "xp"));
-        WriteItemCard(writer, "clover", BalString("Clover", "items", "clover", "name"), BalString("A lucky clover", "items", "clover", "description"), ItemPrice("clover", BalInt(15, "treats", "clover", "coins")), BalInt(8, "treats", "clover", "xp"));
+        WriteItemCard(writer, "item_lucky_leaf", BalString("Lucky four leaf clover", "items", "item_lucky_leaf", "name"), BalString("Paddock prizes appear four times as often for 15 minutes", "items", "item_lucky_leaf", "description"), ItemPrice("item_lucky_leaf", BalInt(15, "treats", "item_lucky_leaf", "coins")), 0, 0, 0, 0, null, "clover");
+        WriteItemCard(writer, "item_apple_gold", BalString("Golden apple", "items", "item_apple_gold", "name"), BalString("Gives your horse 2000 action points", "items", "item_apple_gold", "description"), ItemPrice("item_apple_gold", BalInt(200, "treats", "item_apple_gold", "coins")), 0, 0, 0, 0, null, "icon_goldenapple");
+        WriteItemCard(writer, "item_sugarcubes", BalString("Sugar cubes", "items", "item_sugarcubes", "name"), BalString("+1 on every stat for 1 hour", "items", "item_sugarcubes", "description"), ItemPrice("item_sugarcubes", BalInt(40, "treats", "item_sugarcubes", "coins")), 0, 0, 0, 0, null, "icon_sugarcubes");
+        WriteItemCard(writer, "item_book", BalString("XP book", "items", "item_book", "name"), BalString("Double XP for 24 hours", "items", "item_book", "description"), ItemPrice("item_book", BalInt(100, "treats", "item_book", "coins")), 0, 0, 0, 0, null, "icon_book");
         WriteItemCard(writer, "coinbag", BalString("Coin bag", "items", "coinbag", "name"), BalString("A small bag of coins", "items", "coinbag", "description"), ItemPrice("coinbag", BalInt(25, "treats", "coinbag", "coins")), BalInt(0, "treats", "coinbag", "xp"));
         WriteItemCard(writer, "item_apple", BalString("Apple", "items", "item_apple", "name"), BalString("An apple", "items", "item_apple", "description"), ItemPrice("item_apple", 0), 0, 0, 0, 0, null, "icon_apple");
         WriteItemCard(writer, "item_apple_big", BalString("Big apple", "items", "item_apple_big", "name"), BalString("A big apple", "items", "item_apple_big", "description"), ItemPrice("item_apple_big", 0), 0, 0, 0, 0, null, "icon_apple_big");
@@ -1632,7 +1635,10 @@ public static class Host
             {
                 var itemIds = new List<string>();
                 itemIds.Add("carrot");
-                itemIds.Add("clover");
+                itemIds.Add("item_lucky_leaf");
+                itemIds.Add("item_apple_gold");
+                itemIds.Add("item_sugarcubes");
+                itemIds.Add("item_book");
                 itemIds.Add("coinbag");
                 foreach (GearPiece piece in wardrobe.Items)
                     itemIds.Add(piece.Id);

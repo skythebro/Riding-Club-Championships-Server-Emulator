@@ -44,7 +44,7 @@
     "settle_wait_seconds": 120
   },
   "showdown": {
-    "_note": "Original entry is level 10 and 150 skill tickets, and it does not cost action points. Original coins: 1st 2000, 2nd 500, 3rd 500, 4th-10th 250, 11th-100th 100. 2nd also gets item_apple_big and 200 horse XP. 3rd gets item_apple and 200 horse XP. The client names item_lucky_leaf, but that icon is not in the asset list, so places 4-10 do not grant it yet. The exclusive jacket and the apple slice have no item id in the client.",
+    "_note": "Original entry is level 10 and 150 skill tickets, and it does not cost action points. Original coins: 1st 2000, 2nd 500, 3rd 500, 4th-10th 250, 11th-100th 100. 2nd also gets item_apple_big and 200 horse XP. 3rd gets item_apple and 200 horse XP. Places 4-10 also get item_lucky_leaf. The exclusive jacket and the apple slice have no item id in the client.",
     "min_level": 10,
     "skill_tickets": 150,
     "prizes": [
@@ -74,7 +74,7 @@
         "to": 10,
         "coins": 250,
         "xp": 0,
-        "item": ""
+        "item": "item_lucky_leaf"
       },
       {
         "from": 11,
@@ -125,21 +125,46 @@
     ]
   },
   "treats": {
-    "_note": "These match the item cards this server already sells.",
+    "_note": "Shop treats. Each key is the item id the client uses. xp is horse XP and ap is action points, added on top of the bar. coins is the price. Original: the golden apple gives 2000 action points; sugar cubes give +1 on every stat for 1 hour; the lucky leaf makes paddock prizes appear 4 times as often (rate 0.75 shortens the spawn interval to a quarter) for 15 minutes; the XP book doubles XP for 24 hours (rate 1.0 is +100%). Server choice: every price, the carrot and coin bag, and the apple amounts. minutes is how long an effect lasts, counted from the first use.",
     "carrot": {
       "coins": 10,
       "xp": 5,
       "coins_on_use": 0
     },
-    "clover": {
+    "item_lucky_leaf": {
       "coins": 15,
-      "xp": 8,
-      "coins_on_use": 0
+      "effect": "loot",
+      "rate": 0.75,
+      "minutes": 15
     },
     "coinbag": {
       "coins": 25,
       "xp": 0,
       "coins_on_use": 50
+    },
+    "item_apple_gold": {
+      "coins": 200,
+      "ap": 2000
+    },
+    "item_sugarcubes": {
+      "coins": 40,
+      "effect": "stats",
+      "value": 1,
+      "minutes": 60
+    },
+    "item_book": {
+      "coins": 100,
+      "effect": "xp",
+      "rate": 1.0,
+      "minutes": 1440
+    },
+    "item_apple": {
+      "coins": 0,
+      "ap": 100
+    },
+    "item_apple_big": {
+      "coins": 0,
+      "ap": 500
     },
     "unknown_item_coins": 10
   },
@@ -186,15 +211,30 @@
       "description": "A carrot for your horse.",
       "price": 10
     },
-    "clover": {
-      "name": "Clover",
-      "description": "A lucky clover.",
+    "item_lucky_leaf": {
+      "name": "Lucky four leaf clover",
+      "description": "Paddock prizes appear four times as often for 15 minutes.",
       "price": 15
     },
     "coinbag": {
       "name": "Coin bag",
       "description": "A small bag of coins.",
       "price": 25
+    },
+    "item_apple_gold": {
+      "name": "Golden apple",
+      "description": "Gives your horse 2000 action points.",
+      "price": 200
+    },
+    "item_sugarcubes": {
+      "name": "Sugar cubes",
+      "description": "+1 on every stat for 1 hour.",
+      "price": 40
+    },
+    "item_book": {
+      "name": "XP book",
+      "description": "Double XP for 24 hours.",
+      "price": 100
     },
     "item_apple": {
       "name": "Apple",
@@ -2121,5 +2161,36 @@
       "description": "Weed.",
       "price": 5
     }
+  },
+  "paddock": {
+    "_note": "Original prizes: 2 or 6 coins, and 20, 60, or 150 XP. Server choice: how often each comes up (weight), and max_per_minute, which stops a modified client from collecting faster than prizes spawn (one every 20 seconds, 5 with a lucky leaf).",
+    "max_per_minute": 12,
+    "prizes": [
+      {
+        "coins": 2,
+        "weight": 30
+      },
+      {
+        "coins": 6,
+        "weight": 15
+      },
+      {
+        "xp": 20,
+        "weight": 30
+      },
+      {
+        "xp": 60,
+        "weight": 15
+      },
+      {
+        "xp": 150,
+        "weight": 10
+      }
+    ]
+  },
+  "energy_buff": {
+    "_note": "Original: with more than half the action points left, every stat gets +1. Set value to 0 to turn it off.",
+    "above": 0.5,
+    "value": 1
   }
 }

@@ -2,9 +2,12 @@
 
 import datetime
 import json
+import random
 import struct
 import threading
 import time
+import zlib
+from collections import deque
 
 from game_clubs import ClubsMixin
 from game_chat import ChatMixin
@@ -13,7 +16,7 @@ from game_showdown import ShowdownMixin
 from game_courses import CoursesMixin
 from paths import APP_DIR
 from server_config import ride_is_plausible
-from migrations import PROFILE_COLUMNS, migrate
+from migrations import BOOST_COLUMNS, PROFILE_COLUMNS, migrate
 from storage import connect_db
 
 MAP_PATH = APP_DIR / "igor_host" / "protocol_map.json"
@@ -31,6 +34,8 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         # client_id -> the human ranked match it is in. Both riders share one dict.
         self.rm_matches = {}
         self.practice_open = set()
+        self.paddock_open = set()
+        self.pickups = {}
         self.groom_at = {}
         self.slots = {}
         self.courses = {}
@@ -88,7 +93,8 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         with self._connect() as conn:
             row = conn.execute(
                 """SELECT horse_name, horse_gender, player_gender, player_skin, horse_skin, tail_skin,
-                          coins, skill_tickets, action_points, horse_level, horse_xp, grooming, name, rating, skill_points
+                          coins, skill_tickets, action_points, horse_level, horse_xp, grooming, name, rating, skill_points,
+                          xp_boost_until, loot_boost_until, stat_boost_until
                    FROM player_data WHERE player_id = ?""",
                 (player_id,),
             ).fetchone()
@@ -110,17 +116,21 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
             "name": row[12] or "Player",
             "rating": row[13] if row[13] is not None else 1000,
             "skill_points": row[14] if row[14] is not None else 0,
+            "xp_boost_until": row[15] or 0,
+            "loot_boost_until": row[16] or 0,
+            "stat_boost_until": row[17] or 0,
         }
 
     def _blank(self, player_id):
         return {
             "horse_name": "Horse", "horse_gender": 0, "player_gender": 0, "player_skin": 0,
             "horse_skin": 0, "tail_skin": 0, "coins": 500, "skill_tickets": 5, "action_points": 100,
-            "horse_level": 1, "horse_xp": 0,             "grooming": 1.0, "name": "Player", "rating": 1000, "skill_points": 0,
+            "horse_level": 1, "horse_xp": 0, "grooming": 1.0, "name": "Player", "rating": 1000, "skill_points": 0,
+            "xp_boost_until": 0, "loot_boost_until": 0, "stat_boost_until": 0,
         }
 
     def save_profile(self, player_id, **values):
-        allowed = {name for name, _declaration in PROFILE_COLUMNS} | {"name"}
+        allowed = {name for name, _declaration in PROFILE_COLUMNS + BOOST_COLUMNS} | {"name"}
         pairs = [(key, value) for key, value in values.items() if key in allowed]
         if not pairs:
             return
@@ -198,7 +208,41 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
             bonuses["ApMax"] = ap_max
         if restore:
             bonuses["ApRestoreRate"] = restore
+        data = self.profile(player_id)
+        # The client spawns paddock prizes at an interval scaled by 1 - LootRate.
+        if self._boost_active(data, "loot_boost_until"):
+            bonuses["LootRate"] = float(self.bal("treats", "item_lucky_leaf", "rate", default=0.75))
+        if self._boost_active(data, "xp_boost_until"):
+            bonuses["XpRate"] = float(self.bal("treats", "item_book", "rate", default=1.0))
         return bonuses
+
+    @staticmethod
+    def _boost_active(data, column):
+        return int(data.get(column) or 0) > time.time()
+
+    def _boost_xp(self, data, gain):
+        """The XP book doubles XP while it lasts."""
+        gain = int(gain or 0)
+        if gain and self._boost_active(data, "xp_boost_until"):
+            gain = int(round(gain * (1 + float(self.bal("treats", "item_book", "rate", default=1.0)))))
+        return gain
+
+    def _energy_buff_active(self, player_id, data):
+        """Original: above half energy, every stat gets +1."""
+        above = float(self.bal("energy_buff", "above", default=0.5))
+        if int(self.bal("energy_buff", "value", default=1)) == 0:
+            return False
+        top = int(self.bal("action_points", "max", default=200)) + int(self._gear_bonuses_ap_max(player_id))
+        return top > 0 and int(data.get("action_points") or 0) > top * above
+
+    def _gear_bonuses_ap_max(self, player_id):
+        ap_step = int(self.bal("gear", "ap_per_level", default=10))
+        ap_cap = int(self.bal("gear", "ap_cap", default=50))
+        total = 0
+        for item in self.rider_equipment(player_id):
+            if int(item.get("slot") or 0) in (3, 4):
+                total += min(ap_cap, ap_step * max(1, int(item.get("level") or 1)))
+        return total
 
     def equipment(self, player_id):
         with self._connect() as conn:
@@ -296,7 +340,8 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         values = {stat: min(cap, start[stat] + value) for stat, value in self._spent_skills(player_id).items() if stat in start}
         for stat, value in start.items():
             values.setdefault(stat, value)
-        grooming = float(self.profile(player_id).get("grooming") or 0)
+        data = self.profile(player_id)
+        grooming = float(data.get("grooming") or 0)
         clean_at = float(self.bal("grooming", "clean_at", default=0.8))
         dirty_at = float(self.bal("grooming", "dirty_at", default=0.3))
         if grooming >= clean_at:
@@ -305,6 +350,10 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
             buff = int(self.bal("grooming", "dirty_debuff", default=-1))
         else:
             buff = 0
+        if self._boost_active(data, "stat_boost_until"):
+            buff += int(self.bal("treats", "item_sugarcubes", "value", default=1))
+        if self._energy_buff_active(player_id, data):
+            buff += int(self.bal("energy_buff", "value", default=1))
         # Send all six every time. Horse.SetHorseStats only overwrites the stats it receives,
         # so a stat left out keeps its old value and buff on screen.
         return [{"StatType": stat, "Value": values.get(stat, 0), "Buff": buff} for stat in range(1, 7)]
@@ -520,6 +569,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                 if all(client in match["results"] or client in match["gone"] for client in match["clients"]):
                     self._rm_settle(match)
             self.chat_rooms = {key for key in self.chat_rooms if key[0] != client_id}
+            self.paddock_open.discard(self.emulator.client_players.get(client_id))
 
     def on_GetLikes(self, message, client_id, player_id):
         ids = self.liked_ids(player_id) if player_id else []
@@ -624,17 +674,66 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         # The scene looks up spawn places after it sends this call. An immediate
         # reply starts presents before those places exist.
         frame = self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
+        if player_id:
+            self.paddock_open.add(player_id)
+
         def send_later():
             time.sleep(2)
             self.emulator.send_to(client_id, frame)
         threading.Thread(target=send_later, daemon=True).start()
         return None
 
+    def _paddock_prize(self, player_id):
+        """What one paddock pickup gives: {"coins": n} or {"xp": n}, or {} when it gives nothing.
+
+        Only a rider who is in the paddock gets a prize, and only so many a minute. Prizes spawn on
+        a timer in the client, so a faster stream than that is not honest play.
+        """
+        if player_id not in self.paddock_open:
+            return {}
+        now = time.time()
+        recent = self.pickups.setdefault(player_id, deque())
+        while recent and now - recent[0] > 60:
+            recent.popleft()
+        if len(recent) >= int(self.bal("paddock", "max_per_minute", default=12)):
+            return {}
+        recent.append(now)
+        prizes = [p for p in (self.bal("paddock", "prizes", default=None) or [
+            {"coins": 2, "weight": 30}, {"coins": 6, "weight": 15},
+            {"xp": 20, "weight": 30}, {"xp": 60, "weight": 15}, {"xp": 150, "weight": 10},
+        ]) if int(p.get("weight") or 0) > 0]
+        if not prizes:
+            return {}
+        choice = random.choices(prizes, weights=[int(p["weight"]) for p in prizes])[0]
+        return {"coins": int(choice.get("coins") or 0), "xp": int(choice.get("xp") or 0)}
+
     def on_PickupItem(self, message, client_id, player_id):
-        return self.emulator.igor.reply_type(
+        prize = self._paddock_prize(player_id) if player_id else {}
+        coins = int(prize.get("coins") or 0)
+        xp = int(prize.get("xp") or 0)
+        level_frame = b""
+        if coins or xp:
+            data = self.profile(player_id)
+            level, xp_left, points = self._apply_xp(data, xp)
+            level_frame = self._level_up_frame(data["horse_level"], level)
+            bonus_coins, bonus_tickets, bonus_ap = self._level_bonus(data["horse_level"], level)
+            self.save_profile(
+                player_id,
+                coins=data["coins"] + coins + bonus_coins,
+                skill_tickets=data["skill_tickets"] + bonus_tickets,
+                action_points=data["action_points"] + bonus_ap,
+                horse_level=level,
+                horse_xp=xp_left,
+                skill_points=points,
+            )
+            xp = self._boost_xp(data, xp)
+        # The popup reads Money first, so an XP prize must carry no Money at all.
+        reward = {"Money": {"Coins": coins, "SkillTickets": 0} if coins else None, "Xp": xp, "Ap": 0, "Items": []}
+        frame = self.emulator.igor.reply_type(
             message["service"], message["function"], message["rpc"], "Protocol2.LootItem",
-            {"Chance": 1},
+            {"Reward": reward, "Chance": 1},
         )
+        return frame + (self.session_push(player_id) + level_frame if coins or xp else b"")
 
     def on_StartPractice(self, message, client_id, player_id):
         if player_id:
@@ -671,6 +770,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                 wear = 0
             worn = max(0.0, float(data["grooming"] if data["grooming"] is not None else 1) - wear)
             level, xp, points = self._apply_xp(data, reward_xp)
+            reward_xp = self._boost_xp(data, reward_xp)
             level_frame = self._level_up_frame(data["horse_level"], level)
             bonus_coins, bonus_tickets, bonus_ap = self._level_bonus(data["horse_level"], level)
             self.save_profile(
@@ -785,7 +885,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         cap = int(self.bal("max_level", default=60))
         per_level = int(self.bal("skill_points_per_level", default=1))
         level = int(data.get("horse_level") or 1)
-        xp = int(data.get("horse_xp") or 0) + int(gain or 0)
+        xp = int(data.get("horse_xp") or 0) + self._boost_xp(data, gain)
         points = int(data.get("skill_points") or 0)
         while level < cap and xp >= threshold:
             xp -= threshold
@@ -879,23 +979,33 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         worn = self.rider_equipment(player_id) + self.equipment(player_id)
         return any(int(item.get("hash") or 0) == item_hash for item in worn)
 
+    # Items bought in the shop and used on the horse. The numbers are under treats in balance.json.
+    # The hash of "clover" is kept because saves from before the lucky leaf still hold it.
+    LEGACY_TREATS = {4141365854: "item_lucky_leaf"}
+    TREAT_COLUMNS = {"xp": "xp_boost_until", "loot": "loot_boost_until", "stats": "stat_boost_until"}
+
+    def _treats(self):
+        """item hash -> treat id, for every entry under treats in balance.json."""
+        table = {
+            zlib.crc32(name.encode("utf-8")) & 0xffffffff: name
+            for name, value in (self.bal("treats", default={}) or {}).items()
+            if isinstance(value, dict) and not name.startswith("_")
+        }
+        table.update(self.LEGACY_TREATS)
+        return table
+
     def on_BuyItem(self, message, client_id, player_id):
         if not player_id:
             return None
         item_hash, count = self._hash_and_count(message.get("rest") or "")
         if not item_hash:
             return None
-        treats = {
-            3099497678: ("carrot", 10),
-            4141365854: ("clover", 15),
-            1965560022: ("coinbag", 25),
-        }
+        treat_id = self._treats().get(item_hash)
         gear = self._gear_by_hash().get(item_hash)
-        item_id = gear.get("id") if gear else None
+        item_id = treat_id or (gear.get("id") if gear else None)
         fallback = int(gear.get("price") or 20) if gear else int(self.bal("treats", "unknown_item_coins", default=10))
-        if item_hash in treats:
-            item_id, treat_fallback = treats[item_hash]
-            fallback = int(self.bal("treats", item_id, "coins", default=treat_fallback))
+        if treat_id:
+            fallback = int(self.bal("treats", treat_id, "coins", default=fallback))
         listed = self.bal("items", item_id, "price", default=None) if item_id else None
         price = int(listed if listed is not None else fallback) * max(1, count)
         data = self.profile(player_id)
@@ -917,12 +1027,17 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                 item["count"] = int(item["count"]) - 1
                 self.save_inventory(player_id, [row for row in items if int(row.get("count") or 0) > 0])
                 data = self.profile(player_id)
-                xp_gain = {
-                    3099497678: int(self.bal("treats", "carrot", "xp", default=5)),
-                    4141365854: int(self.bal("treats", "clover", "xp", default=8)),
-                    1965560022: int(self.bal("treats", "coinbag", "xp", default=0)),
-                }.get(item_hash, 0)
-                coins_gain = int(self.bal("treats", "coinbag", "coins_on_use", default=50)) if item_hash == 1965560022 else 0
+                treat_id = self._treats().get(item_hash)
+                treat = (self.bal("treats", treat_id, default={}) if treat_id else {}) or {}
+                xp_gain = int(treat.get("xp") or 0)
+                coins_gain = int(treat.get("coins_on_use") or 0)
+                ap_gain = int(treat.get("ap") or 0)
+                effect = {}
+                column = self.TREAT_COLUMNS.get(treat.get("effect"))
+                if column:
+                    # A second use while one is running adds its time on the end.
+                    start = max(time.time(), int(data.get(column) or 0))
+                    effect[column] = int(start + float(treat.get("minutes") or 0) * 60)
                 level, xp, points = self._apply_xp(data, xp_gain)
                 level_frame = self._level_up_frame(data["horse_level"], level)
                 bonus_coins, bonus_tickets, bonus_ap = self._level_bonus(data["horse_level"], level)
@@ -932,8 +1047,9 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                     horse_xp=xp,
                     skill_points=points,
                     skill_tickets=data["skill_tickets"] + bonus_tickets,
-                    action_points=data["action_points"] + bonus_ap,
+                    action_points=data["action_points"] + ap_gain + bonus_ap,
                     coins=data["coins"] + coins_gain + bonus_coins,
+                    **effect,
                 )
                 self.emulator.debug_log_tcp("USE ITEM: %s hash=%s" % (client_id, item_hash))
                 return self.session_push(player_id) + level_frame

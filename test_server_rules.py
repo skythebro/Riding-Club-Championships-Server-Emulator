@@ -10,6 +10,8 @@ from server_config import login_decision, ride_is_plausible
 class Levels:
     balance = {"xp_per_level": 100, "max_level": 3, "skill_points_per_level": 1}
     bal = GameFeatures.bal
+    _boost_xp = GameFeatures._boost_xp
+    _boost_active = staticmethod(GameFeatures._boost_active)
 
 
 class LoginTests(unittest.TestCase):
