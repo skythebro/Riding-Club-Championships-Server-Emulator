@@ -1039,6 +1039,7 @@ class RCCServerEmulator:
                 guild_id = self.features._player_guild(player_id)
                 if guild_id:
                     self.features._push_guild_to(client_id, guild_id)
+                self.features._sync_guild_room(player_id)
             return None
         if name == "GetSpecialOffers":
             return self.igor.reply_special_offers(message["rpc"])

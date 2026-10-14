@@ -1540,6 +1540,18 @@ public static class Host
                 mainType.GetProperty("HorseNameMaxSize").SetValue(card, 16, null);
                 mainType.GetProperty("SkillPointsForLevelUp").SetValue(card, 1f, null);
                 SetPriceCoins(card, "ChangeAvatar", BalInt(4000, "avatar_change_coins"));
+                // The level-up popup lists this reward. The server pays the same numbers.
+                PropertyInfo bonusProperty = mainType.GetProperty("LevelUpBonus");
+                object bonus = bonusProperty.GetValue(card, null);
+                if (bonus == null)
+                {
+                    bonus = Activator.CreateInstance(bonusProperty.PropertyType);
+                    bonusProperty.SetValue(card, bonus, null);
+                }
+                SetPriceCoins(bonus, "Money", BalInt(100, "level_up_bonus", "coins"));
+                object bonusMoney = bonus.GetType().GetProperty("Money").GetValue(bonus, null);
+                PropertyInfo ticketProperty = bonusMoney.GetType().GetProperty("SkillTickets");
+                ticketProperty.SetValue(bonusMoney, Convert.ChangeType(BalInt(1, "level_up_bonus", "skill_tickets"), ticketProperty.PropertyType), null);
                 PropertyInfo levels = mainType.GetProperty("LevelsXp");
                 object list = levels.GetValue(card, null);
                 if (list == null)

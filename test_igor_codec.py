@@ -150,7 +150,8 @@ class LoginBurstServerTest(unittest.TestCase):
             except socket.timeout:
                 pass
             self.assertIn(bytes.fromhex("066c0901000000"), received)
-            self.assertIn(bytes.fromhex("066a0b02000000"), received)
+            # The likes reply for rpc 2. It lists the riders this one already liked, so its length varies.
+            self.assertIn(bytes.fromhex("6a0b02"), received)
             sock.settimeout(0.5)
             try:
                 extra = sock.recv(1)

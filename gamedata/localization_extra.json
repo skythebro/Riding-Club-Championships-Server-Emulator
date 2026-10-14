@@ -4341,6 +4341,15 @@
             }
         }
     },
+    "daily_login_claim_reward_message": {
+        "text": "Your daily reward",
+        "data": {
+            "ru": {
+                "original": "Your daily reward",
+                "translation": "Ваша ежедневная награда"
+            }
+        }
+    },
     "common_buy_premium": {
         "text": "Buy premium",
         "data": {

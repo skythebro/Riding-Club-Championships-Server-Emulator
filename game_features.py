@@ -33,12 +33,20 @@ PROFILE_COLUMNS = (
     ("skill_points", "INTEGER DEFAULT 0"),
     ("skills", "TEXT DEFAULT '[]'"),
     ("ds_claimed", "INTEGER DEFAULT 0"),
+    # YYYYMMDD of the Monday of the last week whose result popup this rider has been shown.
+    ("ds_week_seen", "INTEGER DEFAULT 0"),
 )
 
 
 class GameFeatures:
     # The login burst sends these before the Login reply has been read.
     BEFORE_LOGIN = frozenset({"Subscribe"})
+
+    # Protocol2.GuildNewsType values this server posts.
+    NEWS_ROLE, NEWS_JOIN, NEWS_KICK, NEWS_LEAVE = 1, 2, 3, 4
+    NEWS_COURSE, NEWS_RANKED, NEWS_CHALLENGE, NEWS_CREATED = 8, 9, 10, 11
+    # Chat room id of a club's chat is this plus the club id. Plain rooms stay far below it.
+    GUILD_ROOM_BASE = 1000000
 
     # Protocol2.GuildMemberStatus
     GUILD_OWNER, GUILD_MANAGER, GUILD_MEMBER = 1, 2, 3
@@ -686,7 +694,13 @@ class GameFeatures:
             time_left=self._seconds_until_midnight(datetime.datetime.now()),
         )
         reply = self.emulator.igor.reply_likes(message["rpc"], ids) + bonus
-        return reply + self.session_push(player_id) if player_id else reply
+        if not player_id:
+            return reply
+        frame = reply + self.session_push(player_id)
+        # The result popup opens the showdown window, so it waits until the daily gift is out of the way.
+        if not need_accept:
+            frame += self._week_finished_frame(player_id)
+        return frame
 
     def on_ApplyAvatar(self, message, client_id, player_id):
         if not player_id:
@@ -807,6 +821,7 @@ class GameFeatures:
         wear = float(self.bal("grooming", "wear_per_ride", default=0.05))
         if player_id:
             self.practice_open.discard(player_id)
+        level_frame = b""
         if player_id and kept:
             data = self.profile(player_id)
             if int(data["action_points"] or 0) < ap_cost:
@@ -816,9 +831,12 @@ class GameFeatures:
                 wear = 0
             worn = max(0.0, float(data["grooming"] if data["grooming"] is not None else 1) - wear)
             level, xp, points = self._apply_xp(data, reward_xp)
+            level_frame = self._level_up_frame(data["horse_level"], level)
+            bonus_coins, bonus_tickets = self._level_bonus(data["horse_level"], level)
             self.save_profile(
                 player_id,
-                coins=data["coins"] + reward_coins,
+                coins=data["coins"] + reward_coins + bonus_coins,
+                skill_tickets=data["skill_tickets"] + bonus_tickets,
                 horse_level=level,
                 horse_xp=xp,
                 skill_points=points,
@@ -840,7 +858,7 @@ class GameFeatures:
                     "Items": [],
                 },
             },
-        ) + self.session_push(player_id or 1)
+        ) + self.session_push(player_id or 1) + level_frame
 
     def on_StartTutorial(self, message, client_id, player_id):
         # A disconnect during the paddock tutorial logs back into it.
@@ -907,6 +925,18 @@ class GameFeatures:
             return current
         self.groom_at[player_id] = now
         return min(reported, current + 0.35)
+
+    def _level_up_frame(self, old_level, new_level):
+        """Player.NewLevel: opens the level-up popup. Nothing when the level did not rise."""
+        if int(new_level) <= int(old_level or 1):
+            return b""
+        return self._push_frame(109, 4, struct.pack("<i", int(new_level)))
+
+    def _level_bonus(self, old_level, new_level):
+        """Coins and skill tickets for the levels just gained (balance.json level_up_bonus)."""
+        gained = max(0, int(new_level) - int(old_level or 1))
+        return (gained * int(self.bal("level_up_bonus", "coins", default=100)),
+                gained * int(self.bal("level_up_bonus", "skill_tickets", default=1)))
 
     def _apply_xp(self, data, gain):
         """Turn horse XP into levels. Each level grants the skill points on the main card."""
@@ -1053,15 +1083,18 @@ class GameFeatures:
                 }.get(item_hash, 0)
                 coins_gain = int(self.bal("treats", "coinbag", "coins_on_use", default=50)) if item_hash == 1965560022 else 0
                 level, xp, points = self._apply_xp(data, xp_gain)
+                level_frame = self._level_up_frame(data["horse_level"], level)
+                bonus_coins, bonus_tickets = self._level_bonus(data["horse_level"], level)
                 self.save_profile(
                     player_id,
                     horse_level=level,
                     horse_xp=xp,
                     skill_points=points,
-                    coins=data["coins"] + coins_gain,
+                    skill_tickets=data["skill_tickets"] + bonus_tickets,
+                    coins=data["coins"] + coins_gain + bonus_coins,
                 )
                 self.emulator.debug_log_tcp("USE ITEM: %s hash=%s" % (client_id, item_hash))
-                return self.session_push(player_id)
+                return self.session_push(player_id) + level_frame
         return None
 
     def on_UpgradeInventoryItem(self, message, client_id, player_id):
@@ -1192,6 +1225,9 @@ class GameFeatures:
                 (course_id, owner, name, body),
             )
         self.courses[course_id] = {"owner": owner, "body": body, "name": name}
+        club = self._player_guild(owner)
+        if club:
+            self._push_guild_news(club, self.NEWS_COURSE, owner, course_id=course_id)
         self.emulator.debug_log_tcp("COURSE SUBMIT: %s slot=%s name=%s" % (client_id, slot_id, name))
         return self._uint_reply(message, course_id)
 
@@ -1832,6 +1868,9 @@ class GameFeatures:
 
     def _rm_finish(self, mine, theirs, won, paid):
         player_id = mine["player"]
+        club = self._player_guild(player_id) if paid and player_id and not mine["canceled"] else None
+        if club:
+            self._push_guild_news(club, self.NEWS_RANKED, player_id)
         if paid and player_id and not mine["canceled"]:
             wear = float(self.bal("grooming", "wear_per_ride", default=0.05))
             with self._connect() as conn:
@@ -2081,6 +2120,9 @@ class GameFeatures:
                 )
             self.emulator.send_to(client_id, self.session_push(player_id))
         self._push_challenge_state(challenge)
+        club = self._player_guild(player_id) if not parsed["canceled"] else None
+        if club:
+            self._push_guild_news(club, self.NEWS_CHALLENGE, player_id)
         self.emulator.debug_log_tcp(
             "CHALLENGE RESULT: %s friend=%s time=%.2f penalty=%s canceled=%s"
             % (client_id, friend, parsed["time"], parsed["penalty"], parsed["canceled"])
@@ -2285,9 +2327,12 @@ class GameFeatures:
             if not claimed or int(claimed[0] or 0) != today_key:
                 data = self.profile(player_id)
                 level, xp_left, points = self._apply_xp(data, xp)
+                level_frame = self._level_up_frame(data["horse_level"], level)
+                bonus_coins, bonus_tickets = self._level_bonus(data["horse_level"], level)
                 self.save_profile(
                     player_id,
-                    coins=data["coins"] + coins,
+                    coins=data["coins"] + coins + bonus_coins,
+                    skill_tickets=data["skill_tickets"] + bonus_tickets,
                     horse_level=level,
                     horse_xp=xp_left,
                     skill_points=points,
@@ -2296,11 +2341,40 @@ class GameFeatures:
                 if item_id:
                     item_hash = zlib.crc32(str(item_id).encode("utf-8")) & 0xffffffff
                     self.add_item(player_id, item_hash, 1)
-                self.emulator.send_to(client_id, self.session_push(player_id))
+                self.emulator.send_to(client_id, self.session_push(player_id) + level_frame)
         self.emulator.debug_log_tcp(
             "DS REWARD: %s place=%s coins=%s xp=%s item=%s" % (client_id, place, coins, xp, item_id)
         )
         return None
+
+    def _week_finished_frame(self, player_id):
+        """Game.DsWeekFinished: where the rider finished last week, shown once at the next login.
+
+        This server has no weekly final, so the popup carries the place and no reward. The
+        daily prizes were already paid when each day's board was claimed.
+        """
+        if not self.bal("showdown", "week_result_popup", default=True):
+            return b""
+        this_week = self._showdown_week_start(datetime.datetime.now())
+        last_week = this_week - datetime.timedelta(days=7)
+        key = int(last_week.strftime("%Y%m%d"))
+        with self._connect() as conn:
+            row = conn.execute("SELECT ds_week_seen FROM player_data WHERE player_id = ?", (player_id,)).fetchone()
+            if row is None or int(row[0] or 0) >= key:
+                return b""
+            conn.execute("UPDATE player_data SET ds_week_seen = ? WHERE player_id = ?", (key, player_id))
+        place = next(
+            (int(entry["Place"]) for entry in self._ds_board_span(last_week, this_week, None)
+             if entry["PlayerId"] == player_id),
+            0,
+        )
+        if not place:
+            return b""
+        self.emulator.debug_log_tcp("DS WEEK FINISHED: player=%s place=%s" % (player_id, place))
+        return self.emulator.igor.push_object(108, 14, "Protocol2.ReplyDsFinished", {
+            "Place": place,
+            "Reward": {"Money": {"Coins": 0, "SkillTickets": 0}, "Xp": 0, "Ap": 0, "Items": []},
+        })
 
     def _showdown_day(self, moment):
         """Client days are Monday 1 through Saturday 6. Sunday is 7, not DayOfWeek.Sunday."""
@@ -2770,6 +2844,9 @@ class GameFeatures:
             )
         self.emulator.debug_log_tcp("GUILD CREATE: %s id=%s name=%s" % (client_id, guild_id, name))
         reply = self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
+        self.chat_rooms.add((client_id, self.GUILD_ROOM_BASE + guild_id))
+        room = self._guild_room_frame(guild_id)
+        news, chat = self._guild_news_frames(guild_id, self.NEWS_CREATED, player_id)
         push = self._push_present(105, 18, "Protocol2.GuildUpdate", {
             "GuildId": guild_id,
             "Name": name,
@@ -2778,7 +2855,7 @@ class GameFeatures:
             "Description": "",
             "Welcome": "",
         })
-        return reply + push
+        return reply + push + room + news + chat
 
     def _player_guild(self, player_id):
         if not player_id:
@@ -2905,6 +2982,7 @@ class GameFeatures:
                 if guild_id:
                     self._guild_after_leave(conn, guild_id)
             self._push_no_guild_update(player_id)
+            self._sync_guild_room(player_id)
         self.emulator.send_to(client_id, self._push_frame(105, 18, b"\x00"))
         if guild_id:
             self._push_guild_members(guild_id)
@@ -2972,7 +3050,10 @@ class GameFeatures:
                         "DELETE FROM guild_requests WHERE guild_id = ? AND player_id = ?",
                         (guild_id, target),
                     )
+            self._sync_guild_room(target)
             self._push_guild_members(guild_id)
+            if self._player_guild(target) == guild_id:
+                self._push_guild_news(guild_id, self.NEWS_JOIN, target)
         self.emulator.debug_log_tcp("GUILD ACCEPT: %s target=%s" % (client_id, target))
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
 
@@ -3003,6 +3084,7 @@ class GameFeatures:
                 )
             for other in self._clients_for(target):
                 self.emulator.send_to(other, self._push_frame(105, 18, b"\x00"))
+            self._sync_guild_room(target)
             self._push_guild_members(guild_id)
             self._push_guild_news(guild_id, 3, target, "")
         self.emulator.debug_log_tcp("GUILD KICK: %s target=%s" % (client_id, target))
@@ -3078,7 +3160,9 @@ class GameFeatures:
                         (guild_id, player_id),
                     )
             if invited:
+                self._sync_guild_room(player_id)
                 self._push_guild_members(guild_id)
+                self._push_guild_news(guild_id, self.NEWS_JOIN, player_id)
                 self._push_no_guild_update(player_id)
         self.emulator.debug_log_tcp("GUILD JOIN ACCEPT: %s guild=%s" % (client_id, guild_id))
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
@@ -3278,19 +3362,62 @@ class GameFeatures:
         owners = getattr(self.emulator, "client_players", {})
         return [client_id for client_id, owner in list(owners.items()) if owner == player_id]
 
-    def _push_guild_news(self, guild_id, news_type, actor_id, text):
-        # Actor and text bits are set. Welcome is 7, description is 6, name is 5.
-        payload = self._varint(1) + bytes([0x88, news_type & 255])
-        payload += struct.pack("<QI", int(time.time()), int(actor_id or 0))
-        payload += self._igor_string(text or "")
-        frame = self._push_frame(105, 19, payload)
+    def _guild_news_item(self, news_type, actor_id, text="", target_id=None, course_id=None):
+        """One Protocol2.GuildNews. Optional fields in wire order: actor, status, target, course, text, rank."""
+        bits = 0x08  # text is always sent, empty when unused
+        body = b""
+        if actor_id:
+            bits |= 0x80
+            body += struct.pack("<I", int(actor_id))
+        if target_id:
+            bits |= 0x20
+            body += struct.pack("<I", int(target_id))
+        if course_id:
+            bits |= 0x10
+            body += struct.pack("<I", int(course_id))
+        body += self._igor_string(text or "")
+        return bytes([bits, news_type & 255]) + struct.pack("<Q", int(time.time())) + body
+
+    def _guild_news_frames(self, guild_id, news_type, actor_id, text="", target_id=None, course_id=None):
+        item = self._guild_news_item(news_type, actor_id, text, target_id, course_id)
+        news = self._push_frame(105, 19, self._varint(1) + item)
+        chat = self._push_frame(103, 11, struct.pack("<I", self.GUILD_ROOM_BASE + int(guild_id)) + item)
+        return news, chat
+
+    def _guild_member_ids(self, guild_id):
         with self._connect() as conn:
-            members = [row[0] for row in conn.execute(
+            return [row[0] for row in conn.execute(
                 "SELECT player_id FROM guild_members WHERE guild_id = ?", (guild_id,)
             )]
-        for member in members:
+
+    def _push_guild_news(self, guild_id, news_type, actor_id, text="", target_id=None, course_id=None):
+        news, chat = self._guild_news_frames(guild_id, news_type, actor_id, text, target_id, course_id)
+        for member in self._guild_member_ids(guild_id):
             for other in self._clients_for(member):
-                self.emulator.send_to(other, frame)
+                self.emulator.send_to(other, news)
+                # The chat line only has a room once the rider has the club chat open.
+                if (other, self.GUILD_ROOM_BASE + int(guild_id)) in self.chat_rooms:
+                    self.emulator.send_to(other, chat)
+
+    def _guild_room_frame(self, guild_id):
+        """Chat.RoomAdd for a club's chat: type Guild (3) with the club id."""
+        payload = bytes([0x80]) + struct.pack("<IB", self.GUILD_ROOM_BASE + int(guild_id), 3)
+        payload += struct.pack("<I", int(guild_id))
+        return self._push_frame(103, 1, payload)
+
+    def _sync_guild_room(self, player_id):
+        """Give a rider's open games the chat of the club they are in now, and take away any old one."""
+        guild_id = self._player_guild(player_id)
+        wanted = self.GUILD_ROOM_BASE + int(guild_id) if guild_id else None
+        for client_id in self._clients_for(player_id):
+            stale = [key for key in self.chat_rooms
+                     if key[0] == client_id and key[1] >= self.GUILD_ROOM_BASE and key[1] != wanted]
+            for key in stale:
+                self.chat_rooms.discard(key)
+                self.emulator.send_to(client_id, self._push_frame(103, 2, struct.pack("<I", key[1])))
+            if wanted and (client_id, wanted) not in self.chat_rooms:
+                self.chat_rooms.add((client_id, wanted))
+                self.emulator.send_to(client_id, self._guild_room_frame(guild_id))
 
     def _push_guild_members(self, guild_id):
         with self._connect() as conn:
@@ -3368,6 +3495,16 @@ class GameFeatures:
         if refused:
             return None
         frame = self._room_message_frame(room_id, player_id or 1, text)
+        if int(room_id) >= self.GUILD_ROOM_BASE:
+            guild_id = int(room_id) - self.GUILD_ROOM_BASE
+            if self._player_guild(player_id) != guild_id:
+                self.emulator.debug_log_tcp("CHAT CLUB REFUSED: %s not in club %s" % (client_id, guild_id))
+                return None
+            for member in self._guild_member_ids(guild_id):
+                for other in self._clients_for(member):
+                    self.emulator.send_to(other, frame)
+            self.emulator.debug_log_tcp("CHAT CLUB: %s club=%s" % (client_id, guild_id))
+            return None
         for other in list(self.emulator.tcp_clients):
             self._announce_room(other, room_id)
             self.emulator.send_to(other, frame)
@@ -3396,7 +3533,7 @@ class GameFeatures:
 
     def _announce_room(self, client_id, room_id):
         key = (client_id, room_id)
-        if key in self.chat_rooms:
+        if key in self.chat_rooms or int(room_id) >= self.GUILD_ROOM_BASE:
             return
         self.chat_rooms.add(key)
         if int(room_id) == 2:

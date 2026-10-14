@@ -416,6 +416,113 @@ class BackupTests(unittest.TestCase):
             self.assertEqual(sum(name.endswith("-manual.db") for name in files), 1)
 
 
+class LevelUpTests(Harness):
+    def test_a_level_gain_sends_the_popup_frame_and_no_gain_sends_nothing(self):
+        frame = self.features._level_up_frame(2, 4)
+        self.assertEqual(frame[1:3], bytes([109, 4]))
+        self.assertEqual(struct.unpack_from("<i", frame, 3)[0], 4)
+        self.assertEqual(self.features._level_up_frame(4, 4), b"")
+
+    def test_xp_that_crosses_a_level_reaches_the_rider(self):
+        player = self.rider(1, "me")
+        self.features.save_profile(player, horse_xp=95, horse_level=1)
+        self.features.balance["xp_per_level"] = 100
+        data = self.features.profile(player)
+        level, _xp, _points = self.features._apply_xp(data, 10)
+        self.assertEqual(level, 2)
+        self.assertTrue(self.features._level_up_frame(data["horse_level"], level))
+
+    def test_each_level_gained_pays_the_bonus(self):
+        self.features.balance["level_up_bonus"] = {"coins": 100, "skill_tickets": 1}
+        self.assertEqual(self.features._level_bonus(1, 4), (300, 3))
+        self.assertEqual(self.features._level_bonus(4, 4), (0, 0))
+        self.features.balance["level_up_bonus"] = {"coins": 0, "skill_tickets": 0}
+        self.assertEqual(self.features._level_bonus(1, 4), (0, 0))
+
+
+class ClubChatTests(Harness):
+    def room_frames(self, client):
+        return [frame for target, frame in self.emu.sent if target == client and frame[1:3] == bytes([103, 1])]
+
+    def test_a_club_member_gets_the_club_room_and_leaving_removes_it(self):
+        owner = self.rider(1, "owner")
+        guild_id = self.make_club(owner)
+        self.features._sync_guild_room(owner)
+        room = self.features.GUILD_ROOM_BASE + guild_id
+        frames = self.room_frames("owner")
+        self.assertEqual(len(frames), 1)
+        self.assertEqual(struct.unpack_from("<IB", frames[0], 4), (room, 3))
+        # A second sync does not open it twice.
+        self.features._sync_guild_room(owner)
+        self.assertEqual(len(self.room_frames("owner")), 1)
+        self.emu.sent.clear()
+        self.features.on_GuildLeave(self.message(31), "owner", owner)
+        removed = [frame for target, frame in self.emu.sent if target == "owner" and frame[1:3] == bytes([103, 2])]
+        self.assertEqual(struct.unpack_from("<I", removed[0], 3)[0], room)
+
+    def test_a_club_line_reaches_only_that_club(self):
+        owner, mate, outsider = self.rider(1, "owner"), self.rider(2, "mate"), self.rider(3, "outsider")
+        guild_id = self.make_club(owner, mate)
+        room = self.features.GUILD_ROOM_BASE + guild_id
+        rest = struct.pack("<I", room) + self.features._igor_string("hello club")
+        self.features._relay_room(self.message(1, rest, service=103), "owner", owner)
+        got = {target for target, frame in self.emu.sent if frame[1:3] == bytes([103, 7])}
+        self.assertEqual(got, {"owner", "mate"})
+        self.emu.sent.clear()
+        self.features._relay_room(self.message(1, rest, service=103), "outsider", outsider)
+        self.assertFalse(self.emu.sent)
+
+    def test_club_news_is_also_a_line_in_the_club_chat(self):
+        owner = self.rider(1, "owner")
+        guild_id = self.make_club(owner)
+        self.features._sync_guild_room(owner)
+        self.emu.sent.clear()
+        self.features._push_guild_news(guild_id, self.features.NEWS_JOIN, owner)
+        kinds = [frame[1:3] for target, frame in self.emu.sent if target == "owner"]
+        self.assertIn(bytes([105, 19]), kinds)
+        self.assertIn(bytes([103, 11]), kinds)
+        chat = next(frame for target, frame in self.emu.sent if frame[1:3] == bytes([103, 11]))
+        self.assertEqual(struct.unpack_from("<I", chat, 3)[0], self.features.GUILD_ROOM_BASE + guild_id)
+
+    def test_creating_a_club_returns_the_room_and_the_created_news(self):
+        owner = self.rider(1, "owner")
+        raw = self.features._igor_string("Meadow Riders") + self.features._igor_string("MR")
+        # The fake Igor returns tags, so look for the frames this handler builds itself.
+        reply = self.features.on_GuildCreate(self.message(10, raw), "owner", owner)
+        self.assertIn(bytes([103, 1]), reply)
+        self.assertIn(bytes([103, 11]), reply)
+        self.assertIn(bytes([105, 19]), reply)
+
+
+class WeekResultTests(Harness):
+    def ride(self, player, when, seconds):
+        stamp = when.strftime("%Y-%m-%d %H:%M:%S")
+        self.sql("INSERT INTO ds_results (player_id, course_hash, time, penalty, created_at) VALUES (?, 1, ?, 0, ?)",
+                 (player, seconds, stamp))
+
+    def test_last_weeks_place_is_sent_once(self):
+        a, b = self.rider(1, "a"), self.rider(2, "b")
+        monday = self.features._showdown_week_start(datetime.datetime.now())
+        last = monday - datetime.timedelta(days=5)
+        self.ride(a, last, 40.0)
+        self.ride(b, last, 35.0)
+        first = self.features._week_finished_frame(a)
+        self.assertEqual(first[1:3], bytes([108, 14]))
+        self.assertEqual(self.emu.igor.pushed[-1][1]["Place"], 2)
+        self.assertEqual(self.features._week_finished_frame(a), b"")
+
+    def test_no_ride_last_week_means_no_popup(self):
+        player = self.rider(1, "a")
+        self.assertEqual(self.features._week_finished_frame(player), b"")
+
+    def test_it_can_be_turned_off(self):
+        player = self.rider(1, "a")
+        monday = self.features._showdown_week_start(datetime.datetime.now())
+        self.ride(player, monday - datetime.timedelta(days=3), 40.0)
+        self.features.balance["showdown"] = {"week_result_popup": False}
+        self.assertEqual(self.features._week_finished_frame(player), b"")
+
+
 class ClientConfigTests(unittest.TestCase):
     def test_the_entry_is_named_live_and_uses_the_configured_ports(self):
         import json

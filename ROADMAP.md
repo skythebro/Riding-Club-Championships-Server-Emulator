@@ -35,10 +35,10 @@ Measured on 14 October 2026 against the decompiled client:
 
 ## 4. Gameplay gaps
 
-- [ ] `Player.NewLevel`: the level-up popup.
-- [ ] `Chat.GuildMessage`: club chat.
+- [x] `Player.NewLevel`: the level-up popup, seen in the real client on 14 October 2026. Each level pays `level_up_bonus` in `balance.json` (100 coins, 1 skill ticket), and the popup lists it.
+- [x] `Chat.GuildMessage`: club chat room and club news lines.
 - [ ] `UpgradeInventoryItem` and `UpgradeEquipmentItem` are no-ops. Upgrading should cost coins and raise the item level, up to 6.
-- [ ] `Game.DsQualification` and `Game.DsWeekFinished`: showdown notifications.
+- [x] `Game.DsWeekFinished`: the weekly result popup, seen in the real client. `Game.DsQualification` is skipped: this server has no weekly final.
 - [ ] Quests: accept and decline are stored, but `QuestUpdate` never offers one.
 - [ ] The original 60-level XP table. Today every level is 100 XP.
 - [ ] The 200-day login gifts (`Rewards for all the daily logins.txt`).
