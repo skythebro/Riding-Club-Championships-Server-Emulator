@@ -20,6 +20,12 @@ DEFAULTS = {
     "max_clients": 64,
     # Steam ids that get the admin marker in chat.
     "admin_steam_ids": [],
+    # Every rider counts as a Pro Rider: half the action points, a larger daily gift, a free stable hand.
+    # `admin pro <rider> off` still takes it from one rider.
+    "everyone_pro": True,
+    # Who a ranked search can match when no rider is waiting: "alone" uses the saved Rival only when no other
+    # rider is online, "always" after two seconds, "never" keeps searching for a real rider.
+    "ranked_rival": "alone",
     # users.db is copied into backups/ at start and every this many hours. 0 turns it off.
     "backup_hours": 6,
     "backups_keep": 28,

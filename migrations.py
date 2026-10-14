@@ -173,10 +173,19 @@ def _item_effects(conn):
             pass
 
 
+def _pro_override(conn):
+    """pro_override: NULL follows the server's everyone_pro setting, 1 is Pro, 0 is not."""
+    try:
+        conn.execute("ALTER TABLE player_data ADD COLUMN pro_override INTEGER")
+    except sqlite3.OperationalError:
+        pass
+
+
 # (version, what it does, function(conn)). Versions count up from 1 with no gaps.
 MIGRATIONS = (
     (1, "tables and columns up to the first numbered release", _baseline),
     (2, "timed item effects", _item_effects),
+    (3, "per-rider Pro Rider override", _pro_override),
 )
 
 

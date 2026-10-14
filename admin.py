@@ -8,6 +8,7 @@ Run from a shell while the server is up, and changes reach players at once:
     RCCServer.exe admin mute <rider> [--minutes N] [--reason TEXT]
     RCCServer.exe admin unmute <rider>
     RCCServer.exe admin coins <rider> <amount>          (negative takes coins away)
+    RCCServer.exe admin pro <rider> on|off|default       (default follows everyone_pro in server.json)
     RCCServer.exe admin rename <rider> <name>
     RCCServer.exe admin reset <rider> --yes              (fresh rider and horse, same Steam account)
     RCCServer.exe admin kick <rider>
@@ -265,6 +266,20 @@ class Admin:
         self._push_session(player_id)
         return "Rider %s now has %s coins." % (player_id, total[0] if total else 0)
 
+    def pro(self, who, mode):
+        """on or off for one rider, or default to follow the everyone_pro setting again."""
+        mode = str(mode).lower()
+        if mode not in ("on", "off", "default"):
+            raise AdminError("pro takes on, off, or default.")
+        player_id, _steam_id = self.find(who)
+        value = {"on": 1, "off": 0, "default": None}[mode]
+        with connect_db(self.db_path) as conn:
+            conn.execute("UPDATE player_data SET pro_override = ? WHERE player_id = ?", (value, player_id))
+        self._push_session(player_id)
+        if self.emulator is not None:
+            self.emulator.features.broadcast_pro()
+        return "Rider %s: Pro Rider %s." % (player_id, "follows the server setting" if value is None else mode)
+
     def rename(self, who, name):
         player_id, _steam_id = self.find(who)
         name = (name or "").strip()
@@ -324,6 +339,7 @@ class Admin:
             "mute": lambda: self.mute(args["rider"], args.get("minutes"), args.get("reason") or ""),
             "unmute": lambda: self.unmute(args["rider"]),
             "coins": lambda: self.coins(args["rider"], args["amount"]),
+            "pro": lambda: self.pro(args["rider"], args["mode"]),
             "rename": lambda: self.rename(args["rider"], args["name"]),
             "reset": lambda: self.reset(args["rider"], bool(args.get("yes"))),
             "kick": lambda: self.kick(args["rider"]),
@@ -376,6 +392,9 @@ def cli(argv, db_path, http_port):
     coins = sub.add_parser("coins")
     coins.add_argument("rider")
     coins.add_argument("amount", type=int)
+    pro = sub.add_parser("pro")
+    pro.add_argument("rider")
+    pro.add_argument("mode", choices=("on", "off", "default"))
     rename = sub.add_parser("rename")
     rename.add_argument("rider")
     rename.add_argument("name")

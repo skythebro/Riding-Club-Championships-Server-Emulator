@@ -116,6 +116,8 @@ The first start writes `server.json`. All keys are optional.
 | `open_registration` | `true` | `false` keeps existing accounts and refuses new ones. |
 | `allowed_steam_ids` | empty | Empty lets any Steam account create a rider. Fill it to allow only those ids. |
 | `admin_steam_ids` | empty | These riders get the admin marker in chat. |
+| `everyone_pro` | `true` | Every rider counts as a Pro Rider: rides cost half the action points, the daily gift is larger, the stable hand is free, and names show in the Pro colour in chat. `admin pro <rider> off` takes it from one rider. Nothing is sold, and Steam checkout stays off. |
+| `ranked_rival` | `alone` | What fills a ranked search when nobody is waiting. `alone` uses the saved Rival only when no other rider is online, `always` uses it after two seconds, `never` keeps searching for a real rider. |
 | `max_clients` | 64 | Open game connections. One that does not log in within a minute is closed. |
 | `min_ride_seconds` | 8 | A ride shorter than this is not stored and does not win. |
 | `backup_hours`, `backups_keep` | 6, 28 | How often `users.db` is copied into `backups/`, and how many copies stay. |
@@ -148,6 +150,7 @@ RCCServer.exe admin unban <rider>
 RCCServer.exe admin mute <rider> [--minutes N] [--reason "text"]
 RCCServer.exe admin unmute <rider>
 RCCServer.exe admin coins <rider> <amount>
+RCCServer.exe admin pro <rider> on|off|default
 RCCServer.exe admin rename <rider> <name>
 RCCServer.exe admin reset <rider> --yes
 RCCServer.exe admin kick <rider>

@@ -111,6 +111,20 @@ class SteamAchievementCardTest(unittest.TestCase):
             self.assertIn(row["id"].encode(), frame, row["id"])
 
 
+class DefaultCourseCodecTest(unittest.TestCase):
+    def test_the_default_course_encodes_with_its_horse_start(self):
+        from game_features import GameFeatures
+        from igor_client import IgorClient
+        course = GameFeatures._meadow_map(GameFeatures, 60)
+        frame = IgorClient().reply_type(1, 2, 3, "Protocol2.Course", {
+            "Id": 3023709559, "Type": 1, "OwnerId": 0, "Name": "Meadow", "Likes": 0, "SubmitTime": 1790492400,
+            "ShowJumpMap": course,
+        })
+        # The horse start and the jumps share the strip at x -65. Each is a 32-bit float on the wire.
+        self.assertGreaterEqual(frame.count(struct.pack("<f", -65.0)), 4)
+        self.assertIn(struct.pack("<f", 50.0), frame)
+
+
 class LoginBurstServerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

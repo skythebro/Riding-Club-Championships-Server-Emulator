@@ -390,23 +390,32 @@ class CoursesMixin:
         jumps, _offset = self._read_varint(saved, offset + 28)
         return jumps > 0
 
+    # A flat, clear strip on the paddock terrain, found in its height map. Ground is about -0.95 here.
+    # The editor turns a jump half way round (y 180 degrees) when it faces +z, as the horse does.
+    MEADOW_START = (-65.0, 50.0)
+    MEADOW_JUMPS = (
+        (2670118389, 70.0, -0.951),
+        (2932793192, 90.0, -0.952),
+        (1218636073, 110.0, -0.888),
+    )
+
     def _meadow_map(self, min_time):
-        jumps = (
-            (2670118389, 15),
-            (2932793192, 35),
-            (1218636073, 55),
-        )
+        x = self.MEADOW_START[0]
         obstacles = []
-        for key, distance in jumps:
+        for key, z, ground in self.MEADOW_JUMPS:
             obstacles.append({
                 "Key": key,
                 "Position": {
-                    "Position": {"x": 0, "y": 0, "z": distance},
-                    "Rotation": {"x": 0, "y": 0, "z": 0, "w": 1},
+                    "Position": {"x": x, "y": ground, "z": z},
+                    "Rotation": {"x": 0, "y": 1, "z": 0, "w": 0},
                 },
             })
         return {
             "Terrain": 3684040698,
+            "Horse": {
+                "Position": {"x": x, "y": -0.6, "z": self.MEADOW_START[1]},
+                "Rotation": {"x": 0, "y": 0, "z": 0, "w": 1},
+            },
             "MinTime": int(min_time),
             "ObstacleHeight": 110,
             "Obstacles": obstacles,

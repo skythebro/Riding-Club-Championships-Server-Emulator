@@ -621,6 +621,7 @@ class RCCServerEmulator:
                 self.features.on_disconnect(client_id)
                 if left is not None and left not in self.client_players.values():
                     self.features.global_chat.discard(left)
+                    self.features.announce_presence(left, False)
                 self.features._broadcast_online_count()
             except Exception:
                 pass
@@ -691,6 +692,7 @@ class RCCServerEmulator:
                 if guild_id:
                     self.features._push_guild_to(client_id, guild_id)
                 self.features._sync_guild_room(player_id)
+                self.features.on_player_online(client_id, player_id)
             return None
         if name == "GetSpecialOffers":
             return self.igor.reply_special_offers(message["rpc"])

@@ -40,6 +40,16 @@ class RankedMixin:
         self._rm_finish(mine, rival, won, paid=in_match)
         return None
 
+    def _rival_allowed(self):
+        """The saved Rival fills a ranked search by server.json ranked_rival: alone, always, or never."""
+        mode = str((getattr(self.emulator, "join_config", None) or {}).get("ranked_rival", "always")).lower()
+        if mode == "never":
+            return False
+        if mode == "alone":
+            online = set((getattr(self.emulator, "client_players", {}) or {}).values())
+            return len(online) <= 1
+        return True
+
     @staticmethod
     def _rm_beats(mine, theirs, ties_win=False):
         """Fewer faults wins. Equal faults, then the faster time."""
@@ -96,7 +106,7 @@ class RankedMixin:
                            grooming = MAX(0, COALESCE(grooming, 1) - ?)
                        WHERE player_id = ?""",
                     (
-                        int(self.bal("action_points", "ranked", default=20)),
+                        self._ap_cost(player_id, "ranked"),
                         int(self.bal("ranked", "win_rating" if won else "loss_rating", default=15 if won else 0)),
                         int(self.bal("ranked", "win_coins" if won else "loss_coins", default=25 if won else 0)),
                         wear,
@@ -189,11 +199,15 @@ class RankedMixin:
 
         def start_rival():
             time.sleep(2)
-            with self.lock:
-                if client_id not in self.waiting:
-                    return
-                self.waiting.remove(client_id)
-                self.opponents[client_id] = self._rival_id()
+            while True:
+                with self.lock:
+                    if client_id not in self.waiting:
+                        return
+                    if self._rival_allowed():
+                        self.waiting.remove(client_id)
+                        self.opponents[client_id] = self._rival_id()
+                        break
+                time.sleep(1)
             self.emulator.send_to(client_id, self._rm_start(owner, 0))
             self.emulator.debug_log_tcp("RANKED RIVAL: %s" % client_id)
 
@@ -215,19 +229,26 @@ class RankedMixin:
                 message["service"], message["function"], message["rpc"], "That player is not on this server."
             )
         target = friend or (player_id or 1)
+        # The client calls this again to play: the sender right after sending, the receiver on accepting.
+        # Only the first call opens the challenge and tells both riders.
+        fresh = True
         if player_id and target != player_id:
             key = self._challenge_key(player_id, target)
-            self.challenges[key] = {
-                "key": key,
-                "starter": int(player_id),
-                "course": 3023709559,
-                "results": {},
-            }
-        self._push_challenge(client_id, target, 1)
-        for other, other_player in list(self.emulator.client_players.items()):
-            if other_player == target and other != client_id:
-                self._push_challenge(other, player_id or 1, 2)
-        self.emulator.debug_log_tcp("CHALLENGE: %s target=%s" % (client_id, target))
+            if key in self.challenges:
+                fresh = False
+            else:
+                self.challenges[key] = {
+                    "key": key,
+                    "starter": int(player_id),
+                    "course": 3023709559,
+                    "results": {},
+                }
+        if fresh:
+            self._push_challenge(client_id, target, 1)
+            for other, other_player in list(self.emulator.client_players.items()):
+                if other_player == target and other != client_id:
+                    self._push_challenge(other, player_id or 1, 2)
+        self.emulator.debug_log_tcp("CHALLENGE: %s target=%s fresh=%s" % (client_id, target, fresh))
         return self._status_payload(message, struct.pack("<I", 3023709559))
 
     def _challenge_key(self, left, right):
@@ -297,6 +318,19 @@ class RankedMixin:
         if both:
             self.challenges.pop(challenge["key"], None)
         return challenge_ids
+
+    def push_open_challenges(self, client_id, player_id):
+        """Show a rider who just logged in the challenges still waiting on them or their friend."""
+        for challenge in list(self.challenges.values()):
+            if player_id not in challenge["key"]:
+                continue
+            other = challenge["key"][0] if challenge["key"][1] == player_id else challenge["key"][1]
+            results = challenge["results"]
+            status = 1 if challenge["starter"] == player_id else 2
+            update = self._challenge_update_payload(
+                other, status, int(challenge["course"]), results.get(player_id), results.get(other)
+            )
+            self.emulator.send_to(client_id, self._push_frame(109, 13, update))
 
     def _challenge_key_ids(self, challenge):
         return challenge["key"]

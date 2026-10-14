@@ -89,3 +89,8 @@ Steam checkout, Kickstarter, and debug Exec and Eval. A checkout would charge a 
 - Claiming the daily gift. "Open reward" and the red ball should go away at once, without a restart.
 - Making a horse in the avatar screen. The client should show the coat that was picked, not the default one.
 - Steam achievements. The server now lists all 67 (`gamedata/steam_achievements.json`) and the client grants them through Steam. Clear a 1.10m course, groom the horse, or feed an apple, and the Steam pop-up should appear. The thresholds for each are inferred from the achievement names, so check that the counts match their text.
+- Pro Rider. With `everyone_pro` on, the menu should show the Pro badge, a ride should cost half the action points, the daily gift should be the larger one, the stable hand should be free, and names should show in the Pro colour in chat. `admin pro <rider> off` should turn it off for that rider.
+- Friends and club members who are online should show as online, and you should show as online to yourself. Closing the game should turn the rider offline for the others.
+- Sending a challenge. The sender rides at once. The friend gets one invite and, on accepting, no second one for the sender.
+- A ranked search with another rider online should keep waiting for them, not match the Rival. Alone on the server it should still match the Rival.
+- The default course on Meadow (and the challenge). The horse should start in the open, facing the three jumps, and the jumps should stand on the ground facing the horse.

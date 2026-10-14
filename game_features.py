@@ -431,7 +431,71 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         frame += self._no_guild_update(player_id)
         frame += self._online_count_frame()
         frame += self._admin_users_frame()
+        frame += self._pro_frame(player_id)
         return self._with_global_room(player_id, frame)
+
+    def is_pro(self, player_id):
+        """Pro Rider: the rider's own override, else the server's everyone_pro setting."""
+        if player_id:
+            with self._connect() as conn:
+                row = conn.execute("SELECT pro_override FROM player_data WHERE player_id = ?", (player_id,)).fetchone()
+            if row and row[0] is not None:
+                return bool(row[0])
+        return bool((getattr(self.emulator, "join_config", None) or {}).get("everyone_pro", False))
+
+    def _pro_frame(self, player_id):
+        """Player.UpdatePremiumFree: turns on the half action point cost and the Pro badge."""
+        return self._push_frame(109, 7, bytes([1 if self.is_pro(player_id) else 0]))
+
+    def _premium_users_frame(self):
+        """Game.PremiumUsers: who gets the Pro colour in chat. Sent for every rider online."""
+        online = sorted(set((getattr(self.emulator, "client_players", {}) or {}).values()))
+        payload = self._varint(len(online))
+        for other in online:
+            payload += struct.pack("<I", int(other)) + bytes([1 if self.is_pro(other) else 0])
+        return self._push_frame(108, 15, payload)
+
+    def broadcast_pro(self):
+        frame = self._premium_users_frame()
+        for other in list(getattr(self.emulator, "tcp_clients", {}) or {}):
+            self.emulator.send_to(other, frame)
+
+    def _presence_frame(self, player_id, online):
+        """Social.UpdatePlayerData: the Online flag, level, and state behind every friend, member, and ladder row."""
+        state = 3
+        if player_id in self.paddock_open:
+            state = 7
+        elif player_id in self.practice_open:
+            state = 4
+        elif self._user_state(player_id) in (1, 2):
+            state = self._user_state(player_id)
+        level = int(self.profile(player_id)["horse_level"] or 1)
+        return self._push_frame(105, 6, struct.pack("<IBiB", int(player_id), 1 if online else 0, level, state))
+
+    def announce_presence(self, player_id, online=True):
+        """Tell every connected client that this rider came online or went offline."""
+        if not player_id:
+            return
+        frame = self._presence_frame(player_id, online)
+        for other in list(getattr(self.emulator, "tcp_clients", {}) or {}):
+            self.emulator.send_to(other, frame)
+
+    def on_player_online(self, client_id, player_id):
+        """After login: show this rider as online, show who else is, and share who is Pro."""
+        if not player_id:
+            return
+        with self.lock:
+            self.announce_presence(player_id, True)
+            others = set((getattr(self.emulator, "client_players", {}) or {}).values()) - {player_id}
+            for other in sorted(others):
+                self.emulator.send_to(client_id, self._presence_frame(other, True))
+            self.broadcast_pro()
+            self.push_open_challenges(client_id, player_id)
+
+    def _ap_cost(self, player_id, key):
+        """Action points one ride costs. A Pro Rider pays half, which is what the client shows."""
+        cost = int(self.bal("action_points", key, default=20))
+        return cost // 2 if self.is_pro(player_id) else cost
 
     def _admin_users_frame(self):
         from admin import admin_player_ids, admin_users_frame
@@ -630,8 +694,11 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
             return [10, 15, 20, 25, 30, 35, 40]
         return [int(value) for value in table]
 
-    def _daily_coins(self, day):
+    def _daily_coins(self, day, pro=False):
         table = self._daily_table()
+        premium = self.bal("daily", "premium_coins", default=None)
+        if pro and isinstance(premium, list) and len(premium) >= len(table):
+            table = [int(value) for value in premium]
         index = (int(day or 1) - 1) % len(table)
         return table[index]
 
@@ -659,7 +726,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         if player_id:
             day, already = self._daily_state(player_id)
             if not already:
-                paid = self._daily_coins(day)
+                paid = self._daily_coins(day, pro=self.is_pro(player_id))
                 next_day = 1 if day >= len(self._daily_table()) else day + 1
                 today = datetime.date.today().isoformat()
                 with self._connect() as conn:
@@ -766,7 +833,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                 )
         reward_coins = int(self.bal("practice", "coins", default=25))
         reward_xp = int(self.bal("practice", "horse_xp", default=10))
-        ap_cost = int(self.bal("action_points", "practice", default=20))
+        ap_cost = self._ap_cost(player_id, "practice")
         wear = float(self.bal("grooming", "wear_per_ride", default=0.05))
         if player_id:
             self.practice_open.discard(player_id)
@@ -836,8 +903,8 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
 
     def on_PremiumGrooming(self, message, client_id, player_id):
         # The real client sends this only for a Pro Rider. Anyone can send the
-        # packet, and this server does not sell Pro, so the groom still costs coins.
-        return self._paid_groom(client_id, player_id, "PREMIUM GROOM", free=False)
+        # packet, so the server checks Pro itself and charges coins when it is not.
+        return self._paid_groom(client_id, player_id, "PREMIUM GROOM", free=self.is_pro(player_id))
 
     def _paid_groom(self, client_id, player_id, label, free=False):
         if not player_id:

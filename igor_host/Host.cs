@@ -810,7 +810,15 @@ public static class Host
         foreach (string key in fields.Keys)
         {
             PropertyInfo property = value.GetType().GetProperty(key);
-            if (property == null || !property.CanWrite)
+            if (property == null)
+            {
+                // Unity's Vector3 and Quaternion keep x, y, z, w in public fields, not properties.
+                FieldInfo field = value.GetType().GetField(key);
+                if (field != null && fields[key] != null)
+                    field.SetValue(value, ConvertTo(field.FieldType, fields[key]));
+                continue;
+            }
+            if (!property.CanWrite)
                 continue;
             object raw = fields[key];
             Type keyType = Game.GetType("Key");
@@ -963,14 +971,17 @@ public static class Host
         MethodInfo addItem = obstacles.GetType().GetMethod("Add");
         MethodInfo addSeq = sequence.GetType().GetMethod("Add");
         string[] ids = new string[] { "jump_01_110_blue", "jump_01_120_blue", "jump_02_110_green" };
-        float z = 15f;
+        // A flat, clear strip on the paddock terrain, found in its height map. The ground there is about -0.95.
+        // The editor turns a jump half way round (y 180 degrees) when it faces +z, as the horse does.
+        float[] ground = new float[] { -0.951f, -0.952f, -0.888f };
+        float z = 70f;
         for (int i = 0; i < ids.Length; i++)
         {
             object item = Activator.CreateInstance(itemType);
             itemType.GetProperty("Key").SetValue(item, Activator.CreateInstance(keyType, new object[] { ids[i] }), null);
             object place = Activator.CreateInstance(posType);
-            object position = Activator.CreateInstance(vectorType, new object[] { 0f, 0f, z });
-            object rotation = quatType.GetProperty("identity").GetValue(null, null);
+            object position = Activator.CreateInstance(vectorType, new object[] { -65f, ground[i], z });
+            object rotation = Activator.CreateInstance(quatType, new object[] { 0f, 1f, 0f, 0f });
             posType.GetProperty("Position").SetValue(place, position, null);
             posType.GetProperty("Rotation").SetValue(place, rotation, null);
             itemType.GetProperty("Position").SetValue(item, place, null);
@@ -978,6 +989,10 @@ public static class Host
             addSeq.Invoke(sequence, new object[] { (ushort)i });
             z += 20f;
         }
+        object horsePlace = Activator.CreateInstance(posType);
+        posType.GetProperty("Position").SetValue(horsePlace, Activator.CreateInstance(vectorType, new object[] { -65f, -0.6f, 50f }), null);
+        posType.GetProperty("Rotation").SetValue(horsePlace, quatType.GetProperty("identity").GetValue(null, null), null);
+        map.GetType().GetProperty("Horse").SetValue(map, horsePlace, null);
         obstaclesProp.SetValue(map, obstacles, null);
         sequenceProp.SetValue(map, sequence, null);
     }

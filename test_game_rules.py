@@ -732,3 +732,149 @@ class DailyGiftTests(Harness):
         fields = self.features.session_fields(player)
         self.assertEqual((fields["SkinId"], fields["PlayerSkinId"]), (7, 4))
         self.assertEqual((fields["Gender"], fields["PlayerGender"]), (2, 1))
+
+
+class PresenceTests(Harness):
+    @staticmethod
+    def presence(frames, client):
+        """(player id, online, level, state) for every Social.UpdatePlayerData frame sent to this client."""
+        return [struct.unpack("<IBiB", frame[3:]) for to, frame in frames if to == client and frame[1:3] == bytes([105, 6])]
+
+    def test_a_login_shows_the_rider_online_to_everyone_and_lists_who_is_already_here(self):
+        first, second = self.rider(1, "a"), self.rider(2, "b")
+        self.emu.tcp_clients = {"a": None, "b": None}
+        self.features.on_player_online("b", second)
+        # The rider sees themselves online, so the club member list stops saying offline.
+        self.assertIn((second, 1), [(row[0], row[1]) for row in self.presence(self.emu.sent, "b")])
+        self.assertIn((first, 1), [(row[0], row[1]) for row in self.presence(self.emu.sent, "b")])
+        self.assertIn((second, 1), [(row[0], row[1]) for row in self.presence(self.emu.sent, "a")])
+
+    def test_leaving_shows_the_rider_offline(self):
+        self.rider(1, "a")
+        second = self.rider(2, "b")
+        self.emu.tcp_clients = {"a": None}
+        self.features.announce_presence(second, False)
+        self.assertEqual([(row[0], row[1]) for row in self.presence(self.emu.sent, "a")], [(second, 0)])
+
+    def test_the_state_names_the_paddock(self):
+        rider = self.rider(1, "a")
+        self.emu.tcp_clients = {"a": None}
+        self.features.paddock_open.add(rider)
+        self.features.announce_presence(rider, True)
+        self.assertEqual(self.presence(self.emu.sent, "a")[0][3], 7)
+
+
+class ProRiderTests(Harness):
+    def test_everyone_is_pro_when_the_server_says_so(self):
+        rider = self.rider(1, "a")
+        self.assertFalse(self.features.is_pro(rider))
+        self.emu.join_config = {"everyone_pro": True}
+        self.assertTrue(self.features.is_pro(rider))
+
+    def test_one_rider_can_be_set_apart_from_the_server_setting(self):
+        rider, other = self.rider(1, "a"), self.rider(2, "b")
+        self.emu.join_config = {"everyone_pro": True}
+        self.sql("UPDATE player_data SET pro_override = 0 WHERE player_id = ?", (rider,))
+        self.assertFalse(self.features.is_pro(rider))
+        self.assertTrue(self.features.is_pro(other))
+        self.emu.join_config = {"everyone_pro": False}
+        self.sql("UPDATE player_data SET pro_override = 1 WHERE player_id = ?", (rider,))
+        self.assertTrue(self.features.is_pro(rider))
+        self.assertFalse(self.features.is_pro(other))
+
+    def test_the_session_tells_the_client_pro_is_on(self):
+        rider = self.rider(1, "a")
+        self.emu.join_config = {"everyone_pro": True}
+        frame = self.features._pro_frame(rider)
+        self.assertEqual(frame[1:], bytes([109, 7, 1]))
+        self.emu.join_config = {"everyone_pro": False}
+        self.assertEqual(self.features._pro_frame(rider)[1:], bytes([109, 7, 0]))
+
+    def test_a_pro_rider_pays_half_the_action_points(self):
+        rider = self.rider(1, "a")
+        self.assertEqual(self.features._ap_cost(rider, "practice"), 20)
+        self.emu.join_config = {"everyone_pro": True}
+        self.assertEqual(self.features._ap_cost(rider, "practice"), 10)
+        self.assertEqual(self.features._ap_cost(rider, "ranked"), 10)
+
+    def test_a_pro_rider_gets_the_larger_daily_gift(self):
+        self.features.balance["daily"] = {"coins": [10, 15, 20, 25, 30, 35, 40], "premium_coins": [20, 30, 40, 50, 60, 70, 80]}
+        self.assertEqual(self.features._daily_coins(2), 15)
+        self.assertEqual(self.features._daily_coins(2, pro=True), 30)
+
+    def test_the_stable_hand_is_free_only_for_pro(self):
+        rider = self.rider(1, "a")
+        self.features.save_profile(rider, grooming=0.0, coins=100)
+        self.features.on_PremiumGrooming(self.message(5, service=109), "a", rider)
+        self.assertEqual(self.features.profile(rider)["coins"], 80)
+        self.features.save_profile(rider, grooming=0.0, coins=100)
+        self.emu.join_config = {"everyone_pro": True}
+        self.features.on_PremiumGrooming(self.message(5, service=109), "a", rider)
+        self.assertEqual(self.features.profile(rider)["coins"], 100)
+
+    def test_chat_colour_lists_every_rider_online(self):
+        first, second = self.rider(1, "a"), self.rider(2, "b")
+        self.emu.join_config = {"everyone_pro": True}
+        self.sql("UPDATE player_data SET pro_override = 0 WHERE player_id = ?", (second,))
+        frame = self.features._premium_users_frame()
+        self.assertEqual(frame[1:3], bytes([108, 15]))
+        rows = frame[4:]
+        self.assertEqual(struct.unpack_from("<IB", rows, 0), (first, 1))
+        self.assertEqual(struct.unpack_from("<IB", rows, 5), (second, 0))
+
+
+class ChallengeStartTests(Harness):
+    def states(self, client):
+        return [frame for to, frame in self.emu.sent if to == client and frame[1:3] == bytes([109, 13])]
+
+    def start(self, client, player, friend):
+        return self.features.on_StartChallenge(self.message(2, struct.pack("<I", friend), service=107), client, player)
+
+    def test_starting_tells_both_riders_once(self):
+        sender, friend = self.rider(1, "a"), self.rider(2, "b")
+        self.start("a", sender, friend)
+        self.assertEqual((len(self.states("a")), len(self.states("b"))), (1, 1))
+
+    def test_playing_a_challenge_does_not_start_it_again(self):
+        sender, friend = self.rider(1, "a"), self.rider(2, "b")
+        self.start("a", sender, friend)
+        # The sender's client asks again to load the course. So does the friend when they accept.
+        self.start("a", sender, friend)
+        self.start("b", friend, sender)
+        self.assertEqual((len(self.states("a")), len(self.states("b"))), (1, 1))
+        self.assertEqual(self.features.challenges[tuple(sorted((sender, friend)))]["starter"], sender)
+
+    def test_a_rider_who_logs_in_later_sees_the_open_challenge(self):
+        sender, friend = self.rider(1, "a"), self.rider(2)
+        self.start("a", sender, friend)
+        self.emu.client_players["b"] = friend
+        self.features.push_open_challenges("b", friend)
+        self.assertEqual(len(self.states("b")), 1)
+
+
+class RankedRivalTests(Harness):
+    def test_the_rival_only_fills_in_when_nobody_else_is_online(self):
+        self.rider(1, "a")
+        self.emu.join_config = {"ranked_rival": "alone"}
+        self.assertTrue(self.features._rival_allowed())
+        self.rider(2, "b")
+        self.assertFalse(self.features._rival_allowed())
+
+    def test_the_rival_can_be_always_or_never(self):
+        self.rider(1, "a")
+        self.rider(2, "b")
+        self.emu.join_config = {"ranked_rival": "always"}
+        self.assertTrue(self.features._rival_allowed())
+        self.emu.join_config = {"ranked_rival": "never"}
+        self.assertFalse(self.features._rival_allowed())
+
+
+class DefaultCourseTests(Harness):
+    def test_the_default_course_has_a_start_and_jumps_on_the_ground_facing_the_horse(self):
+        course = self.features._meadow_map(60)
+        self.assertEqual(course["Horse"]["Rotation"]["w"], 1)
+        ground = course["Obstacles"][0]["Position"]["Position"]["y"]
+        self.assertLess(abs(ground - course["Horse"]["Position"]["y"]), 1)
+        for jump in course["Obstacles"]:
+            self.assertEqual(jump["Position"]["Rotation"], {"x": 0, "y": 1, "z": 0, "w": 0})
+            self.assertGreater(jump["Position"]["Position"]["z"], course["Horse"]["Position"]["z"])

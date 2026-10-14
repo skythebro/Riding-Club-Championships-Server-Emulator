@@ -104,7 +104,7 @@
     "rename_coins": 0
   },
   "daily": {
-    "_note": "Server choice. The original login gift ran for 200 days and that day-by-day list was not recovered. premium_coins is the larger gift shown for a Pro Rider. The server pays coins, not premium_coins.",
+    "_note": "Server choice. The original login gift ran for 200 days and that day-by-day list was not recovered. premium_coins is the larger gift for a Pro Rider, and the server pays it to them.",
     "coins": [
       10,
       15,
