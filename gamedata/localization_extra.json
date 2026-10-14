@@ -1426,10 +1426,10 @@
         }
     },
     "gui_main_menu_back_to_menu_button": {
-        "text": "Back to menu",
+        "text": "Back to Menu",
         "data": {
             "ru": {
-                "original": "Back to menu",
+                "original": "Back to Menu",
                 "translation": "В меню"
             }
         }
@@ -4225,10 +4225,10 @@
         }
     },
     "avatar_creation_mane_n_tail_color": {
-        "text": "Mane and tail",
+        "text": "Mane and tail color",
         "data": {
             "ru": {
-                "original": "Mane and tail",
+                "original": "Mane and tail color",
                 "translation": "Грива и хвост"
             }
         }
@@ -4243,10 +4243,10 @@
         }
     },
     "avatar_creation_choose_skin_color": {
-        "text": "Skin color",
+        "text": "Choose skin color",
         "data": {
             "ru": {
-                "original": "Skin color",
+                "original": "Choose skin color",
                 "translation": "Цвет кожи"
             }
         }
@@ -4261,10 +4261,10 @@
         }
     },
     "avatar_creation_choose_rider_gender": {
-        "text": "Rider",
+        "text": "Choose Rider Gender",
         "data": {
             "ru": {
-                "original": "Rider",
+                "original": "Choose Rider Gender",
                 "translation": "Всадник"
             }
         }
@@ -4279,19 +4279,19 @@
         }
     },
     "avatar_creation_choose_horse_name": {
-        "text": "Choose a name",
+        "text": "Choose Horse Name",
         "data": {
             "ru": {
-                "original": "Choose a name",
+                "original": "Choose Horse Name",
                 "translation": "Выберите имя"
             }
         }
     },
     "avatar_creation_choose_horse_color": {
-        "text": "Horse color",
+        "text": "Choose horse color",
         "data": {
             "ru": {
-                "original": "Horse color",
+                "original": "Choose horse color",
                 "translation": "Масть лошади"
             }
         }
@@ -4306,10 +4306,10 @@
         }
     },
     "avatar_creation_choose_horse_gender": {
-        "text": "Horse",
+        "text": "Choose Horse Gender",
         "data": {
             "ru": {
-                "original": "Horse",
+                "original": "Choose Horse Gender",
                 "translation": "Лошадь"
             }
         }
@@ -4756,19 +4756,19 @@
         }
     },
     "avatar_creation_change_your_character": {
-        "text": "Change your character",
+        "text": "Purchasing your new look.",
         "data": {
             "ru": {
-                "original": "Change your character",
+                "original": "Purchasing your new look.",
                 "translation": "Измените персонажа"
             }
         }
     },
     "avatar_creation_welcome_change": {
-        "text": "Change how you look",
+        "text": "Select from either a male or female avatar, and from the vast range of horse colors available. You may also rename your horse if you wish.\nWhen you are happy with your choices, select \"done\".\nIf you wish to return without buying any changes, simply select the \"Back to menu\" button.",
         "data": {
             "ru": {
-                "original": "Change how you look",
+                "original": "Select from either a male or female avatar, and from the vast range of horse colors available. You may also rename your horse if you wish.\nWhen you are happy with your choices, select \"done\".\nIf you wish to return without buying any changes, simply select the \"Back to menu\" button.",
                 "translation": "Измените внешность"
             }
         }
