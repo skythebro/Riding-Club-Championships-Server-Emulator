@@ -42,7 +42,8 @@ Rules that keep the client connected:
 
 | Path | What |
 | --- | --- |
-| `Server.py` | FastAPI HTTP on 8080, TCP game server on 27130, policy server on 27132, `UserDatabase` |
+| `Server.py` | FastAPI HTTP on 8080, TCP game server on 27130, policy server on 27132 |
+| `db.py` | `UserDatabase`: accounts, profiles, and the base tables |
 | `game_features.py` | Every game handler (`on_*`). This is where new behaviour goes. |
 | `storage.py` | `connect_db(path)`: the only way to open SQLite. It commits, closes, and waits on a busy lock. |
 | `server_config.py` | `server.json` loading, login allow list, `ride_is_plausible` |
