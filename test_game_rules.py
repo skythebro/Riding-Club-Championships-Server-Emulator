@@ -676,3 +676,44 @@ class PaddockTests(Harness):
         self.features.balance["paddock"] = {"max_per_minute": 2, "prizes": [{"coins": 2, "weight": 1}]}
         paid = [bool(self.features._paddock_prize(player)) for _ in range(4)]
         self.assertEqual(paid, [True, True, False, False])
+
+
+class ClubJoinRequestTests(Harness):
+    def guild_updates(self):
+        return [fields for kind, fields in self.emu.igor.pushed if kind == "Protocol2.GuildUpdate"]
+
+    def test_a_join_request_reaches_the_applicant_and_the_owner(self):
+        owner = self.rider(1, "owner")
+        guest = self.rider(2, "guest")
+        guild_id = self.make_club(owner)
+        self.emu.sent.clear()
+        self.emu.igor.pushed.clear()
+        reply = self.features.on_NoGuildCreateRequest(self.message(8, struct.pack("<I", guild_id)), "guest", guest)
+        self.assertEqual(reply, b"ok")
+        # The applicant gets NoGuildUpdate (105/13) so the Join button shows a pending request.
+        frames = [frame for target, frame in self.emu.sent if target == "guest" and frame[1:3] == bytes([105, 13])]
+        self.assertEqual(len(frames), 1)
+        # The owner gets the club again, now listing the applicant.
+        update = self.guild_updates()[-1]
+        self.assertEqual([row["PlayerId"] for row in update["Requests"]], [guest])
+        self.assertIsNone(update["Requests"][0]["ActorId"])
+        self.assertGreater(update["Requests"][0]["CreatedTime"], 0)
+
+    def test_accepting_clears_the_request_from_the_owners_list(self):
+        owner = self.rider(1, "owner")
+        guest = self.rider(2, "guest")
+        guild_id = self.make_club(owner)
+        self.features.on_NoGuildCreateRequest(self.message(8, struct.pack("<I", guild_id)), "guest", guest)
+        self.emu.igor.pushed.clear()
+        self.features.on_GuildAcceptRequest(self.message(14, struct.pack("<I", guest)), "owner", owner)
+        self.assertEqual(self.features._player_guild(guest), guild_id)
+        self.assertEqual(self.guild_updates()[-1]["Requests"], [])
+
+    def test_cancelling_a_request_clears_it_too(self):
+        owner = self.rider(1, "owner")
+        guest = self.rider(2, "guest")
+        guild_id = self.make_club(owner)
+        self.features.on_NoGuildCreateRequest(self.message(8, struct.pack("<I", guild_id)), "guest", guest)
+        self.emu.igor.pushed.clear()
+        self.features.on_NoGuildCancelRequest(self.message(11, struct.pack("<I", guild_id)), "guest", guest)
+        self.assertEqual(self.guild_updates()[-1]["Requests"], [])

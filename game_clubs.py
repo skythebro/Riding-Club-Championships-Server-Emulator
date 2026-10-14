@@ -208,6 +208,10 @@ class ClubsMixin:
                 "SELECT player_id, role FROM guild_members WHERE guild_id = ? ORDER BY role, player_id",
                 (guild_id,),
             ).fetchall()
+            request_rows = conn.execute(
+                "SELECT player_id, kind, actor_id, created_at FROM guild_requests WHERE guild_id = ? ORDER BY created_at",
+                (guild_id,),
+            ).fetchall()
         if row is None:
             self.emulator.send_to(client_id, self._push_frame(105, 18, b"\x00"))
             return
@@ -223,6 +227,12 @@ class ClubsMixin:
             "Members": [
                 {"PlayerId": player, "Status": role or 3, "CreatedTime": 0}
                 for player, role in member_rows
+            ],
+            # A join request has no ActorId (the rider asked). An invite carries the rider who sent it.
+            # Always sent, so an answered request disappears from the owner's list.
+            "Requests": [
+                {"PlayerId": player, "ActorId": actor if kind == "invite" else None, "CreatedTime": int(created or 0)}
+                for player, kind, actor, created in request_rows
             ],
         })
         self.emulator.send_to(client_id, frame)
@@ -352,6 +362,7 @@ class ClubsMixin:
                     (guild_id, target),
                 )
             self._push_no_guild_update(target)
+            self._push_guild_members(guild_id)
         self.emulator.debug_log_tcp("GUILD CANCEL: %s target=%s" % (client_id, target))
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
 
@@ -463,9 +474,12 @@ class ClubsMixin:
         if guild_id and player_id and self._guild_exists(guild_id):
             with self._connect() as conn:
                 conn.execute(
-                    "INSERT OR REPLACE INTO guild_requests (guild_id, player_id, kind) VALUES (?, ?, 'join')",
-                    (guild_id, player_id),
+                    "INSERT OR REPLACE INTO guild_requests (guild_id, player_id, kind, created_at) VALUES (?, ?, 'join', ?)",
+                    (guild_id, player_id, int(time.time())),
                 )
+            # The rider's Join button turns into a pending request, and the club's owner sees it in Requests.
+            self._push_no_guild_update(player_id)
+            self._push_guild_members(guild_id)
         self.emulator.debug_log_tcp("GUILD JOIN: %s guild=%s" % (client_id, guild_id))
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
 
@@ -508,6 +522,7 @@ class ClubsMixin:
                     (guild_id, player_id),
                 )
             self._push_no_guild_update(player_id)
+            self._push_guild_members(guild_id)
         self.emulator.debug_log_tcp("GUILD JOIN CANCEL: %s guild=%s" % (client_id, guild_id))
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
 
@@ -543,6 +558,7 @@ class ClubsMixin:
                     (guild_id, target, player_id, int(time.time())),
                 )
             self._push_no_guild_update(target)
+            self._push_guild_members(guild_id)
         self.emulator.debug_log_tcp("GUILD INVITE PLAYER: %s target=%s" % (client_id, target))
         return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
 

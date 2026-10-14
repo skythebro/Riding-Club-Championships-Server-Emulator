@@ -85,3 +85,4 @@ Steam checkout, Kickstarter, and debug Exec and Eval. A checkout would charge a 
 - A level-up should give 100 action points.
 - The +1 on every stat above half energy. The stats panel should show it, and it should go away at half energy or below.
 - Showdown places 4 to 10 getting a lucky four leaf clover.
+- A second rider pressing Join on a club. Their button should become a pending request. The club owner and managers should see the rider under Requests, with a count on the club menu, and Accept should put the rider in the club. Cancelling should clear it on both screens.

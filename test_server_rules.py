@@ -474,6 +474,9 @@ class GuildInviteTests(unittest.TestCase):
             def _clients_for(self, player_id):
                 return ["invitee"]
 
+            def _push_guild_members(self, guild_id):
+                pass
+
         for name in ("_uint_from_rest", "_varint", "_push_frame", "_guild_request_bytes", "_no_guild_update", "_push_no_guild_update"):
             setattr(Box, name, getattr(GameFeatures, name))
         message = {"service": 105, "function": 16, "rpc": 3, "rest": struct.pack("<I", 4).hex()}
