@@ -7,7 +7,6 @@ Analyze debug logs from the RCC Server Emulator to understand protocol patterns
 import os
 import re
 from pathlib import Path
-from datetime import datetime
 
 def analyze_tcp_logs(log_file):
     """Analyze TCP communication logs"""
@@ -51,7 +50,7 @@ def analyze_tcp_logs(log_file):
                     client_id = client_match.group(1)
                     print(f"🔌 Disconnected: {client_id}")
     
-    print(f"\n📊 Summary:")
+    print("\n📊 Summary:")
     print(f"Total connections: {len(connections)}")
     print(f"Successful logins: {sum(1 for c in connections.values() if c.get('logged_in', False))}")
     print(f"Total messages: {len(messages)}")
@@ -65,7 +64,7 @@ def analyze_tcp_logs(log_file):
         service_stats[service_id]["count"] += 1
         service_stats[service_id]["rpcs"].add(msg["rpc"])
     
-    print(f"\n📈 Service Usage:")
+    print("\n📈 Service Usage:")
     for service_id, stats in service_stats.items():
         service_name = {0: "Login", 1: "Unknown1", 2: "Unknown2"}.get(service_id, f"Unknown{service_id}")
         print(f"  Service {service_id} ({service_name}): {stats['count']} messages, RPCs: {sorted(stats['rpcs'])}")
@@ -77,7 +76,6 @@ def analyze_binary_logs(log_file):
     
     incoming_count = 0
     outgoing_count = 0
-    patterns = {}
     
     with open(log_file, 'r') as f:
         content = f.read()
@@ -101,7 +99,7 @@ def analyze_binary_logs(log_file):
                     first_byte = hex_data[:2]
                     first_bytes[first_byte] = first_bytes.get(first_byte, 0) + 1
             
-            print(f"\n📋 Common first bytes (service IDs):")
+            print("\n📋 Common first bytes (service IDs):")
             for byte, count in sorted(first_bytes.items(), key=lambda x: x[1], reverse=True):
                 print(f"  0x{byte}: {count} occurrences")
 
@@ -154,7 +152,7 @@ def main():
         latest_http = max(http_logs, key=os.path.getctime)
         analyze_http_logs(latest_http)
     
-    print(f"\n✅ Analysis complete!")
+    print("\n✅ Analysis complete!")
     print(f"📁 All logs available in: {debug_dir}")
 
 if __name__ == "__main__":

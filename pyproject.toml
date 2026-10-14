@@ -1,0 +1,14 @@
+[project]
+name = "rcc-server-emu"
+version = "0.1.0"
+description = "Private server for Riding Club Championships"
+requires-python = ">=3.10"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 140
+extend-exclude = [".venv", "debug_logs", "images"]
+
+[tool.ruff.lint]
+# Real errors first: syntax, undefined names, unused imports and variables.
+select = ["E9", "F"]

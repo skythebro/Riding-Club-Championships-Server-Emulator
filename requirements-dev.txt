@@ -1,0 +1,5 @@
+# Tools for working on the server. Not needed to host it.
+-r requirements.txt
+ruff>=0.6
+# agent_mcp/server.py (drives the game client through the MelonLoader bridge)
+mcp>=2.3

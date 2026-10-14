@@ -32,13 +32,13 @@ An existing save is not rewritten when you change `new_player`. Those values app
 
 ## Setup
 
-1. Install Python 3.7 or newer.
+1. Install Python 3.10 or newer.
 2. From this folder:
 
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
-pip install fastapi uvicorn websockets aiofiles python-multipart
+pip install -r requirements.txt
 ```
 
 3. The card host reads `gamedata/wardrobe.json`, `gamedata/course_items.json`, and `gamedata/localization_extra.json` from this folder. If the game already has the same files in `UserData`, next to `rcc_Data`, those copies win.
@@ -63,49 +63,48 @@ python Server.py
 start_server.bat "D:\Games\RidingClubChampionships\rcc_Data\Managed"
 ```
 
-The client has to point at this machine. `AssetbundleEditServer.py` rewrites `resources.assets`. Replacing `servers.txt` alone is not enough, because the game reads the host from the asset bundle.
+## Pointing the game at a server
 
-```json
-[
-    {
-        "Name": "local_emulator",
-        "WebSocketUrl": "ws://127.0.0.1:80/websocket",
-        "Host": "127.0.0.1",
-        "Port": 27130,
-        "PolicyPort": 27132,
-        "ServerURL": "http://127.0.0.1:80/mochiweb/",
-        "ImageURL": "http://127.0.0.1:80/rcc/",
-        "ProxyURL": "http://127.0.0.1:80/",
-        "FacebookOGUrl": "http://127.0.0.1:80/rcc/open_graph/",
-        "FacebookApp": "ridingclub"
-    }
-]
+The game reads `servers.txt`, next to `rcc.exe`, before its built-in list, and uses the entry named `live`. That file is all a player needs. Nothing inside the game files changes, and Steam's "Verify integrity of game files" puts the original back.
+
+To play on this PC:
+
+```bash
+python client_config.py
+```
+
+This writes `servers.txt` into the game folder. The old one is kept as `servers.txt.before-emu`.
+
+For players on other machines, run it with the address they reach you at, and send them the `servers.txt` it writes into this folder:
+
+```bash
+python client_config.py 203.0.113.7
 ```
 
 | Port | Use |
 | --- | --- |
-| 27130 | Game TCP |
+| 27130 | Game TCP. Open this one for other players. |
 | 27132 | Policy file |
-| 80 | HTTP and the legacy websocket |
+| 8080 | HTTP. The Steam client only uses it for Facebook and VK features. |
 | 27141 | Card host, local only |
-
-Port 80 needs an administrator shell on Windows, or change `http_port` in `server.json`.
 
 ## Letting other people on
 
 Copy [`server.json.example`](server.json.example) to `server.json`.
 
-- `bind_host` is `127.0.0.1` until you set `0.0.0.0`. Only then can another computer reach the server. Put this machine's address in their client server list, not `127.0.0.1`.
+- `bind_host` is `127.0.0.1` until you set `0.0.0.0`. Only then can another computer reach the server.
+- `public_host` is the address players use to reach you. `client_config.py` uses it when you give no address.
 - `allowed_steam_ids` empty means any real Steam account can create a rider. Fill it with the Steam ids you want, and everyone else is refused.
 - `open_registration` false keeps accounts that already exist and refuses new ones.
+- `max_clients` is how many game connections may be open at once. 64 by default. A connection that does not log in within a minute is closed.
 
 The stock client does not send a password. It sends a Steam id. This server cannot ask Valve whether that ticket is real, so a person who can reach the port and knows an id can claim it. Use the allow list, and do not leave `bind_host` open to the internet, if that matters to you.
 
 ## What a modified client cannot do
 
-Coins, rating, action points, and showdown prizes are stored here. A debug "give reward" packet is ignored. A ranked result pays only after that client was actually paired, and only once. A showdown prize uses the place on today's board, not the place written in the packet. A ride shorter than `min_ride_seconds` (8 by default) is not stored and does not win. Grooming cannot jump to clean in one packet, and the Pro Rider groom packet still costs coins because this server does not sell Pro. Course edits are limited to the rider who owns the course. A login that is not a real Steam id does not create an account.
+Coins, rating, action points, and showdown prizes are stored here. A debug "give reward" packet is ignored. A ranked result pays only after that client was actually paired, and only once. A showdown prize uses the place on today's board, not the place written in the packet. A ride shorter than `min_ride_seconds` (8 by default) is not stored and does not win. Grooming cannot jump to clean in one packet, and the Pro Rider groom packet still costs coins because this server does not sell Pro. Course edits are limited to the rider who owns the course, only slots bought through the editor can be saved, and a saved course is capped at `course_editor.max_slot_bytes`. Clothes and tack must be owned before they can be worn. Only a club's owner can rename it, change the icon, or change roles. Owners and managers invite, accept, and kick, and a manager can only kick plain members. A club holds `club.max_members`, and a rider is in one club at a time. When two riders here meet in ranked, both results are compared and each is paid once. A rider who quits or drops loses. The showdown prize pays once per day's board. A login that is not a real Steam id, or that `allowed_steam_ids` and `open_registration` do not let in, does not create an account. Game calls before a login are refused.
 
-`http://127.0.0.1:80/health` should answer while the server is up.
+`http://127.0.0.1:8080/health` should answer while the server is up. The `/debug` pages list Steam ids and packet logs, so they only answer requests from this machine.
 
 ## Driving the client
 
@@ -125,7 +124,9 @@ The TCP log in `debug_logs/` names the last call. `NO REPLY` on an RPC means tha
 
 ## Contributing
 
-Fork, keep new replies in `game_features.py`, and write cards through the host rather than hand-packed bytes. Test with the Steam client. The open items are the unchecked boxes in [`STATUS.md`](STATUS.md).
+Fork, keep new replies in `game_features.py`, and write cards through the host rather than hand-packed bytes. Test with the Steam client.
+
+Install the tools with `pip install -r requirements-dev.txt`. Run `python -m unittest test_server_rules test_game_rules test_igor_codec` and `ruff check .` before a pull request. The tests use a temporary database and never touch `users.db`. [`AGENTS.md`](AGENTS.md) explains how a packet flows through the code, for people and for coding agents. The open items are the unchecked boxes in [`STATUS.md`](STATUS.md).
 
 ## Legal
 

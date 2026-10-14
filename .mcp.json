@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "rcc-game": {
+      "command": ".venv/Scripts/python.exe",
+      "args": ["agent_mcp/server.py"]
+    }
+  }
+}

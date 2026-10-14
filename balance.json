@@ -34,7 +34,9 @@
     "win_coins": 25,
     "win_rating": 15,
     "loss_coins": 0,
-    "loss_rating": 0
+    "loss_rating": 0,
+    "_settle_note": "Server choice. Two riders on this server are settled when both finish. If one has not finished after this many seconds, the other wins by forfeit.",
+    "settle_wait_seconds": 120
   },
   "showdown": {
     "_note": "Original entry is level 10 and 150 skill tickets, and it does not cost action points. Original coins: 1st 2000, 2nd 500, 3rd 500, 4th-10th 250, 11th-100th 100. 2nd also gets item_apple_big and 200 horse XP. 3rd gets item_apple and 200 horse XP. The client names item_lucky_leaf, but that icon is not in the asset list, so places 4-10 do not grant it yet. The exclusive jacket and the apple slice have no item id in the client.",
@@ -83,7 +85,9 @@
     "_note": "The original game included one free show-jumping slot. The coin price for an extra slot, for submitting a course, and for one placed jump was never published. 0 means every slot is free. If you set slot_coins, the first slot stays free and the later ones cost that many coins. piece_coins is charged for every course-editor piece, because the item list has no per-jump price. Names and coin prices for each placed piece are under items. piece_coins is used only when that piece has no price.",
     "slot_coins": 0,
     "submit_coins": 0,
-    "piece_coins": 0
+    "piece_coins": 0,
+    "_max_slot_bytes_note": "Server limit. A saved course larger than this many bytes is refused. A placed piece is about 32 bytes.",
+    "max_slot_bytes": 524288
   },
   "club": {
     "_note": "Original: 20 members, name 30, short name 10, description 400, welcome 100. A rename price was not published.",
@@ -142,6 +146,13 @@
     "rating": 1000
   },
   "xp_per_level": 100,
+  "max_level": 60,
+  "skill_points_per_level": 1,
+  "stat_cap": 10,
+  "horse_stats": {
+    "_note": "Server choice. The original starting stats were not recorded. The client caps a stat at stat_cap (10) on the skill screen, and 60 levels at one skill point each fill all six, so 0 matches that design. Use one number for every stat, or one per stat: {\"strength\": 2, \"timing\": 2, \"speed\": 2, \"acceleration\": 2, \"stamina\": 2, \"obedience\": 2}. Starting stats count toward stat_cap. Saved skill points are kept when this changes.",
+    "start": 0
+  },
   "starter": {
     "_note": "Given once, when an account has no clothes and no tack. These are the plain pieces already in the shop. The mane is a hair color, not an item. An account that already owns gear is left alone.",
     "rider": [

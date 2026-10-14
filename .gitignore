@@ -5,3 +5,8 @@ server.json
 *.pyc
 __pycache__/
 igor_host/*.exe
+.venv/
+.ruff_cache/
+*.db-journal
+*.db-wal
+*.db-shm

@@ -82,12 +82,14 @@ class IgorClient:
         self.sock = None
         self.reader = None
 
-    def _request(self, payload):
+    def _request(self, payload, retry=True):
         with self.lock:
             try:
                 return self._request_once(payload)
             except (OSError, RuntimeError):
                 self._close_socket()
+                if not retry:
+                    raise
                 return self._request_once(payload)
 
     def _request_once(self, payload):
@@ -107,7 +109,9 @@ class IgorClient:
         return response
 
     def feed(self, client_id, data: bytes):
-        response = self._request({"op": "feed", "client": client_id, "hex": data.hex()})
+        # No retry: the host may have buffered these bytes before the error, and a
+        # second feed would run the same call twice (a purchase, a reward).
+        response = self._request({"op": "feed", "client": client_id, "hex": data.hex()}, retry=False)
         return response.get("messages") or []
 
     def drop(self, client_id):

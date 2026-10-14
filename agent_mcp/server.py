@@ -9,7 +9,13 @@ from pathlib import Path
 from mcp.server.mcpserver import MCPServer
 
 BRIDGE = ("127.0.0.1", 27140)
-EMU_HEALTH = "http://127.0.0.1:80/health"
+try:
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from server_config import load_config
+    EMU_HEALTH = "http://127.0.0.1:%s/health" % load_config()["http_port"]
+except Exception:
+    EMU_HEALTH = "http://127.0.0.1:8080/health"
 LOG_DIR = Path(__file__).resolve().parents[1] / "debug_logs"
 
 server = MCPServer(

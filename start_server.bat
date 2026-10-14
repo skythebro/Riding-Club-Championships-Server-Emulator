@@ -11,7 +11,7 @@ if not exist ".venv" (
 )
 
 call .venv\Scripts\activate.bat
-pip install fastapi uvicorn websockets aiofiles python-multipart UnityPy
+pip install -q -r requirements.txt
 
 set "MANAGED=%~dp0..\rcc_Data\Managed"
 if not "%~1"=="" set "MANAGED=%~1"
@@ -32,7 +32,7 @@ if exist "igor_host\IgorHost.exe" (
 
 echo.
 echo Starting server...
-echo   HTTP: http://127.0.0.1:80
+echo   HTTP: http://127.0.0.1:8080 (or http_port in server.json)
 echo   Game: 127.0.0.1:27130
 echo.
 echo Press Ctrl+C to stop the server. Close the card host window too.

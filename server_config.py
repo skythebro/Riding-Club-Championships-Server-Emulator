@@ -7,10 +7,12 @@ DEFAULTS = {
     "bind_host": "127.0.0.1",
     "tcp_port": 27130,
     "policy_port": 27132,
-    "http_port": 80,
+    "http_port": 8080,
+    "public_host": "",
     "open_registration": True,
     "allowed_steam_ids": [],
     "min_ride_seconds": 8,
+    "max_clients": 64,
 }
 
 STEAM_ID_MIN = 76561197960265728

@@ -2,6 +2,7 @@
 
 import socket
 import struct
+import tempfile
 import time
 import unittest
 from pathlib import Path
@@ -92,7 +93,14 @@ class LoginBurstServerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         from Server import RCCServerEmulator
-        cls.emu = RCCServerEmulator()
+        # Never touch the real save in users.db.
+        cls.tmp = tempfile.TemporaryDirectory()
+        cls.emu = RCCServerEmulator(db_path=str(Path(cls.tmp.name) / "users.db"), debug_logging=False)
+        cls.emu.capture_outbox = True
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
 
     def test_burst_replies_only_to_rpcs(self):
         client = "burst-test"
@@ -106,9 +114,12 @@ class LoginBurstServerTest(unittest.TestCase):
                 if reply:
                     replies.extend(reply)
         self.emu.igor.drop(client)
+        player_id = struct.pack("<I", self.emu.client_players[client]).hex()
         self.assertTrue(replies.hex().startswith(
-            "0b6400030000" + "010000000100" + "066c0901000000" + "066a0b02000000" + "106d000001000000000000000000c0a847"
-        ))
+            # Login (new rider, state 1), the Subscribe online count, offers, empty likes, then the session push.
+            "0b6400030000" + player_id + "0100" + "066c1101000000" + "066c0901000000" + "066a0b02000000"
+            + "106d0000010000000000000001"
+        ), replies.hex()[:120])
         self.assertIn("6d02", replies.hex())
         stored = self.emu.database.get_player_data(self.emu.client_players[client])
         self.assertEqual(stored["name"], "Skye")
@@ -154,11 +165,39 @@ class LoginBurstServerTest(unittest.TestCase):
     def _frame(self, body):
         return bytes([len(body)]) + body
 
+    def test_allow_list_refuses_login(self):
+        saved = self.emu.join_config
+        self.emu.join_config = {"open_registration": True, "allowed_steam_ids": ["76561198000000001"]}
+        try:
+            message = self.emu.igor.feed("uninvited", bytes([24]) + login_request(5, "ticket"))[0]
+            refused = self.emu.handle_igor_message(message, "uninvited")
+        finally:
+            self.emu.join_config = saved
+            self.emu.igor.drop("uninvited")
+        self.assertIn(b"has not invited", refused)
+        self.assertNotIn("uninvited", self.emu.client_players)
+
+    def test_refused_before_login(self):
+        paddock = self._frame(bytes([104, 0]) + struct.pack("<H", 1))
+        message = self.emu.igor.feed("anon", paddock)[0]
+        refused = self.emu.handle_igor_message(message, "anon")
+        self.assertIn(b"Log in first.", refused)
+        self.assertNotIn("anon", self.emu.outbox)
+        self.emu.igor.drop("anon")
+
     def test_paddock_practice_course_ranked_and_steam(self):
+        # Game calls need a logged-in rider. Player 1 and 2 stand in for two logins.
+        for client, player in (("pad", 1), ("prac", 1), ("rank-a", 1), ("rank-b", 2), ("steam", 1)):
+            self.emu.client_players[client] = player
         paddock = self._frame(bytes([104, 0]) + struct.pack("<H", 1))
         messages = self.emu.igor.feed("pad", paddock)
         self.assertEqual(messages[0]["name"], "StartPaddock")
-        self.assertEqual(self.emu.handle_igor_message(messages[0], "pad").hex(), "056800010000")
+        # The reply is held back until the scene has its spawn places.
+        self.assertIsNone(self.emu.handle_igor_message(messages[0], "pad"))
+        deadline = time.time() + 5
+        while not self.emu.outbox.get("pad") and time.time() < deadline:
+            time.sleep(0.1)
+        self.assertEqual(bytes(self.emu.outbox.pop("pad", b"")).hex(), "056800010000")
 
         practice = self._frame(bytes([107, 0]) + struct.pack("<H", 3))
         messages = self.emu.igor.feed("prac", practice)
@@ -172,7 +211,8 @@ class LoginBurstServerTest(unittest.TestCase):
         self.assertEqual(messages[0]["name"], "ApplyAvatar")
         self.assertEqual(messages[0]["horseName"], "Mist")
 
-        save = self._frame(bytes([106, 2]) + struct.pack("<H", 4) + b"slot-body")
+        # SaveSlot reads the slot id as an int32 after the first body byte.
+        save = self._frame(bytes([106, 2]) + struct.pack("<H", 4) + bytes([0]) + struct.pack("<i", 1) + b"slot-body")
         messages = self.emu.igor.feed("slot", save)
         self.assertEqual(messages[0]["name"], "SaveSlot")
         self.emu.client_players["slot"] = 1
@@ -196,9 +236,10 @@ class LoginBurstServerTest(unittest.TestCase):
         self.assertEqual(second["name"], "SubscribeRmSearch")
         # Queue the first rider, then pair when the second subscribes.
         self.emu.features.waiting.append("rank-a")
-        paired = self.emu.handle_igor_message(second, "rank-b")
-        self.assertTrue(paired)
+        # Subscribe is a void call. Both riders get the match start as a push.
+        self.assertIsNone(self.emu.handle_igor_message(second, "rank-b"))
         self.assertTrue(self.emu.outbox.get("rank-a"))
+        self.assertTrue(self.emu.outbox.get("rank-b"))
 
         steam = self._frame(bytes([105, 10]) + struct.pack("<H", 9))
         messages = self.emu.igor.feed("steam", steam)
