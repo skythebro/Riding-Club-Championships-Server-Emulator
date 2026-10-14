@@ -1593,10 +1593,10 @@ public static class Host
                 object item = Activator.CreateInstance(newsType);
                 newsType.GetProperty("Enabled").SetValue(item, true, null);
                 object title = Activator.CreateInstance(nameType);
-                nameType.GetProperty("Text").SetValue(title, "Meadow server", null);
+                nameType.GetProperty("Text").SetValue(title, BalString("Meadow server", "news", "title"), null);
                 nameType.GetProperty("Data").SetValue(title, Activator.CreateInstance(nameType.GetProperty("Data").PropertyType), null);
                 object newsBody = Activator.CreateInstance(nameType);
-                nameType.GetProperty("Text").SetValue(newsBody, "Rides, the shop, and the club stay on this server.", null);
+                nameType.GetProperty("Text").SetValue(newsBody, BalString("Rides, the shop, and the club stay on this server.", "news", "text"), null);
                 nameType.GetProperty("Data").SetValue(newsBody, Activator.CreateInstance(nameType.GetProperty("Data").PropertyType), null);
                 newsType.GetProperty("Capture").SetValue(item, title, null);
                 newsType.GetProperty("Text").SetValue(item, newsBody, null);

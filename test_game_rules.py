@@ -66,6 +66,7 @@ class Harness(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.emu = FakeEmulator(str(Path(self.tmp.name) / "users.db"))
         self.features = GameFeatures(self.emu)
+        self.emu.features = self.features
         self.features.balance = {
             "club": {"max_members": 3, "name_length": 30, "short_name_length": 10,
                      "description_length": 400, "welcome_length": 100, "rename_coins": 0},
@@ -311,6 +312,108 @@ class HorseStatTests(Harness):
         player = self.rider(1)
         self.features.balance["horse_stats"] = {"start": 2}
         self.assertTrue(all(item["Value"] == 2 for item in self.features._attributes(player)))
+
+
+class AdminTests(Harness):
+    def admin(self):
+        from admin import Admin
+        return Admin(self.emu.database.db_path, self.emu)
+
+    def test_a_rider_is_found_by_id_steam_id_or_name(self):
+        player = self.rider(1)
+        self.features.save_profile(player, name="Skye")
+        admin = self.admin()
+        steam = str(76561198000000001)
+        self.assertEqual(admin.find(str(player))[0], player)
+        self.assertEqual(admin.find(steam)[0], player)
+        self.assertEqual(admin.find("skye")[0], player)
+        from admin import AdminError
+        with self.assertRaises(AdminError):
+            admin.find("nobody")
+
+    def test_a_ban_blocks_login_until_it_ends(self):
+        from admin import ban_reason
+        player = self.rider(1)
+        steam = str(76561198000000001)
+        admin = self.admin()
+        admin.ban(str(player), reason="cheating")
+        self.assertIn("cheating", ban_reason(self.emu.database.db_path, steam))
+        admin.unban(str(player))
+        self.assertIsNone(ban_reason(self.emu.database.db_path, steam))
+        admin.ban(str(player), days=-1)
+        self.assertIsNone(ban_reason(self.emu.database.db_path, steam))
+
+    def test_a_muted_rider_is_told_and_not_relayed(self):
+        player = self.rider(1, "me")
+        self.emu.tcp_clients = {"me": None, "other": None}
+        self.admin().mute(str(player), minutes=10, reason="spam")
+        frames = [frame for client, frame in self.emu.sent]
+        self.assertTrue(any(frame[1:3] == bytes([103, 14]) for client, frame in self.emu.sent if client == "me"))
+        self.assertTrue(any(frame[1:3] == bytes([103, 10]) for client, frame in self.emu.sent if client == "other"))
+        self.emu.sent.clear()
+        rest = struct.pack("<I", 2) + self.features._igor_string("hello")
+        self.features._relay_room(self.message(1, rest, service=103), "me", player)
+        self.assertFalse(any(frame[1:3] == bytes([103, 7]) for _client, frame in self.emu.sent))
+        self.assertTrue(len(frames) >= 2)
+
+    def test_coins_never_go_below_zero(self):
+        player = self.rider(1)
+        self.features.save_profile(player, coins=100)
+        self.admin().coins(str(player), -500)
+        self.assertEqual(int(self.features.profile(player)["coins"]), 0)
+        self.admin().coins(str(player), 250)
+        self.assertEqual(int(self.features.profile(player)["coins"]), 250)
+
+    def test_reset_starts_the_rider_over_with_new_player_values(self):
+        player = self.rider(1)
+        self.features.save_profile(player, coins=9999, name="Skye")
+        self.features.balance["new_player"] = {"coins": 321, "rating": 1000}
+        result = self.admin().reset(str(player), confirmed=True)
+        self.assertIn("backups", result)
+        again, data = self.emu.database.get_or_create_user("Steam", str(76561198000000001), "")
+        self.assertEqual(again, player)
+        self.assertTrue(data["new"])
+        self.features.apply_new_player(again)
+        self.assertEqual(int(self.features.profile(again)["coins"]), 321)
+
+    def test_reset_needs_yes(self):
+        from admin import AdminError
+        player = self.rider(1)
+        with self.assertRaises(AdminError):
+            self.admin().reset(str(player))
+
+    def test_admin_marker_frame(self):
+        from admin import admin_users_frame
+        frame = admin_users_frame([3, 7])
+        self.assertEqual(frame[1:4], bytes([108, 19, 2]))
+        self.assertEqual(struct.unpack_from("<II", frame, 4), (3, 7))
+
+
+class AdminCliTests(unittest.TestCase):
+    def test_offline_without_a_save_refuses_and_creates_nothing(self):
+        import admin
+        with tempfile.TemporaryDirectory() as folder:
+            db = Path(folder) / "users.db"
+            # Port 9 is not the server, so the command falls back to the save on disk.
+            self.assertEqual(admin.cli(["list"], str(db), 9), 1)
+            self.assertFalse(db.exists())
+
+
+class BackupTests(unittest.TestCase):
+    def test_auto_backups_keep_the_newest(self):
+        import sqlite3
+        import time as clock
+        from storage import backup_db
+        with tempfile.TemporaryDirectory() as folder:
+            db = Path(folder) / "users.db"
+            sqlite3.connect(str(db)).close()
+            for _index in range(3):
+                backup_db(db, keep=2)
+                clock.sleep(1.1)
+            backup_db(db, note="manual")
+            files = sorted(item.name for item in (Path(folder) / "backups").iterdir())
+            self.assertEqual(sum(name.endswith("-auto.db") for name in files), 2)
+            self.assertEqual(sum(name.endswith("-manual.db") for name in files), 1)
 
 
 class ClientConfigTests(unittest.TestCase):

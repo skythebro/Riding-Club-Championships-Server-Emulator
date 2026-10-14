@@ -85,6 +85,35 @@ Copy [`server.json.example`](server.json.example) to `server.json`.
 
 The stock client does not send a password. It sends a Steam id. This server cannot ask Valve whether that ticket is real, so a person who can reach the port and knows an id can claim it. Use the allow list, and do not leave `bind_host` open to the internet, if that matters to you.
 
+## Running the server day to day
+
+Use `RCCServer.exe admin` (or `python Server.py admin` from source) in a second window. While the server is up, changes reach players at once. With the server off, the same commands edit `users.db` directly.
+
+```bat
+RCCServer.exe admin list [search]
+RCCServer.exe admin ban <rider> [--days N] [--reason "text"]
+RCCServer.exe admin unban <rider>
+RCCServer.exe admin mute <rider> [--minutes N] [--reason "text"]
+RCCServer.exe admin unmute <rider>
+RCCServer.exe admin coins <rider> <amount>
+RCCServer.exe admin rename <rider> <name>
+RCCServer.exe admin reset <rider> --yes
+RCCServer.exe admin kick <rider>
+RCCServer.exe admin backup
+```
+
+`<rider>` is the player id from `list`, a Steam id, or a rider name.
+
+- A ban works on the Steam account. A banned player is disconnected and cannot log in until the ban ends.
+- A mute stops that rider's chat. The game shows them how long and why, and their earlier lines disappear from everyone's chat.
+- `coins` with a negative amount takes coins away, never below 0.
+- `reset` gives that Steam account a new rider and horse. The old save is copied into `backups/` first.
+- Riders whose Steam ids are in `admin_steam_ids` in `server.json` get the admin marker in chat.
+
+`users.db` is copied into `backups/` at every start and every `backup_hours` (6 by default). The newest `backups_keep` (28) are kept. Packet logs older than `log_days` (7) are deleted. To restore, stop the server and copy a backup over `users.db`.
+
+The news panel in the main menu reads `news` in `balance.json`.
+
 ## What a modified client cannot do
 
 Coins, rating, action points, and showdown prizes are stored here. A debug "give reward" packet is ignored. A ranked result pays only after that client was actually paired, and only once. A showdown prize uses the place on today's board, not the place written in the packet. A ride shorter than `min_ride_seconds` (8 by default) is not stored and does not win. Grooming cannot jump to clean in one packet, and the Pro Rider groom packet still costs coins because this server does not sell Pro. Course edits are limited to the rider who owns the course, only slots bought through the editor can be saved, and a saved course is capped at `course_editor.max_slot_bytes`. Clothes and tack must be owned before they can be worn. Only a club's owner can rename it, change the icon, or change roles. Owners and managers invite, accept, and kick, and a manager can only kick plain members. A club holds `club.max_members`, and a rider is in one club at a time. When two riders here meet in ranked, both results are compared and each is paid once. A rider who quits or drops loses. The showdown prize pays once per day's board. A login that is not a real Steam id, or that `allowed_steam_ids` and `open_registration` do not let in, does not create an account. Game calls before a login are refused.

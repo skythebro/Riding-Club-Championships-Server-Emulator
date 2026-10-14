@@ -9,5 +9,9 @@
   "open_registration": true,
   "allowed_steam_ids": [],
   "min_ride_seconds": 8,
-  "max_clients": 64
+  "max_clients": 64,
+  "admin_steam_ids": [],
+  "backup_hours": 6,
+  "backups_keep": 28,
+  "log_days": 7
 }

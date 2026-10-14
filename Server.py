@@ -15,6 +15,7 @@ try:
 except Exception:
     pass
 import threading
+import time
 import sqlite3
 import hashlib
 import zlib
@@ -186,6 +187,12 @@ class UserDatabase:
                     'created_at': result[3],
                     'name': result[4] or 'Player'
                 }
+                # An admin reset removes the rider row. The next login starts that rider over.
+                fresh = cursor.execute(
+                    "INSERT OR IGNORE INTO player_data (player_id, name) VALUES (?, ?)",
+                    (player_id, f"Player{player_id}"),
+                ).rowcount
+                user_data['new'] = bool(fresh)
                 
                 logger.info(f"Existing user logged in: {player_id} ({source_type}:{source_id})")
                 return player_id, user_data
@@ -210,7 +217,8 @@ class UserDatabase:
                     'user_state': 1,  # Menu
                     'access_level': 0,  # User
                     'created_at': datetime.now().isoformat(),
-                    'name': default_name
+                    'name': default_name,
+                    'new': True,
                 }
                 
                 conn.commit()
@@ -504,8 +512,8 @@ class RCCServerEmulator:
         @self.app.middleware("http")
         async def debug_routes_local_only(request: Request, call_next):
             # /debug lists Steam ids and raw packet logs. Only this machine may read it.
-            if request.url.path.startswith("/debug") and (request.client is None or request.client.host not in LOOPBACK_HOSTS):
-                return JSONResponse({"error": "debug routes are local only"}, status_code=403)
+            if request.url.path.startswith(("/debug", "/admin")) and (request.client is None or request.client.host not in LOOPBACK_HOSTS):
+                return JSONResponse({"error": "debug and admin routes are local only"}, status_code=403)
             return await call_next(request)
 
     def setup_routes(self):
@@ -517,6 +525,21 @@ class RCCServerEmulator:
             return {"message": "RCC Server Emulator is running", "status": "online"}
         
         # Health check endpoint
+        @self.app.post("/admin/{command}")
+        async def admin_command(command: str, request: Request):
+            from admin import Admin, AdminError
+            try:
+                body = await request.json()
+            except Exception:
+                body = {}
+            try:
+                with self.features.lock:
+                    result = Admin(self.database.db_path, self).run(command, body or {})
+            except (AdminError, KeyError, ValueError) as exc:
+                return JSONResponse({"ok": False, "error": str(exc)}, status_code=400)
+            logger.info(f"ADMIN {command} {body}: {result if command != 'list' else 'ok'}")
+            return {"ok": True, "result": result}
+
         @self.app.get("/health")
         async def health_check():
             db_stats = self.database.get_stats()
@@ -975,6 +998,11 @@ class RCCServerEmulator:
             allowed, reason = login_decision(source_id, self.join_config, exists)
             if source_name != "Steam":
                 allowed, reason = False, "That login did not include a Steam account."
+            if allowed:
+                from admin import ban_reason
+                banned = ban_reason(self.database.db_path, source_id)
+                if banned:
+                    allowed, reason = False, banned
             if not allowed:
                 logger.warning(f"Login refused for {client_id} ({source_name} {source_id}): {reason}")
                 self.debug_log_tcp(f"LOGIN REFUSED: {client_id} - {reason}")
@@ -982,6 +1010,8 @@ class RCCServerEmulator:
             player_id, user_data = self.database.get_or_create_user(
                 source_name, message["sourceId"], message.get("token") or ""
             )
+            if user_data.get("new"):
+                self.features.apply_new_player(player_id)
             self.client_players[client_id] = player_id
             pending = self.pending_profile.pop(client_id, None)
             if pending:
@@ -1059,6 +1089,28 @@ class RCCServerEmulator:
         except Exception as e:
             logger.error(f"Error sending cards to ServiceCards for {client_id}: {e}")
             self.debug_log_tcp(f"CARDS TO SERVICE ERROR: {client_id} - {str(e)}")
+
+    def start_housekeeping(self):
+        """Back up users.db at start and every backup_hours, and drop old packet logs."""
+        from storage import backup_db, prune_logs
+
+        hours = float(self.join_config.get("backup_hours") or 0)
+        keep = int(self.join_config.get("backups_keep") or 0)
+
+        def loop():
+            while True:
+                try:
+                    if hours:
+                        path = backup_db(self.database.db_path, keep=keep)
+                        logger.info(f"Backup written: {path}")
+                    prune_logs(DEBUG_DIR, self.join_config.get("log_days"))
+                except Exception as exc:
+                    logger.error(f"Housekeeping failed: {exc}")
+                if not hours:
+                    return
+                time.sleep(hours * 3600)
+
+        threading.Thread(target=loop, daemon=True).start()
 
     def stop_tcp_server(self):
         """Stop the TCP server"""
@@ -1138,6 +1190,7 @@ class RCCServerEmulator:
         
         # Start policy server in background
         self.start_policy_server()
+        self.start_housekeeping()
         
         try:
             # Run the HTTP/WebSocket server (this blocks)
@@ -1163,7 +1216,14 @@ def main(argv=None):
     join = sub.add_parser("join", help="write the servers.txt players need to join this server")
     join.add_argument("host", nargs="?", help="address players use to reach this server")
     join.add_argument("--out", help="where to write servers.txt")
-    args = parser.parse_args(argv)
+    sub.add_parser("admin", help="ban, mute, give coins, back up ... (admin --help)", add_help=False)
+    args, rest = parser.parse_known_args(argv)
+
+    if args.command == "admin":
+        import admin
+        sys.exit(admin.cli(rest, str(ROOT / "users.db"), JOIN_CONFIG["http_port"]))
+    if rest:
+        parser.error("unrecognized arguments: %s" % " ".join(rest))
 
     if args.command == "join":
         import client_config

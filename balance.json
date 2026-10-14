@@ -1,5 +1,10 @@
 {
   "_about": "Prices and rewards for this server. Edit a number, save, and restart the server and the card host. Notes that start with _ are not used as prices. A value marked original matches a published help page. A value marked server choice was not published, so change it if you want a different game. Each shop and course-editor entry is under items: edit name and price there.",
+  "news": {
+    "_note": "The news panel in the main menu. Restart the server after a change.",
+    "title": "Meadow server",
+    "text": "Rides, the shop, and the club stay on this server."
+  },
   "action_points": {
     "_note": "Original: play-alone and ranked cost 20, or 10 with Pro Rider. The bar holds 200. Paddock and friend matches cost nothing.",
     "max": 200,

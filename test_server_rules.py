@@ -686,6 +686,7 @@ class GlobalChatTests(unittest.TestCase):
     def test_the_room_is_opened_once_per_login(self):
         class Emu:
             client_players = {"a": 1}
+            database = type("Db", (), {"db_path": ":memory:"})()
 
         class Box:
             global_chat = set()

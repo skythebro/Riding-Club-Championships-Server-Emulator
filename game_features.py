@@ -464,6 +464,15 @@ class GameFeatures:
     def _gear_by_id(self):
         return {item.get("id"): item for item in self._gear_by_hash().values() if item.get("id")}
 
+    def apply_new_player(self, player_id):
+        """Starting coins, action points, skill tickets, and rating from balance.json new_player."""
+        values = {
+            key: int(value) for key, value in (self.bal("new_player", default={}) or {}).items()
+            if key in ("coins", "action_points", "skill_tickets", "rating") and not str(key).startswith("_")
+        }
+        if values:
+            self.save_profile(player_id, **values)
+
     def ensure_starter(self, player_id):
         """Dress an account that has never been given clothes or tack."""
         if not player_id:
@@ -521,7 +530,13 @@ class GameFeatures:
         frame += self._ignore_frame(player_id)
         frame += self._no_guild_update(player_id)
         frame += self._online_count_frame()
+        frame += self._admin_users_frame()
         return self._with_global_room(player_id, frame)
+
+    def _admin_users_frame(self):
+        from admin import admin_player_ids, admin_users_frame
+        steam_ids = (getattr(self.emulator, "join_config", None) or {}).get("admin_steam_ids") or []
+        return admin_users_frame(admin_player_ids(self.emulator.database.db_path, steam_ids))
 
     def _global_room_frame(self):
         # Room 2 is the global chat. No local name and no welcome line.
@@ -532,6 +547,10 @@ class GameFeatures:
         if not player_id or player_id in self.global_chat:
             return frame
         self.global_chat.add(player_id)
+        from admin import active_mute, muted_frame
+        mute = active_mute(self.emulator.database.db_path, player_id)
+        if mute:
+            frame += muted_frame(*mute)
         for client_id, owner in list((getattr(self.emulator, "client_players", {}) or {}).items()):
             if owner == player_id:
                 self.chat_rooms.add((client_id, 2))
@@ -3324,6 +3343,18 @@ class GameFeatures:
             return None
         return self.emulator.igor.reply_fail(message["service"], message["function"], message["rpc"], text)
 
+    CHAT_MAX_CHARS = 500
+
+    def _chat_refused(self, client_id, player_id, text):
+        """True when this line must not be relayed: a muted rider, an empty line, or one too long."""
+        from admin import active_mute, muted_frame
+        mute = active_mute(self.emulator.database.db_path, player_id)
+        if mute:
+            self.emulator.send_to(client_id, muted_frame(*mute))
+            self.emulator.debug_log_tcp("CHAT MUTED: %s" % client_id)
+            return True
+        return not text.strip() or len(text) > self.CHAT_MAX_CHARS
+
     def _relay_room(self, message, client_id, player_id):
         raw = bytes.fromhex(message.get("rest") or "")
         room_id = struct.unpack_from("<I", raw)[0] if len(raw) >= 4 else 1
@@ -3333,6 +3364,9 @@ class GameFeatures:
                 text, _offset = self._read_igor_string(raw, 4)
             except (IndexError, UnicodeDecodeError):
                 text = ""
+        refused = self._chat_refused(client_id, player_id, text)
+        if refused:
+            return None
         frame = self._room_message_frame(room_id, player_id or 1, text)
         for other in list(self.emulator.tcp_clients):
             self._announce_room(other, room_id)
@@ -3349,6 +3383,9 @@ class GameFeatures:
                 text, _offset = self._read_igor_string(raw, 4)
             except (IndexError, UnicodeDecodeError):
                 text = ""
+        refused = self._chat_refused(client_id, player_id, text)
+        if refused:
+            return None
         frame = self._private_message_frame(player_id or 1, target, text)
         self.emulator.send_to(client_id, frame)
         for other, other_player in list(self.emulator.client_players.items()):
@@ -3374,13 +3411,13 @@ class GameFeatures:
         self.chat_seq += 1
         payload = struct.pack("<III", int(room_id), self.chat_seq, int(player_id))
         payload += self._igor_string(text)
-        payload += struct.pack("<Q", int(time.time()))
+        payload += struct.pack("<Q", int(time.time() * 1000))  # client reads ms since 1970
         return self._push_frame(103, 7, payload)
 
     def _private_message_frame(self, sender, target, text):
         payload = struct.pack("<II", int(sender), int(target))
         payload += self._igor_string(text)
-        payload += struct.pack("<Q", int(time.time()))
+        payload += struct.pack("<Q", int(time.time() * 1000))  # client reads ms since 1970
         return self._push_frame(103, 4, payload)
 
     def _push_frame(self, service, function, payload):

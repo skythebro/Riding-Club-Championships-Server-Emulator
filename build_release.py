@@ -43,7 +43,10 @@ QUICKSTART = """Riding Club Championships server
    They put it next to rcc.exe. Steam's "Verify integrity of game files"
    undoes it.
 
-Prices and rewards: balance.json. Saves: users.db (back it up).
+Admin: open a command prompt here and run  RCCServer.exe admin --help
+(list, ban, mute, coins, rename, reset, kick, backup).
+Prices, rewards, and the news panel: balance.json.
+Saves: users.db. Automatic copies go to backups/.
 Full guide: README.md.
 """
 

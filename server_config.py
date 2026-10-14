@@ -18,6 +18,13 @@ DEFAULTS = {
     "allowed_steam_ids": [],
     "min_ride_seconds": 8,
     "max_clients": 64,
+    # Steam ids that get the admin marker in chat.
+    "admin_steam_ids": [],
+    # users.db is copied into backups/ at start and every this many hours. 0 turns it off.
+    "backup_hours": 6,
+    "backups_keep": 28,
+    # Packet logs older than this many days are deleted at start and with each backup.
+    "log_days": 7,
 }
 
 STEAM_ID_MIN = 76561197960265728
@@ -27,6 +34,7 @@ STEAM_ID_MAX = 76561297960265728
 def load_config(path=None):
     config = dict(DEFAULTS)
     config["allowed_steam_ids"] = []
+    config["admin_steam_ids"] = []
     file = Path(path) if path else APP_DIR / "server.json"
     if not file.exists():
         return config
@@ -37,7 +45,7 @@ def load_config(path=None):
         if key not in loaded:
             continue
         value = loaded[key]
-        if key == "allowed_steam_ids":
+        if key in ("allowed_steam_ids", "admin_steam_ids"):
             config[key] = [str(item) for item in (value or [])]
         elif isinstance(default, bool):
             config[key] = bool(value)

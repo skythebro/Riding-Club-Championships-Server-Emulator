@@ -73,6 +73,10 @@ Showdown pays 2000, then 500, 500, 250, and 100 coins. Second place also gets a 
 - Wearing gear. Only owned clothes and tack, plus the starter pieces, should stay on.
 - Saving a course into a slot you did not buy should fail.
 
+- Chat moderation in the chat window. A mute should print how long and why, and the muted rider's earlier lines should disappear for everyone. Unmuting should print that the mute ended. A rider in `admin_steam_ids` should show the admin marker in chat. The connection stays up through all of this (tested); the chat text itself has not been looked at yet.
+- Chat times. Each line should show today's time, not a date in 1970.
+- The news panel showing `news` from `balance.json`.
+
 ## Left as errors on purpose
 
 Steam checkout, Kickstarter, and debug Exec and Eval. A checkout would charge a real wallet, the Kickstarter campaign is over, and debug commands are not run.

@@ -25,12 +25,13 @@ Measured on 14 October 2026 against the decompiled client:
 - [x] Hosting steps in the README and `QUICKSTART.txt`.
 - [ ] A Windows service or scheduled-task option for always-on servers.
 
-## 3. Tools for server owners
+## 3. Tools for server owners: done
 
-- [ ] An admin command line or local web page: list riders, ban and unban, give coins, reset a rider, and rename one.
-- [ ] Wire up the client's own moderation messages: `Chat.Banned`, `Chat.Unbanned`, `RemovePlayerMessage`, `RemoveRoomMessage`, and `Game.AdminUsers`.
-- [ ] Automatic `users.db` backups, and rotation for `debug_logs/`.
-- [ ] A server message of the day through the `news` card.
+- [x] `RCCServer.exe admin`: list, ban and unban (by Steam account, optionally timed), mute and unmute, coins, rename, reset, kick, backup. It reaches the running server through local-only `/admin` routes, or edits `users.db` when the server is off. Tested against the real client on 14 October 2026.
+- [x] The client's own moderation messages: `Chat.Banned` and `Chat.Unbanned` for mutes, `RemovePlayerMessage` to wipe a muted rider's lines, and `Game.AdminUsers` from `admin_steam_ids`.
+- [x] Automatic `users.db` backups (online-safe SQLite backup), and cleanup of old packet logs.
+- [x] Message of the day: `news` in `balance.json`.
+- [x] Fixed on the way: chat timestamps were seconds where the client reads milliseconds (every line said 1970), and `new_player` in `balance.json` was never applied.
 
 ## 4. Gameplay gaps
 
