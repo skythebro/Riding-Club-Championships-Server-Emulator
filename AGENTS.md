@@ -44,7 +44,8 @@ Rules that keep the client connected:
 | --- | --- |
 | `Server.py` | FastAPI HTTP on 8080, TCP game server on 27130, policy server on 27132 |
 | `db.py` | `UserDatabase`: accounts, profiles, and the base tables |
-| `game_features.py` | Every game handler (`on_*`). This is where new behaviour goes. |
+| `game_features.py` | `GameFeatures`: dispatch, profile, inventory, practice, shop, and the shared frame helpers. It inherits the area files below. |
+| `game_clubs.py`, `game_chat.py`, `game_ranked.py`, `game_showdown.py`, `game_courses.py` | Mixins with the `on_*` handlers for that area. Put new handlers in the matching file. |
 | `storage.py` | `connect_db(path)`: the only way to open SQLite. It commits, closes, and waits on a busy lock. |
 | `server_config.py` | `server.json` loading, login allow list, `ride_is_plausible` |
 | `admin.py` | Owner commands (`Admin.run`), bans and mutes, and the client moderation frames. `/admin/<command>` on the server and `RCCServer.exe admin` both call `Admin.run`. |

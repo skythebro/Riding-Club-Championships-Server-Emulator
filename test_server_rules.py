@@ -324,6 +324,8 @@ class SlotNameTests(unittest.TestCase):
         class Slot:
             _varint = GameFeatures._varint
             _igor_string = lambda self, text: GameFeatures._igor_string(self, text)
+            _read_varint = GameFeatures._read_varint
+            _read_igor_string = GameFeatures._read_igor_string
 
         body = GameFeatures._empty_slot(Slot(), 2, "Meadow draft")
         self.assertEqual(GameFeatures._slot_name(Slot(), body.hex()), "Meadow draft")

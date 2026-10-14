@@ -47,7 +47,7 @@ Measured on 14 October 2026 against the decompiled client:
 
 ## 5. Code health
 
-- [ ] Split `game_features.py` (about 3,500 lines) by service: economy, courses, ranked, clubs, chat, showdown. Keep the `on_<Name>` dispatch.
+- [x] Split `game_features.py` (3,700 lines) into clubs, chat, ranked, showdown, and courses mixins. The dispatch is unchanged and all 264 methods are still there.
 - [x] `UserDatabase` moved to `db.py`.
 - [ ] Numbered migrations in place of the `_ensure_columns` lists.
 - [x] Removed the legacy `/websocket` route. It was an echo toy, and the game plays over TCP.
