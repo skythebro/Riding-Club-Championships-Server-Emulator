@@ -87,7 +87,7 @@
   },
   "avatar_change_coins": 4000,
   "course_editor": {
-    "_note": "The original game included one free show-jumping slot. The coin price for an extra slot, for submitting a course, and for one placed jump was never published. 0 means every slot is free. If you set slot_coins, the first slot stays free and the later ones cost that many coins. piece_coins is charged for every course-editor piece, because the item list has no per-jump price. Names and coin prices for each placed piece are under items. piece_coins is used only when that piece has no price.",
+    "_note": "The original game included one free show-jumping slot. The coin price for an extra slot, for submitting a course, and for one placed jump was never published. 0 means every slot is free. If you set slot_coins, the first slot stays free and the later ones cost that many coins. piece_coins is charged for every course-editor piece, because the item list has no per-jump price. Names and coin prices for each placed piece are under items. piece_coins is used only when that piece has no price. The lowest price is 1, because the editor shows a placeholder for a price of 0. The server takes the same total the editor shows when a course is saved, and gives half back for pieces you remove.",
     "slot_coins": 0,
     "submit_coins": 0,
     "piece_coins": 0,
@@ -729,32 +729,32 @@
     "paddock_terrain": {
       "name": "Paddock",
       "description": "Paddock.",
-      "price": 0
+      "price": 1
     },
     "winter_terrain": {
       "name": "Winter",
       "description": "Winter.",
-      "price": 0
+      "price": 1
     },
     "desert_terrain": {
       "name": "Desert",
       "description": "Desert.",
-      "price": 0
+      "price": 1
     },
     "stadium_terrain": {
       "name": "Stadium",
       "description": "Stadium.",
-      "price": 0
+      "price": 1
     },
     "tutorial_terrain": {
       "name": "Tutorial",
       "description": "Tutorial.",
-      "price": 0
+      "price": 1
     },
     "agility_checkpoint": {
       "name": "Checkpoint",
       "description": "Checkpoint.",
-      "price": 0
+      "price": 1
     },
     "jump_01_110_blue": {
       "name": "Blue fence 1",

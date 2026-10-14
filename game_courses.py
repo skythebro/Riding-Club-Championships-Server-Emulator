@@ -2,6 +2,7 @@
 
 import json
 import struct
+import zlib
 
 
 class CoursesMixin:
@@ -70,12 +71,22 @@ class CoursesMixin:
             owned = {row[0] for row in conn.execute(
                 "SELECT slot_id FROM course_slots WHERE player_id = ?", (owner,)
             )}
+            before = conn.execute(
+                "SELECT body FROM course_slots WHERE player_id = ? AND slot_id = ?", (owner, slot_id)
+            ).fetchone()
             # Only slots bought through BuySlot can be saved. The first one is free there.
             # A rider with no slot yet may save slot 1, which is that free slot.
             if slot_id not in owned and not (not owned and slot_id == 1):
                 self.emulator.debug_log_tcp("SLOT REFUSED: %s slot=%s not owned" % (client_id, slot_id))
                 return self.emulator.igor.reply_fail(
                     message["service"], message["function"], message["rpc"], "Buy that course slot first."
+                )
+            cost = self._editor_cost(before[0] if before else "", body) if owner else 0
+            coins = int(self.profile(owner)["coins"] or 0) if owner else 0
+            if cost > coins:
+                self.emulator.debug_log_tcp("SLOT REFUSED: %s slot=%s coins=%s need=%s" % (client_id, slot_id, coins, cost))
+                return self.emulator.igor.reply_fail(
+                    message["service"], message["function"], message["rpc"], "Not enough coins to save that course."
                 )
             conn.execute(
                 "INSERT OR REPLACE INTO course_slots (player_id, slot_id, body) VALUES (?, ?, ?)",
@@ -85,8 +96,65 @@ class CoursesMixin:
                 "SELECT body FROM course_slots WHERE player_id = ? ORDER BY slot_id", (owner,)
             ).fetchall()
         self.slots[owner] = [row[0] or "" for row in rows]
-        self.emulator.debug_log_tcp("COURSE SLOT SAVED: %s slot=%s" % (client_id, slot_id))
-        return self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
+        reply = self.emulator.igor.reply_ok(message["service"], message["function"], message["rpc"])
+        if cost:
+            self.save_profile(owner, coins=coins - cost)
+            reply += self.session_push(owner)
+        self.emulator.debug_log_tcp("COURSE SLOT SAVED: %s slot=%s cost=%s" % (client_id, slot_id, cost))
+        return reply
+
+    def _piece_price(self, key_hash):
+        """Coins for one course piece, by the card key. The same number the card host sends, never below 1."""
+        for piece_id, entry in (self.bal("items", default={}) or {}).items():
+            if (zlib.crc32(piece_id.encode("utf-8")) & 0xFFFFFFFF) == key_hash:
+                price = (entry or {}).get("price")
+                if price is None:
+                    price = self.bal("course_editor", "piece_coins", default=0)
+                return max(1, int(price))
+        return max(1, int(self.bal("course_editor", "piece_coins", default=0)))
+
+    def _slot_piece_counts(self, body_hex):
+        """How many of each piece a saved slot holds, with its terrain counted once, as the editor does."""
+        counts = {}
+
+        def add(key, amount=1):
+            counts[key] = counts.get(key, 0) + amount
+
+        def read_items(raw, offset):
+            count, offset = self._read_varint(raw, offset)
+            for _index in range(count):
+                add(struct.unpack_from("<I", raw, offset)[0])
+                offset += 32
+            return offset
+
+        jump = self._slot_show_jump(body_hex or "")
+        if jump:
+            add(struct.unpack_from("<I", jump, 0)[0])
+            offset = read_items(jump, 4)
+            read_items(jump, offset + 28)
+        agility = self._slot_agility(body_hex or "")
+        if agility:
+            add(struct.unpack_from("<I", agility, 0)[0])
+            offset = read_items(agility, 4)
+            checkpoints, _offset = self._read_varint(agility, offset + 28)
+            if checkpoints:
+                add(zlib.crc32(b"agility_checkpoint") & 0xFFFFFFFF, checkpoints)
+        return counts
+
+    def _editor_cost(self, old_body, new_body):
+        """What saving costs: each added piece at full price, each removed piece refunds half. Same sum as the editor."""
+        try:
+            old = self._slot_piece_counts(old_body)
+            new = self._slot_piece_counts(new_body)
+        except (IndexError, struct.error, ValueError):
+            return 0
+        total = 0
+        for key in set(old) | set(new):
+            change = new.get(key, 0) - old.get(key, 0)
+            if change:
+                price = self._piece_price(key)
+                total += price * change if change > 0 else -((price * -change) // 2)
+        return total
 
     def _slot_name(self, body_hex):
         try:

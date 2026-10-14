@@ -887,3 +887,53 @@ class ClubOpenToggleTests(Harness):
         self.features.on_GuildChangeInvite(self.message(25, bytes([0])), "owner", owner)
         self.assertEqual(self.sql("SELECT invite FROM guilds WHERE guild_id = ?", (guild_id,)), [(0,)])
         self.assertFalse(self.emu.igor.pushed[-1][1]["AllowInvite"])
+
+
+class EditorCostTests(Harness):
+    JUMP = zlib.crc32(b"jump_01_110_blue") & 0xFFFFFFFF
+    POLE = zlib.crc32(b"pole_05") & 0xFFFFFFFF
+    TERRAIN = zlib.crc32(b"paddock_terrain") & 0xFFFFFFFF
+
+    def setUp(self):
+        super().setUp()
+        self.features.balance["items"] = {
+            "jump_01_110_blue": {"price": 15}, "pole_05": {"price": 5}, "paddock_terrain": {"price": 0},
+        }
+        self.features.balance["course_editor"]["max_slot_bytes"] = 100000
+
+    def slot(self, *obstacles):
+        """A saved show-jump slot holding these obstacle keys."""
+        item = lambda key: struct.pack("<I", key) + bytes(28)  # noqa: E731
+        body = bytes([0x80]) + struct.pack("<iB?", 1, 1, True) + self.features._igor_string("c")
+        body += struct.pack("<I", self.TERRAIN) + self.features._varint(0) + bytes(28)
+        body += self.features._varint(len(obstacles)) + b"".join(item(key) for key in obstacles)
+        body += self.features._varint(len(obstacles)) + struct.pack("<%dH" % len(obstacles), *range(len(obstacles)))
+        return body + struct.pack("<ii", 60, 110)
+
+    def save(self, rider, body):
+        return self.features.on_SaveSlot(self.message(3, body, service=106), "c", rider)
+
+    def test_saving_takes_the_coins_the_editor_shows(self):
+        rider = self.rider(1, "c")
+        self.features.save_profile(rider, coins=100)
+        self.save(rider, self.slot(self.JUMP, self.POLE))
+        # 15 + 5 for the pieces, and 1 for the terrain, which is never free.
+        self.assertEqual(self.features.profile(rider)["coins"], 100 - 21)
+
+    def test_a_course_you_cannot_pay_for_is_not_saved(self):
+        rider = self.rider(1, "c")
+        self.features.save_profile(rider, coins=10)
+        reply = self.save(rider, self.slot(self.JUMP))
+        self.assertTrue(reply.startswith(b"fail"))
+        self.assertEqual(self.features.profile(rider)["coins"], 10)
+        self.assertEqual(self.sql("SELECT COUNT(*) FROM course_slots"), [(0,)])
+
+    def test_resaving_the_same_course_is_free_and_removing_a_piece_refunds_half(self):
+        rider = self.rider(1, "c")
+        self.features.save_profile(rider, coins=100)
+        self.save(rider, self.slot(self.JUMP, self.POLE))
+        paid = self.features.profile(rider)["coins"]
+        self.save(rider, self.slot(self.JUMP, self.POLE))
+        self.assertEqual(self.features.profile(rider)["coins"], paid)
+        self.save(rider, self.slot(self.JUMP))
+        self.assertEqual(self.features.profile(rider)["coins"], paid + 2)

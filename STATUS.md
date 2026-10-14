@@ -28,7 +28,7 @@ A ranked round is won by fewer faults, then the faster time. Quitting pays nothi
 
 A clean horse is +1 on every stat. A fully dirty horse is −1. Grooming a fully dirty horse costs 20 coins, less if it is only a bit dirty. A Pro Rider stable hand is free. A practice ride pays 25 coins and 10 horse XP, spends 20 action points, and dirties the horse a little.
 
-The first course slot is free. Extra slots, submitting a course, and each placed piece cost 0 until you set `course_editor` in `balance.json`.
+The first course slot is free. Extra slots and submitting a course cost 0 until you set `course_editor` in `balance.json`. Saving a course costs the pieces you added, at the price shown in the editor (lowest 1 coin), and gives half back for pieces you removed.
 
 Changing a saved avatar costs 4000 coins, which is what the original game charged. The first time you make one is free. Set `avatar_change_coins` in `balance.json` if you want a different price.
 
@@ -96,3 +96,4 @@ Steam checkout, Kickstarter, and debug Exec and Eval. A checkout would charge a 
 - The default course on Meadow (and the challenge). The horse should start in the open, facing the three jumps, and the jumps should stand on the ground facing the horse.
 - Pro Rider window. With `everyone_pro` on, the Pro screen should say the subscription is active and show no Buy button, and the "Become a Pro Rider" prompt should be gone.
 - `RCCServer.exe logs` and `Collect logs.bat` should make a zip with the server log and the game's log, and no `users.db`.
+- Saving a course in the editor. The coins shown under the list should be what leaves your balance, a second save with no change should cost nothing, removing a piece should give half its price back, and the Checkpoint and terrain rows should show 1, not 10000. Saving with too few coins should be refused.

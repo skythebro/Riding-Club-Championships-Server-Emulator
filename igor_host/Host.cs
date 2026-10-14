@@ -1614,7 +1614,8 @@ public static class Host
         foreach (CoursePiece piece in coursePieces)
         {
             piece.Name = BalString(piece.Name, "items", piece.Id, "name");
-            piece.Price = ItemPrice(piece.Id, BalInt(0, "course_editor", "piece_coins"));
+            // The client leaves its placeholder text (10000) on a price of 0, so the lowest price is 1.
+            piece.Price = Math.Max(1, ItemPrice(piece.Id, BalInt(0, "course_editor", "piece_coins")));
             WriteCoursePiece(writer, piece);
         }
         WriteCourseCard(writer);
