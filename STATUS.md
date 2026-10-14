@@ -94,3 +94,5 @@ Steam checkout, Kickstarter, and debug Exec and Eval. A checkout would charge a 
 - Sending a challenge. The sender rides at once. The friend gets one invite and, on accepting, no second one for the sender.
 - A ranked search with another rider online should keep waiting for them, not match the Rival. Alone on the server it should still match the Rival.
 - The default course on Meadow (and the challenge). The horse should start in the open, facing the three jumps, and the jumps should stand on the ground facing the horse.
+- Pro Rider window. With `everyone_pro` on, the Pro screen should say the subscription is active and show no Buy button, and the "Become a Pro Rider" prompt should be gone.
+- `RCCServer.exe logs` and `Collect logs.bat` should make a zip with the server log and the game's log, and no `users.db`.

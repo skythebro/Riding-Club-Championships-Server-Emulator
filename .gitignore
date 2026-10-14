@@ -13,3 +13,6 @@ igor_host/*.exe
 igor_host/host.log
 build/
 dist/
+logs/
+rcc-logs-*.zip
+backups/

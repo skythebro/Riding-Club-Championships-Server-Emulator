@@ -139,6 +139,21 @@ class OptionalFieldCodecTest(unittest.TestCase):
         self.assertIn(struct.pack("<BIIQ", 0x80, 3, 9, 5), frame)
 
 
+class PremiumInfoCodecTest(unittest.TestCase):
+    def test_the_active_pro_bytes_are_what_the_game_writes(self):
+        from igor_client import IgorClient
+        frame = bytes.fromhex(IgorClient()._request({
+            "op": "push", "kind": "object", "service": 109, "function": 6, "type": "Protocol2.PremiumInfo",
+            "fields": {"IsActive": True, "Status": 1},
+        })["hex"])
+        # After the length, service, and function: the field flags, IsActive, then the status.
+        flags, active, status = frame[3], frame[4], frame[5]
+        self.assertTrue(flags & 0x80)
+        self.assertEqual((active, status), (1, 1))
+        # The server's own frame sets the same three bytes and no more.
+        self.assertEqual(bytes([0x80, 1, 1]), bytes([flags & 0x80, active, status]))
+
+
 class LoginBurstServerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

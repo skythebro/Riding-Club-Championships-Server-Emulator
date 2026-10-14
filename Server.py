@@ -104,6 +104,7 @@ def verify_card_hashes():
 class RCCServerEmulator:
     def __init__(self, db_path: Optional[str] = None, debug_logging: bool = DEBUG_MODE):
         self.debug_logging = debug_logging
+        self._unanswered = set()
         self.app = FastAPI(title="RCC Server Emulator", version="1.0.0")
         self.tcp_clients: Dict[str, socket.socket] = {}
         self.client_players: Dict[str, int] = {}
@@ -195,8 +196,12 @@ class RCCServerEmulator:
             self.http_logger = None
             self.binary_logger = None
     
+    IMPORTANT_MARKERS = ("ERROR", "REFUSED", "IGNORED", "SKIPPED", "FAILED", "NO REPLY")
+
     def debug_log_tcp(self, message: str):
-        """Log TCP-related debug information"""
+        """Log TCP-related debug information. Refusals and errors also go to server.log."""
+        if any(marker in message for marker in self.IMPORTANT_MARKERS) and not message.startswith("NO REPLY"):
+            logger.warning(message)
         if DEBUG_MODE and DEBUG_TCP_COMMUNICATION:
             if self.tcp_logger:
                 self.tcp_logger.debug(message)
@@ -656,7 +661,7 @@ class RCCServerEmulator:
                 if banned:
                     allowed, reason = False, banned
             if not allowed:
-                logger.warning(f"Login refused for {client_id} ({source_name} {source_id}): {reason}")
+                logger.warning(f"Login refused for {client_id} (Steam ...{source_id[-4:]}): {reason}")
                 self.debug_log_tcp(f"LOGIN REFUSED: {client_id} - {reason}")
                 return self.igor.reply_fail(message["service"], message["function"], message["rpc"], reason)
             player_id, user_data = self.database.get_or_create_user(
@@ -665,6 +670,8 @@ class RCCServerEmulator:
             if user_data.get("new"):
                 self.features.apply_new_player(player_id)
             self.client_players[client_id] = player_id
+            logger.info("Login: rider %s (Steam ...%s) on %s%s", player_id, source_id[-4:], client_id,
+                        ", new account" if user_data.get("new") else "")
             pending = self.pending_profile.pop(client_id, None)
             if pending:
                 self.database.update_player_data(player_id, **pending)
@@ -704,6 +711,9 @@ class RCCServerEmulator:
         if handled is not None or name not in (None, "Unknown"):
             if handled is None:
                 self.debug_log_tcp(f"NO REPLY: {client_id} - {name} rest={message.get('rest', '')[:80]}")
+                if message.get("rpc") is not None and name not in self._unanswered:
+                    self._unanswered.add(name)
+                    logger.warning("The client asked %s and the server sent no reply. It may need a handler.", name)
             return handled
         self.debug_log_tcp(f"NO REPLY: {client_id} - {name} rest={message.get('rest', '')[:80]}")
         return None
@@ -871,6 +881,7 @@ def main(argv=None):
     join.add_argument("--out", help="where to write servers.txt")
     sub.add_parser("service", help="run at boot and restart on failure: service install|remove|status", add_help=False)
     sub.add_parser("admin", help="ban, mute, give coins, back up ... (admin --help)", add_help=False)
+    sub.add_parser("logs", help="bundle the server and game logs into a zip to send when asking for help")
     args, rest = parser.parse_known_args(argv)
 
     if args.command == "service":
@@ -881,6 +892,15 @@ def main(argv=None):
         sys.exit(admin.cli(rest, str(ROOT / "users.db"), JOIN_CONFIG["http_port"]))
     if rest:
         parser.error("unrecognized arguments: %s" % " ".join(rest))
+
+    if args.command == "logs":
+        import serverlog
+        from paths import find_game_dir
+        game = find_game_dir(args.game_dir or JOIN_CONFIG.get("game_dir") or None)
+        report = serverlog.collect(ROOT, JOIN_CONFIG, game)
+        print("Wrote %s" % report)
+        print("Send that file. It does not contain users.db.")
+        return
 
     if args.command == "join":
         import client_config
@@ -903,6 +923,10 @@ def main(argv=None):
         # Packet logs record every packet. Keep them for development, off in a packaged server.
         debug = DEBUG_MODE and not getattr(sys, "frozen", False)
 
+    import serverlog
+    serverlog.setup(ROOT)
+    serverlog.describe_start(ROOT, JOIN_CONFIG, game)
+
     print("=" * 50)
     print("Riding Club Championships server")
     print("=" * 50)
@@ -911,6 +935,7 @@ def main(argv=None):
     if SERVER_CONFIG["host"] in ("127.0.0.1", "localhost"):
         print("Only this PC can join. Set bind_host to 0.0.0.0 in server.json to let others in.")
     print("Players need servers.txt next to rcc.exe. Make it with:  join <your address>")
+    print(f"Log file: {serverlog.log_dir(ROOT) / serverlog.LOG_NAME}   (RCCServer.exe logs makes a zip to send)")
     if debug:
         print(f"Packet logs: {DEBUG_DIR}")
     print("-" * 50)

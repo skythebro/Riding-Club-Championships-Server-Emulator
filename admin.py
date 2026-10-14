@@ -19,6 +19,7 @@ commands edit users.db directly (kick needs the server).
 """
 
 import json
+import logging
 import sqlite3
 import struct
 import time
@@ -347,7 +348,10 @@ class Admin:
         }
         if command not in handlers:
             raise AdminError("Unknown command %s." % command)
-        return handlers[command]()
+        result = handlers[command]()
+        if command != "list":
+            logging.getLogger("rcc.admin").info("Admin %s %s -> %s", command, {k: v for k, v in args.items() if v not in (None, "")}, result)
+        return result
 
 
 def format_riders(riders):

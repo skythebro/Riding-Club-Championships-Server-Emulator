@@ -785,10 +785,10 @@ class ProRiderTests(Harness):
     def test_the_session_tells_the_client_pro_is_on(self):
         rider = self.rider(1, "a")
         self.emu.join_config = {"everyone_pro": True}
-        frame = self.features._pro_frame(rider)
-        self.assertEqual(frame[1:], bytes([109, 7, 1]))
+        # UpdatePremium (an active subscription, so the Buy window does not open), then UpdatePremiumFree.
+        self.assertEqual(self.features._pro_frame(rider), bytes([5, 109, 6, 0x80, 1, 1]) + bytes([3, 109, 7, 1]))
         self.emu.join_config = {"everyone_pro": False}
-        self.assertEqual(self.features._pro_frame(rider)[1:], bytes([109, 7, 0]))
+        self.assertEqual(self.features._pro_frame(rider), bytes([4, 109, 6, 0, 0]) + bytes([3, 109, 7, 0]))
 
     def test_a_pro_rider_pays_half_the_action_points(self):
         rider = self.rider(1, "a")

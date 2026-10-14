@@ -196,7 +196,15 @@ The server decides coins, rating, action points, and prizes from its own state. 
 - **The game cannot connect.** Check that `servers.txt` is next to `rcc.exe`, that the server is running, and that its address matches `public_host`. For other players, check that port 27130 is open and forwarded.
 - **"Mono is not installed" (Linux).** Run the `apt install` line above.
 - **A port is already in use.** Another copy of the server is running. Stop it, or change the port in `server.json` and run `join` again.
-- **The client drops.** The newest file in `debug_logs/` names the last call. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **The client drops.** Collect the logs (see below) and send them. The newest file in `debug_logs/` names the last call. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+### Reporting a problem
+
+The server writes `logs/server.log` next to `RCCServer.exe` (2 MB each, the last 5 kept). It records the build, your settings, each login, refusals, warnings, and any crash with its traceback.
+
+To ask for help, double-click `Collect logs.bat` (or run `RCCServer.exe logs`). It makes `rcc-logs-<time>.zip` with the server log, the newest packet logs, the game's own log (`rcc_Data/output_log.txt`), and your settings with the public address and Steam id lists hidden. It never includes `users.db`. Attach that zip to the issue.
+
+The game's own log is replaced each time the game starts, so collect the zip before you restart the game.
 
 ### Steam
 

@@ -743,3 +743,37 @@ class ServiceFileTests(unittest.TestCase):
         self.assertIn("Restart=always", unit)
         self.assertIn("KillMode=control-group", unit)
         self.assertIn("ExecStart=", unit)
+
+class ServerLogTests(unittest.TestCase):
+    def test_the_report_has_the_logs_and_hides_private_settings(self):
+        import json
+        import tempfile
+        import zipfile
+        from pathlib import Path
+
+        import serverlog
+
+        with tempfile.TemporaryDirectory() as folder:
+            app = Path(folder)
+            (app / "logs").mkdir()
+            (app / "logs" / "server.log").write_text("2026 INFO start", encoding="utf-8")
+            (app / "users.db").write_bytes(b"not for sharing")
+            report = serverlog.collect(app, {"public_host": "203.0.113.9", "allowed_steam_ids": ["1"], "tcp_port": 27130})
+            with zipfile.ZipFile(report) as archive:
+                names = archive.namelist()
+                settings = json.loads(archive.read("server.json (private values hidden).txt"))
+                self.assertIn("logs/server.log", names)
+                self.assertIn("report.txt", names)
+                self.assertFalse(any("users.db" in name for name in names))
+                self.assertEqual(settings["public_host"], "<set>")
+                self.assertEqual(settings["allowed_steam_ids"], "<set>")
+                self.assertEqual(settings["tcp_port"], 27130)
+                self.assertNotIn("203.0.113.9", "".join(archive.read(name).decode("utf-8", "ignore") for name in names))
+
+    def test_a_run_from_source_says_so(self):
+        import tempfile
+
+        import serverlog
+
+        with tempfile.TemporaryDirectory() as folder:
+            self.assertEqual(serverlog.version(folder), "source")

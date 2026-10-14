@@ -59,6 +59,10 @@ New behaviour gets a test, and a checklist line in `STATUS.md` until someone has
 
 [`AGENTS.md`](AGENTS.md) explains how a packet flows through the code and which file holds what. It is written for people and for coding agents. [`ROADMAP.md`](ROADMAP.md) says what is done and what is next.
 
+## Reporting a bug
+
+Run `RCCServer.exe logs` (or `Collect logs.bat`) right after it happens, before you restart the game, and attach the zip. It holds the server log, the packet logs, and the game's own log. Say what you pressed and what you expected.
+
 ## Trying a change in the real client
 
 Start the server, then the game, with `servers.txt` pointing at it. The newest file in `debug_logs/` names the last call when the client drops. `NO REPLY` on a call that opened an RPC means it needs a handler. `NO REPLY` on a void call is correct.

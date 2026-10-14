@@ -36,6 +36,12 @@ RCCServer.exe join %HOST%
 pause
 """
 
+LOGS_BAT = r"""@echo off
+cd /d "%~dp0"
+RCCServer.exe logs
+pause
+"""
+
 QUICKSTART = """Riding Club Championships server
 
 1. Start Server.bat. The first start creates server.json and finds the game
@@ -108,7 +114,7 @@ def build_exe():
         "Server.py", cwd=ROOT)
 
 
-def copy_files():
+def copy_files(version):
     for name in ("balance.json", "server.json.example", "README.md", "STATUS.md", "LICENSE",
                  "Rewards for all the daily logins.txt"):
         shutil.copy2(ROOT / name, APP / name)
@@ -119,6 +125,8 @@ def copy_files():
         shutil.copy2(ROOT / "igor_host" / name, host / name)
     (APP / "Start Server.bat").write_text(START_BAT.replace("\n", "\r\n"), encoding="ascii")
     (APP / "Make servers.txt.bat").write_text(JOIN_BAT.replace("\n", "\r\n"), encoding="ascii")
+    (APP / "Collect logs.bat").write_text(LOGS_BAT.replace("\n", "\r\n"), encoding="ascii")
+    (APP / "version.txt").write_text(version, encoding="ascii")
     (APP / "QUICKSTART.txt").write_text(QUICKSTART.replace("\n", "\r\n"), encoding="utf-8")
 
 
@@ -140,6 +148,7 @@ def make_linux(version):
         archive.add(ROOT / "gamedata", "RCCServer/gamedata")
         for name in ("IgorHost.exe", "protocol_map.json"):
             archive.add(ROOT / "igor_host" / name, "RCCServer/igor_host/" + name)
+        add_bytes("version.txt", version.encode(), 0o644)
         add_bytes("start.sh", LINUX_START.encode(), 0o755)
         add_bytes("QUICKSTART.txt", LINUX_QUICKSTART.encode(), 0o644)
     print("Built", target, "%.1f MB" % (target.stat().st_size / 1e6))
@@ -162,7 +171,7 @@ def main():
         shutil.rmtree(APP)
     build_card_host()
     build_exe()
-    copy_files()
+    copy_files(version)
     make_zip(version)
     make_linux(version)
 

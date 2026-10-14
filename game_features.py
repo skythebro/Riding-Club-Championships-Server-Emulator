@@ -2,6 +2,7 @@
 
 import datetime
 import json
+import logging
 import random
 import struct
 import threading
@@ -444,8 +445,14 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
         return bool((getattr(self.emulator, "join_config", None) or {}).get("everyone_pro", False))
 
     def _pro_frame(self, player_id):
-        """Player.UpdatePremiumFree: turns on the half action point cost and the Pro badge."""
-        return self._push_frame(109, 7, bytes([1 if self.is_pro(player_id) else 0]))
+        """Player.UpdatePremium and UpdatePremiumFree: the Pro badge, half action points, and no Buy window.
+
+        The client opens the Buy window for anyone whose paid Pro is not active, so a Pro Rider gets an
+        active subscription with no end date. PremiumInfo: bit 0 says a status follows (1 is Active).
+        """
+        pro = self.is_pro(player_id)
+        info = bytes([0x80, 1, 1]) if pro else bytes([0x00, 0])
+        return self._push_frame(109, 6, info) + self._push_frame(109, 7, bytes([1 if pro else 0]))
 
     def _premium_users_frame(self):
         """Game.PremiumUsers: who gets the Pro colour in chat. Sent for every rider online."""
@@ -618,6 +625,7 @@ class GameFeatures(ClubsMixin, ChatMixin, RankedMixin, ShowdownMixin, CoursesMix
                     return handler(message, client_id, player_id)
                 return self.generic(message, client_id)
         except Exception as exc:
+            logging.getLogger("rcc.features").exception("Handler %s failed", name)
             self.emulator.debug_log_tcp("HANDLER ERROR: %s %s" % (name, exc))
             if message.get("rpc") is None:
                 return None
