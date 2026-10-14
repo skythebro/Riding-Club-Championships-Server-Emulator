@@ -1,20 +1,14 @@
 @echo off
-echo Starting Riding Club Championships Server Emulator...
-echo.
-
+rem Run the server from source. RCCServer.exe from a release does not need this.
+rem Optional: start_server.bat "D:\Games\RidingClubChampionships"   (the folder with rcc.exe)
 cd /d "%~dp0"
-if not exist "images" mkdir images
 
 if not exist ".venv" (
     echo Creating Python virtual environment...
     python -m venv .venv
 )
-
 call .venv\Scripts\activate.bat
 pip install -q -r requirements.txt
-
-set "MANAGED=%~dp0..\rcc_Data\Managed"
-if not "%~1"=="" set "MANAGED=%~1"
 
 if not exist "igor_host\IgorHost.exe" (
     echo Building the card host...
@@ -23,20 +17,10 @@ if not exist "igor_host\IgorHost.exe" (
     popd
 )
 
-if exist "igor_host\IgorHost.exe" (
-    echo Starting the card host...
-    start "RCC card host" "%~dp0igor_host\IgorHost.exe" "%MANAGED%" 27141
+rem The server starts the card host itself and stops it on exit.
+if "%~1"=="" (
+    python Server.py
 ) else (
-    echo The card host did not build. The shop and cards will not load until IgorHost.exe is running.
+    python Server.py --game-dir "%~1"
 )
-
-echo.
-echo Starting server...
-echo   HTTP: http://127.0.0.1:8080 (or http_port in server.json)
-echo   Game: 127.0.0.1:27130
-echo.
-echo Press Ctrl+C to stop the server. Close the card host window too.
-echo.
-
-python Server.py
 pause

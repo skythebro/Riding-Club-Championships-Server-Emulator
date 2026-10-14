@@ -7,12 +7,12 @@ import struct
 import threading
 import time
 import zlib
-from pathlib import Path
 
+from paths import APP_DIR
 from server_config import ride_is_plausible
 from storage import connect_db
 
-MAP_PATH = Path(__file__).resolve().parent / "igor_host" / "protocol_map.json"
+MAP_PATH = APP_DIR / "igor_host" / "protocol_map.json"
 
 PROFILE_COLUMNS = (
     ("horse_name", "TEXT"),
@@ -80,7 +80,7 @@ class GameFeatures:
         self._ensure_columns()
 
     def _load_balance(self):
-        path = Path(__file__).resolve().parent / "balance.json"
+        path = APP_DIR / "balance.json"
         if not path.exists():
             return {}
         return json.loads(path.read_text(encoding="utf-8"))
@@ -913,11 +913,12 @@ class GameFeatures:
             return 8
 
     def _data_file(self, name):
-        root = Path(__file__).resolve().parent
-        installed = root.parent / "UserData" / name
-        if installed.exists():
-            return installed
-        return root / "gamedata" / name
+        # Same order as the card host: this server's copy first, then the game's UserData copy.
+        shipped = APP_DIR / "gamedata" / name
+        if shipped.exists():
+            return shipped
+        installed = APP_DIR.parent / "UserData" / name
+        return installed if installed.exists() else shipped
 
     def _gear_by_hash(self):
         cached = getattr(self, "_gear_index", None)

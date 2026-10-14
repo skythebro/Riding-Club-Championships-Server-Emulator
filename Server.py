@@ -18,7 +18,6 @@ import threading
 import sqlite3
 import hashlib
 import zlib
-from pathlib import Path
 from typing import Dict, Optional, Tuple
 from datetime import datetime
 
@@ -26,13 +25,14 @@ from game_features import GameFeatures
 from igor_client import IgorClient
 from server_config import load_config, login_decision
 from storage import connect_db
+from paths import APP_DIR
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-ROOT = Path(__file__).resolve().parent
+ROOT = APP_DIR
 IMAGE_DIR = ROOT / "images"
 LOOPBACK_HOSTS = {"127.0.0.1", "::1", "localhost"}
 
@@ -350,7 +350,7 @@ class RCCServerEmulator:
         self.tcp_clients: Dict[str, socket.socket] = {}
         self.client_players: Dict[str, int] = {}
         self.pending_profile: Dict[str, dict] = {}
-        self.igor = IgorClient()
+        self.igor = IgorClient(JOIN_CONFIG.get("game_dir") or None)
         self.outbox = {}
         # Tests set this to keep pushes for clients that have no socket.
         self.capture_outbox = False
@@ -1152,36 +1152,65 @@ class RCCServerEmulator:
             self.stop_tcp_server()
             self.stop_policy_server()
 
-def main():
-    """Main entry point"""
+def main(argv=None):
+    """RCCServer [join HOST] [--game-dir PATH]"""
+    import argparse
+    import shutil
+
+    parser = argparse.ArgumentParser(description="Riding Club Championships server")
+    parser.add_argument("--game-dir", help="game folder with rcc.exe and rcc_Data (default: found automatically)")
+    sub = parser.add_subparsers(dest="command")
+    join = sub.add_parser("join", help="write the servers.txt players need to join this server")
+    join.add_argument("host", nargs="?", help="address players use to reach this server")
+    join.add_argument("--out", help="where to write servers.txt")
+    args = parser.parse_args(argv)
+
+    if args.command == "join":
+        import client_config
+        client_config.main([item for item in (args.host, "--out" if args.out else None, args.out) if item])
+        return
+
+    config_file = ROOT / "server.json"
+    example = ROOT / "server.json.example"
+    if not config_file.exists() and example.exists():
+        shutil.copyfile(example, config_file)
+        print(f"Created {config_file}. Edit it to let other people join.")
+        JOIN_CONFIG.update(load_config())
+    if args.game_dir:
+        JOIN_CONFIG["game_dir"] = args.game_dir
+
+    from paths import find_game_dir
+    game = find_game_dir(JOIN_CONFIG.get("game_dir") or None)
+    debug = JOIN_CONFIG.get("debug_logs")
+    if debug is None:
+        # Packet logs record every packet. Keep them for development, off in a packaged server.
+        debug = DEBUG_MODE and not getattr(sys, "frozen", False)
+
     print("=" * 50)
-    print("Riding Club Championships Server Emulator")
+    print("Riding Club Championships server")
     print("=" * 50)
-    
-    if DEBUG_MODE:
-        print("DEBUG MODE ENABLED")
-        print(f"Debug logs will be saved to: {DEBUG_DIR}")
-        print("- TCP communication logs")
-        print("- HTTP request/response logs") 
-        print("- Binary data hex dumps")
-        print("-" * 50)
-    
-    # Create images directory if it doesn't exist
+    print(f"Game:    {game or 'NOT FOUND - set game_dir in server.json'}")
+    print(f"Game TCP {SERVER_CONFIG['host']}:{SERVER_CONFIG['tcp_port']}   HTTP {SERVER_CONFIG['http_port']}")
+    if SERVER_CONFIG["host"] in ("127.0.0.1", "localhost"):
+        print("Only this PC can join. Set bind_host to 0.0.0.0 in server.json to let others in.")
+    print("Players need servers.txt next to rcc.exe. Make it with:  join <your address>")
+    if debug:
+        print(f"Packet logs: {DEBUG_DIR}")
+    print("-" * 50)
+    if game is None:
+        print("The game folder is needed for the card host. Stopping.")
+        sys.exit(1)
+
     IMAGE_DIR.mkdir(exist_ok=True)
-    
-    # Create and run the server
-    server = RCCServerEmulator()
-    
+    server = RCCServerEmulator(debug_logging=debug)
     try:
         server.run()
     except KeyboardInterrupt:
-        print("\nServer stopped by user")
-        if DEBUG_MODE:
-            print(f"Debug logs saved in: {DEBUG_DIR}")
-    except Exception as e:
-        print(f"Server error: {e}")
-        if DEBUG_MODE:
-            print(f"Debug logs saved in: {DEBUG_DIR}")
+        print()
+        print("Server stopped")
+    finally:
+        server.igor.stop()
+
 
 if __name__ == "__main__":
     main()

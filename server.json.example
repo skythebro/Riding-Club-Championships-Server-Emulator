@@ -5,6 +5,7 @@
   "policy_port": 27132,
   "http_port": 8080,
   "public_host": "",
+  "game_dir": "",
   "open_registration": true,
   "allowed_steam_ids": [],
   "min_ride_seconds": 8,

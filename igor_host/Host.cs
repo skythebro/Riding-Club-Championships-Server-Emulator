@@ -20,6 +20,8 @@ public static class Host
     static readonly JavaScriptSerializer Json = new JavaScriptSerializer();
     static Assembly Game;
     static string ManagedDir;
+    // The server folder: balance.json and gamedata/. Defaults to <game>\ServerEmu.
+    static string DataDir;
     static readonly Dictionary<int, CallInfo> Catalog = new Dictionary<int, CallInfo>();
     static readonly Dictionary<string, FrameBuffer> Clients = new Dictionary<string, FrameBuffer>();
     static readonly object Gate = new object();
@@ -27,7 +29,7 @@ public static class Host
 
     static void LoadBalance()
     {
-        string path = Path.GetFullPath(Path.Combine(ManagedDir ?? "", "..", "..", "ServerEmu", "balance.json"));
+        string path = Path.GetFullPath(Path.Combine(DataDir ?? "", "balance.json"));
         if (!File.Exists(path))
             return;
         Json.MaxJsonLength = int.MaxValue;
@@ -113,10 +115,11 @@ public static class Host
     {
         if (args.Length < 2)
         {
-            Console.Error.WriteLine("usage: IgorHost.exe <managed-dir> <port>");
+            Console.Error.WriteLine("usage: IgorHost.exe <managed-dir> <port> [server-dir]");
             return 2;
         }
         ManagedDir = args[0];
+        DataDir = args.Length > 2 ? args[2] : Path.Combine(ManagedDir, "..", "..", "ServerEmu");
         string managed = ManagedDir;
         int port = int.Parse(args[1]);
         AppDomain.CurrentDomain.AssemblyResolve += (sender, resolveArgs) =>
@@ -1383,13 +1386,14 @@ public static class Host
 
     static string DataFile(string name)
     {
+        // The server's own copy decides what every player sees. The game's UserData copy is a fallback.
+        string shipped = Path.GetFullPath(Path.Combine(DataDir, "gamedata", name));
+        if (File.Exists(shipped))
+            return shipped;
         string installed = Path.GetFullPath(Path.Combine(ManagedDir, "..", "..", "UserData", name));
         if (File.Exists(installed))
             return installed;
-        string shipped = Path.GetFullPath(Path.Combine(ManagedDir, "..", "..", "ServerEmu", "gamedata", name));
-        if (File.Exists(shipped))
-            return shipped;
-        return installed;
+        return shipped;
     }
 
     static List<CoursePiece> LoadCoursePieces()

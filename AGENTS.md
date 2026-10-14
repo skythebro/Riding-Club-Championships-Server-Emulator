@@ -46,6 +46,8 @@ Rules that keep the client connected:
 | `game_features.py` | Every game handler (`on_*`). This is where new behaviour goes. |
 | `storage.py` | `connect_db(path)`: the only way to open SQLite. It commits, closes, and waits on a busy lock. |
 | `server_config.py` | `server.json` loading, login allow list, `ride_is_plausible` |
+| `paths.py` | `APP_DIR` (next to the scripts, or next to `RCCServer.exe`) and `find_game_dir()`. Use these, never `Path(__file__)`, so the packaged exe finds its files. |
+| `build_release.py` | Builds `dist/RCCServer-<version>.zip`. CI runs it on `v*` tags (`.github/workflows/`). |
 | `client_config.py` | Writes the `servers.txt` that points a game at this server (entry `live`, read before the built-in list) |
 | `balance.json` | All prices and payouts. Read them with `self.bal("section", "key", default=...)`. Never hard-code a number. |
 | `gamedata/*.json` | Wardrobe, course pieces, and extra localization served by the card host |

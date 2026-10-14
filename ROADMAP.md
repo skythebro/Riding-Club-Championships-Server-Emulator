@@ -15,12 +15,14 @@ Measured on 14 October 2026 against the decompiled client:
 - [x] HTTP moved from port 80 to 8080, so no administrator shell is needed. The Steam client only uses HTTP for Facebook and VK.
 - [x] `RidingclubOffline.dll` (an old debug mod that faked cards) is disabled. The game logs in and loads the paddock without it.
 
-## 2. Hosting a server: one download
+## 2. Hosting a server: one download (done, except an always-on option)
 
-- [ ] A GitHub release zip: the server as one exe (PyInstaller), a prebuilt `IgorHost.exe`, `balance.json`, `gamedata/`, and `server.json.example`. No Python or compiler needed.
-- [ ] One start script that finds the game's `rcc_Data/Managed` folder (Steam library folders, or a path in `server.json`), then starts the card host and the server.
-- [ ] Run the card host from the server process, and stop it when the server stops, instead of using two windows.
-- [ ] A hosting guide: open TCP 27130 on the router and firewall, set `bind_host` and `public_host`, then send players `servers.txt`.
+- [x] `build_release.py` makes `RCCServer-<version>.zip`: `RCCServer.exe` (PyInstaller, no Python needed), a prebuilt `IgorHost.exe`, `balance.json`, `gamedata/`, `server.json.example`, `Start Server.bat`, `Make servers.txt.bat`, and `QUICKSTART.txt`. No game files.
+- [x] The server finds the game itself: `game_dir` in `server.json`, the folder above, then every Steam library. Tested from an unzipped copy outside the game folder on 14 October 2026; the real client logged in.
+- [x] The server starts the card host and stops it with itself, even when the window is closed or the process is killed (a Windows job object).
+- [x] The first start writes `server.json`. Packet logs are off in the exe unless `debug_logs` is true.
+- [x] GitHub Actions: lint and tests on every push, and a release zip on every `v*` tag.
+- [x] Hosting steps in the README and `QUICKSTART.txt`.
 - [ ] A Windows service or scheduled-task option for always-on servers.
 
 ## 3. Tools for server owners

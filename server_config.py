@@ -3,12 +3,17 @@
 import json
 from pathlib import Path
 
+from paths import APP_DIR
+
 DEFAULTS = {
     "bind_host": "127.0.0.1",
     "tcp_port": 27130,
     "policy_port": 27132,
     "http_port": 8080,
     "public_host": "",
+    "game_dir": "",
+    # None: on when run from source, off in RCCServer.exe.
+    "debug_logs": None,
     "open_registration": True,
     "allowed_steam_ids": [],
     "min_ride_seconds": 8,
@@ -22,7 +27,7 @@ STEAM_ID_MAX = 76561297960265728
 def load_config(path=None):
     config = dict(DEFAULTS)
     config["allowed_steam_ids"] = []
-    file = Path(path) if path else Path(__file__).resolve().parent / "server.json"
+    file = Path(path) if path else APP_DIR / "server.json"
     if not file.exists():
         return config
     loaded = json.loads(file.read_text(encoding="utf-8"))

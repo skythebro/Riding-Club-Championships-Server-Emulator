@@ -10,3 +10,6 @@ igor_host/*.exe
 *.db-journal
 *.db-wal
 *.db-shm
+igor_host/host.log
+build/
+dist/

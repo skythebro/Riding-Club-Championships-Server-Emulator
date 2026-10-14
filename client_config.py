@@ -13,10 +13,10 @@ import argparse
 import json
 from pathlib import Path
 
+from paths import APP_DIR, find_game_dir
 from server_config import load_config
 
-ROOT = Path(__file__).resolve().parent
-GAME_DIR = ROOT.parent
+ROOT = APP_DIR
 
 
 def servers_entry(host, config):
@@ -49,10 +49,11 @@ def main(argv=None):
 
     config = load_config()
     host = args.host or config.get("public_host") or "127.0.0.1"
+    game_dir = find_game_dir(config.get("game_dir") or None)
     if args.out:
         out = Path(args.out)
-    elif host == "127.0.0.1" and (GAME_DIR / "rcc.exe").exists():
-        out = GAME_DIR / "servers.txt"
+    elif host == "127.0.0.1" and game_dir is not None:
+        out = game_dir / "servers.txt"
     else:
         out = ROOT / "servers.txt"
     if out.exists():
@@ -62,7 +63,7 @@ def main(argv=None):
             print("Kept the old file as %s" % backup)
     out.write_text(servers_text(host, config), encoding="utf-8", newline="")
     print("Wrote %s for %s:%s" % (out, host, config["tcp_port"]))
-    if out.parent != GAME_DIR:
+    if game_dir is None or out.parent != game_dir:
         print("Give this file to players. They put it next to rcc.exe, replacing the one there.")
 
 

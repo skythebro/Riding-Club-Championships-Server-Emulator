@@ -3,3 +3,5 @@
 ruff>=0.6
 # agent_mcp/server.py (drives the game client through the MelonLoader bridge)
 mcp>=2.3
+# build_release.py (RCCServer.exe)
+pyinstaller>=6.10

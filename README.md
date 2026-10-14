@@ -30,55 +30,38 @@ The original daily gift ran for 200 days. That table is in `Rewards for all the 
 
 An existing save is not rewritten when you change `new_player`. Those values apply to accounts created after the change.
 
-## Setup
+## Hosting a server
 
-1. Install Python 3.10 or newer.
-2. From this folder:
+You need Windows and your own copy of the game installed through Steam. The server reads the game's files from that install. It does not ship them.
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
+1. Download `RCCServer-<version>.zip` from the GitHub releases and unzip it anywhere.
+2. Run `Start Server.bat`. The first start creates `server.json`, finds the game through Steam, and starts the card host. If it cannot find the game, set `game_dir` in `server.json` to the folder that holds `rcc.exe`.
+3. Run `Make servers.txt.bat` to make the file players need. See below.
 
-3. The card host reads `gamedata/wardrobe.json`, `gamedata/course_items.json`, and `gamedata/localization_extra.json` from this folder. If the game already has the same files in `UserData`, next to `rcc_Data`, those copies win.
+Close the server window to stop it. The card host stops with it. Saves are in `users.db` next to `RCCServer.exe`.
 
-4. Build the card host from `igor_host` if `IgorHost.exe` is missing, then start the host before the server. It listens on `127.0.0.1:27141`.
+### Running from source
 
-```bat
-cd igor_host
-C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /target:exe /main:Host /r:System.Web.Extensions.dll /out:IgorHost.exe Host.cs
-IgorHost.exe "<game>\rcc_Data\Managed" 27141
-```
-
-Then, from this folder:
-
-```bash
-python Server.py
-```
-
-`start_server.bat` creates the virtual environment, starts the card host, then starts `Server.py`. It looks for the game at `..\rcc_Data\Managed`. Pass another Managed folder if the game lives somewhere else:
+Install Python 3.10 or newer, then run `start_server.bat`. It creates the virtual environment, builds the card host if `IgorHost.exe` is missing, and starts `Server.py`. If the game is not found, pass its folder:
 
 ```bat
-start_server.bat "D:\Games\RidingClubChampionships\rcc_Data\Managed"
+start_server.bat "D:\Games\RidingClubChampionships"
 ```
+
+`python Server.py join <address>` is the source version of `Make servers.txt.bat`. `python build_release.py` builds the release zip. Pushing a `v*` tag builds it on GitHub and attaches it to a release.
+
+The card host reads `gamedata/wardrobe.json`, `gamedata/course_items.json`, and `gamedata/localization_extra.json` from the server folder. A copy in the game's `UserData` folder is used only when the server has none.
 
 ## Pointing the game at a server
 
 The game reads `servers.txt`, next to `rcc.exe`, before its built-in list, and uses the entry named `live`. That file is all a player needs. Nothing inside the game files changes, and Steam's "Verify integrity of game files" puts the original back.
 
-To play on this PC:
+To play on this PC, run `Make servers.txt.bat` and leave the address blank. When the server sits next to the game, this writes `servers.txt` into the game folder and keeps the old one as `servers.txt.before-emu`.
 
-```bash
-python client_config.py
-```
+For players on other machines, give the address they reach you at, and send them the `servers.txt` it writes next to the server:
 
-This writes `servers.txt` into the game folder. The old one is kept as `servers.txt.before-emu`.
-
-For players on other machines, run it with the address they reach you at, and send them the `servers.txt` it writes into this folder:
-
-```bash
-python client_config.py 203.0.113.7
+```bat
+RCCServer.exe join 203.0.113.7
 ```
 
 | Port | Use |
@@ -93,7 +76,9 @@ python client_config.py 203.0.113.7
 Copy [`server.json.example`](server.json.example) to `server.json`.
 
 - `bind_host` is `127.0.0.1` until you set `0.0.0.0`. Only then can another computer reach the server.
-- `public_host` is the address players use to reach you. `client_config.py` uses it when you give no address.
+- `public_host` is the address players use to reach you. `Make servers.txt.bat` uses it when you give no address.
+- `game_dir` is the game folder, if the server cannot find it through Steam.
+- `debug_logs` writes every packet to `debug_logs/`. It is on when run from source and off in `RCCServer.exe`. Set `true` or `false` to choose.
 - `allowed_steam_ids` empty means any real Steam account can create a rider. Fill it with the Steam ids you want, and everyone else is refused.
 - `open_registration` false keeps accounts that already exist and refuses new ones.
 - `max_clients` is how many game connections may be open at once. 64 by default. A connection that does not log in within a minute is closed.
