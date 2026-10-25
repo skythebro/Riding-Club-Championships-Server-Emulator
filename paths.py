@@ -21,8 +21,41 @@ def _app_dir():
 APP_DIR = _app_dir()
 
 
+def _managed_in(path):
+    """The game's Managed folder inside this game folder, or None.
+
+    Windows and a copied folder on Linux: rcc_Data/Managed. macOS: <name>.app/Contents/Resources/Data/Managed.
+    """
+    if path is None:
+        return None
+    path = Path(path)
+    windows = path / "rcc_Data" / "Managed"
+    if (windows / "Assembly-CSharp.dll").exists():
+        return windows
+    bundles = [path] if path.suffix == ".app" else sorted(path.glob("*.app"))
+    for bundle in bundles:
+        mac = bundle / "Contents" / "Resources" / "Data" / "Managed"
+        if (mac / "Assembly-CSharp.dll").exists():
+            return mac
+    return None
+
+
 def _is_game_dir(path):
-    return path is not None and (Path(path) / "rcc_Data" / "Managed" / "Assembly-CSharp.dll").exists()
+    return _managed_in(path) is not None
+
+
+def app_bundle(game_dir):
+    """The macOS game app inside this game folder, or None on Windows."""
+    managed = _managed_in(game_dir)
+    if managed is None or managed.parent.name == "rcc_Data":
+        return None
+    return managed.parents[3]
+
+
+def servers_txt_path(game_dir):
+    """Where the game reads servers.txt: next to rcc.exe, or at the top of the macOS app (beside Contents)."""
+    bundle = app_bundle(game_dir)
+    return (bundle if bundle is not None else Path(game_dir)) / "servers.txt"
 
 
 def _steam_roots():
@@ -48,6 +81,7 @@ def _steam_roots():
     for env in ("ProgramFiles(x86)", "ProgramFiles"):
         if os.environ.get(env):
             roots.append(Path(os.environ[env]) / "Steam")
+    roots.append(Path.home() / "Library" / "Application Support" / "Steam")
     roots.append(Path.home() / ".steam" / "steam")
     roots.append(Path.home() / ".local" / "share" / "Steam")
     return roots
@@ -66,7 +100,7 @@ def _steam_libraries():
 
 
 def find_game_dir(configured=None):
-    """The game folder that holds rcc_Data/Managed, or None.
+    """The game folder that holds rcc_Data/Managed (or a macOS app), or None.
 
     Order: server.json game_dir, the folder above this server, then every Steam library.
     """
@@ -77,10 +111,12 @@ def find_game_dir(configured=None):
     candidates.extend(library / "steamapps" / "common" / GAME_FOLDER for library in _steam_libraries())
     for candidate in candidates:
         if _is_game_dir(candidate):
-            return candidate.resolve()
+            candidate = candidate.resolve()
+            # game_dir may name the .app itself. The game folder is the one that holds it.
+            return candidate.parent if candidate.suffix == ".app" else candidate
     return None
 
 
 def managed_dir(configured=None):
     game = find_game_dir(configured)
-    return game / "rcc_Data" / "Managed" if game else None
+    return _managed_in(game) if game else None

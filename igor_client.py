@@ -2,6 +2,7 @@
 
 import atexit
 import json
+import os
 import shutil
 import socket
 import subprocess
@@ -17,15 +18,32 @@ HOST_LOG = APP_DIR / "igor_host" / "host.log"
 
 
 def _host_command(managed):
-    """The card host is a .NET exe. Linux runs it with Mono (apt install mono-runtime)."""
+    """The card host is a .NET exe. Linux and macOS run it with Mono."""
     command = [str(EXE), str(managed), str(HOST_PORT), str(APP_DIR)]
     return command if sys.platform == "win32" else ["mono", *command]
+
+
+MONO_HINT = {
+    "darwin": "Mono is not installed. On a Mac: brew install mono (or the installer from mono-project.com).",
+}.get(sys.platform, "Mono is not installed. On Debian or Ubuntu: sudo apt install mono-runtime libmono-system-web-extensions4.0-cil")
 
 
 def _die_with_parent():
     """Linux: the kernel ends the card host when the server ends, however the server ends."""
     import ctypes
     ctypes.CDLL("libc.so.6", use_errno=True).prctl(1, 9)  # PR_SET_PDEATHSIG, SIGKILL
+
+
+def _popen_options():
+    """How to start the card host so it never outlives the server on this system."""
+    if sys.platform == "win32":
+        # A job object (see _tie_to_this_process) ends it. No console window.
+        return {"creationflags": subprocess.CREATE_NO_WINDOW}
+    if sys.platform.startswith("linux"):
+        return {"preexec_fn": _die_with_parent}
+    # macOS and others: the host reads stdin and ends when this process's end of the pipe closes.
+    env = dict(os.environ, RCC_EXIT_WITH_STDIN="1")
+    return {"stdin": subprocess.PIPE, "env": env}
 
 
 def _tie_to_this_process(proc):
@@ -106,12 +124,12 @@ class IgorClient:
         if not EXE.exists():
             raise FileNotFoundError("The card host is missing: %s" % EXE)
         if sys.platform != "win32" and shutil.which("mono") is None:
-            raise FileNotFoundError("Mono is not installed. On Debian or Ubuntu: sudo apt install mono-runtime libmono-system-web-extensions4.0-cil")
+            raise FileNotFoundError(MONO_HINT)
         managed = managed_dir(self.game_dir)
         if managed is None:
             raise FileNotFoundError(
                 "Riding Club Championships was not found. Set game_dir in server.json to the game folder "
-                "(the one with rcc.exe and rcc_Data)."
+                "(the one with rcc.exe and rcc_Data, or on a Mac the one with the game app)."
             )
         # A log file, not a pipe: nobody reads a pipe, and a full one would freeze the host.
         log = open(HOST_LOG, "ab")
@@ -120,8 +138,7 @@ class IgorClient:
             stdout=log,
             stderr=subprocess.STDOUT,
             cwd=str(EXE.parent),
-            **({"creationflags": subprocess.CREATE_NO_WINDOW} if sys.platform == "win32"
-               else {"preexec_fn": _die_with_parent}),
+            **_popen_options(),
         )
         log.close()
         self._job = _tie_to_this_process(self.proc)

@@ -777,3 +777,83 @@ class ServerLogTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as folder:
             self.assertEqual(serverlog.version(folder), "source")
+
+
+class MacSupportTests(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        from pathlib import Path
+
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def mac_game(self):
+        app = self.root / "Riding Club Championships.app"
+        managed = app / "Contents" / "Resources" / "Data" / "Managed"
+        managed.mkdir(parents=True)
+        (managed / "Assembly-CSharp.dll").write_bytes(b"")
+        return app, managed
+
+    def test_the_mac_app_is_found_and_its_managed_folder_used(self):
+        import paths
+
+        app, managed = self.mac_game()
+        self.assertEqual(paths.find_game_dir(str(self.root)), self.root.resolve())
+        self.assertEqual(paths.managed_dir(str(self.root)), managed.resolve())
+        # game_dir may also name the app itself.
+        self.assertEqual(paths.find_game_dir(str(app)), self.root.resolve())
+
+    def test_servers_txt_goes_beside_contents_inside_the_mac_app(self):
+        import paths
+
+        app, _managed = self.mac_game()
+        # The game reads Application.dataPath + "/../servers.txt", and on a Mac dataPath is <app>/Contents.
+        self.assertEqual(paths.servers_txt_path(self.root.resolve()), app.resolve() / "servers.txt")
+
+    def test_windows_keeps_servers_txt_next_to_the_exe(self):
+        import paths
+
+        managed = self.root / "rcc_Data" / "Managed"
+        managed.mkdir(parents=True)
+        (managed / "Assembly-CSharp.dll").write_bytes(b"")
+        self.assertEqual(paths.servers_txt_path(self.root), self.root / "servers.txt")
+        self.assertIsNone(paths.app_bundle(self.root))
+
+    def test_the_card_host_ends_with_the_server_on_each_system(self):
+        import subprocess
+        from unittest import mock
+
+        import igor_client
+
+        with mock.patch.object(igor_client.sys, "platform", "darwin"):
+            options = igor_client._popen_options()
+            self.assertIs(options["stdin"], subprocess.PIPE)
+            self.assertEqual(options["env"]["RCC_EXIT_WITH_STDIN"], "1")
+        with mock.patch.object(igor_client.sys, "platform", "linux"):
+            self.assertIs(igor_client._popen_options()["preexec_fn"], igor_client._die_with_parent)
+
+    def test_the_launch_agent_restarts_the_server_and_finds_mono(self):
+        import plistlib
+
+        import service
+
+        agent = plistlib.loads(service.launch_agent().encode("utf-8"))
+        self.assertEqual(agent["Label"], service.AGENT_LABEL)
+        self.assertTrue(agent["KeepAlive"])
+        self.assertTrue(agent["RunAtLoad"])
+        self.assertIn("/opt/homebrew/bin", agent["EnvironmentVariables"]["PATH"])
+        self.assertEqual(agent["ProgramArguments"], service.server_command())
+
+    def test_the_log_bundle_takes_the_mac_game_log(self):
+        from unittest import mock
+
+        import serverlog
+
+        log = self.root / "Library" / "Logs" / "Unity" / "Player.log"
+        log.parent.mkdir(parents=True)
+        log.write_text("unity", encoding="utf-8")
+        with mock.patch("pathlib.Path.home", return_value=self.root):
+            self.assertEqual(serverlog.game_logs(None), [("game/Player.log (Mac)", log)])

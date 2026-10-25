@@ -129,6 +129,22 @@ public static class Host
         };
         Game = Assembly.LoadFrom(Path.Combine(managed, "Assembly-CSharp.dll"));
         LoadCatalog();
+        // macOS has no way to tie a child to its parent. The server holds this process's stdin open;
+        // when the server ends for any reason the pipe closes, and the host ends too.
+        if (Environment.GetEnvironmentVariable("RCC_EXIT_WITH_STDIN") == "1")
+        {
+            var watcher = new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    while (Console.In.ReadLine() != null) { }
+                }
+                catch (Exception) { }
+                Environment.Exit(0);
+            });
+            watcher.IsBackground = true;
+            watcher.Start();
+        }
 
         var listener = new TcpListener(IPAddress.Loopback, port);
         listener.Start();

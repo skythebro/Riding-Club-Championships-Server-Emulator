@@ -6,6 +6,7 @@
 
 Windows: a scheduled task, so run it from a command prompt opened as administrator.
 Linux: a systemd unit, so run it as root (otherwise it writes the file and tells you what to run).
+macOS: a LaunchAgent for your user. It starts when you log in and restarts the server if it stops.
 
 The task runs as SYSTEM, so install writes the game folder into server.json first. SYSTEM does not
 see your Steam settings. Output goes to server.log next to the server and is replaced on each start.
@@ -24,6 +25,9 @@ from paths import APP_DIR, find_game_dir
 TASK_NAME = "RCC Server"
 UNIT_NAME = "rcc-server.service"
 UNIT_DIR = Path("/etc/systemd/system")
+AGENT_LABEL = "com.rcc.server"
+# launchd starts with a bare PATH. Homebrew puts mono in one of these.
+MAC_PATH = "/opt/homebrew/bin:/usr/local/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/bin:/bin:/usr/sbin:/sbin"
 
 
 def server_command():
@@ -131,6 +135,60 @@ WantedBy=multi-user.target
 """ % (APP_DIR, command)
 
 
+def launch_agent():
+    """The launchd plist for macOS. Output goes to server.log, like the other systems."""
+    program = "".join("        <string>%s</string>\n" % escape(part) for part in server_command())
+    log = escape(str(APP_DIR / "server.log"))
+    return """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>%s</string>
+    <key>ProgramArguments</key>
+    <array>
+%s    </array>
+    <key>WorkingDirectory</key>
+    <string>%s</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>%s</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>60</integer>
+    <key>StandardOutPath</key>
+    <string>%s</string>
+    <key>StandardErrorPath</key>
+    <string>%s</string>
+</dict>
+</plist>
+""" % (AGENT_LABEL, program, escape(str(APP_DIR)), MAC_PATH, log, log)
+
+
+def mac(action):
+    agent = Path.home() / "Library" / "LaunchAgents" / (AGENT_LABEL + ".plist")
+    domain = "gui/%d" % os.getuid()
+    if action == "status":
+        return subprocess.call(["launchctl", "print", "%s/%s" % (domain, AGENT_LABEL)])
+    if action == "remove":
+        subprocess.call(["launchctl", "bootout", domain, str(agent)])
+        agent.unlink(missing_ok=True)
+        print("Removed.")
+        return 0
+    remember_game_dir()
+    agent.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.call(["launchctl", "bootout", domain, str(agent)], stderr=subprocess.DEVNULL)
+    agent.write_text(launch_agent(), encoding="utf-8")
+    code = subprocess.call(["launchctl", "bootstrap", domain, str(agent)])
+    print("Installed %s. Output: %s" % (agent, APP_DIR / "server.log") if code == 0 else "launchctl failed.")
+    return code
+
+
 def linux(action):
     unit = UNIT_DIR / UNIT_NAME
     if action == "status":
@@ -162,4 +220,6 @@ def cli(argv):
         return 2
     if sys.platform == "win32":
         return windows(argv[0])
+    if sys.platform == "darwin":
+        return mac(argv[0])
     return linux(argv[0])

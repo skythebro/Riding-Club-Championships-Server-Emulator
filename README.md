@@ -5,7 +5,7 @@ A private server for Riding Club Championships, so the game can be played after 
 Pick your path:
 
 - **I want to play on someone's server.** Read [Joining a server](#joining-a-server).
-- **I want to run a server.** Read [Hosting a server](#hosting-a-server). It works on Windows and Linux.
+- **I want to run a server.** Read [Hosting a server](#hosting-a-server). It works on Windows, Linux, and macOS.
 - **Something broke.** Read [Reporting a bug](#reporting-a-bug).
 - **I want to help.** Read [what is not finished](#not-finished-and-where-help-is-wanted), then [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
@@ -13,7 +13,7 @@ Pick your path:
 
 Send the logs while it is fresh. Logs let a bug be fixed without guessing, and they are the most useful thing you can attach to a [GitHub issue](https://github.com/skythebro/Riding-Club-Championships-Server-Emulator/issues).
 
-**If you play on someone's server:** right after it happens, and before you restart the game, copy `rcc_Data/output_log.txt` from the game folder. The game replaces that file every time it starts. Say what you pressed and what you expected. Send both to the server's owner, or attach them to an issue.
+**If you play on someone's server:** right after it happens, and before you restart the game, copy the game's log. On Windows it is `rcc_Data/output_log.txt` in the game folder. On a Mac it is `~/Library/Logs/Unity/Player.log` (in Finder: Go, Go to Folder, paste that path). The game replaces that file every time it starts. Say what you pressed and what you expected. Send both to the server's owner, or attach them to an issue.
 
 **If you run the server:** double-click `Collect logs.bat` in the server folder (`RCCServer.exe logs`, or `./start.sh logs` on Linux). It makes `rcc-logs-<time>.zip` with:
 
@@ -55,6 +55,7 @@ The server runs the whole game loop: log in, ride, shop, chat, clubs, ranked, an
 - `service install` on Windows from an administrator prompt. Only the generated task has been checked.
 - The shop treats and the paddock prizes in the real client. The wire format is checked, the screens are not.
 - A Linux host with players on other distributions. The test was Debian under WSL.
+- macOS, as a player and as a host. The Mac game is on the same Steam build as Windows, and the server code is ready for it, but nobody has tried it on a real Mac yet.
 
 The full list of what is checked by hand is [`STATUS.md`](STATUS.md). What is planned is [`ROADMAP.md`](ROADMAP.md).
 
@@ -62,8 +63,11 @@ The full list of what is checked by hand is [`STATUS.md`](STATUS.md). What is pl
 
 The server's owner sends you a file named `servers.txt`.
 
-1. Put it in the game folder, next to `rcc.exe`. In Steam: right-click the game, Manage, Browse local files.
-2. Start the game.
+1. Open the game folder. In Steam: right-click the game, Manage, Browse local files.
+2. Put `servers.txt` where the game reads it:
+   - **Windows:** next to `rcc.exe`.
+   - **Mac:** inside the game app. Right-click the app, Show Package Contents, and put the file there, beside the `Contents` folder (not inside it).
+3. Start the game from Steam.
 
 Nothing inside the game files changes. Steam's "Verify integrity of game files" puts the original back, and you copy `servers.txt` in again. The game uses the entry named `live`, which is what the default Steam branch asks for.
 
@@ -115,7 +119,23 @@ tar xzf RCCServer-linux-<version>.tar.gz && cd RCCServer
 
 Set `game_dir` in `server.json` to `~/rcc-game` (the full path) so you do not need the flag. `./start.sh join <address>` and `./start.sh admin ...` work as on Windows. The card host ends with the server, even when the server is killed.
 
-The game itself only runs on Windows, so players still use `servers.txt` on Windows. Tested on Debian 13 with Mono 6.12.
+The game itself runs on Windows and macOS, so players use `servers.txt` there (see [Joining a server](#joining-a-server)). Tested on Debian 13 with Mono 6.12.
+
+### macOS
+
+Use the same download as Linux, `RCCServer-linux-<version>.tar.gz`. It is Python plus a card host that runs under Mono, and nothing in it is Linux-only.
+
+```sh
+brew install python mono            # or Python and Mono from python.org and mono-project.com
+tar xzf RCCServer-linux-<version>.tar.gz && cd RCCServer
+./start.sh
+```
+
+If the Mac version of the game is installed through Steam, the server finds it by itself (it looks inside the game app for `Contents/Resources/Data/Managed`). Otherwise copy `rcc_Data/Managed` from a Windows install, as on Linux, and pass `--game-dir`. `./start.sh join` with no address writes `servers.txt` straight into the game app, so you can play on the same Mac.
+
+`./start.sh service install` makes a LaunchAgent. It starts the server when you log in and restarts it if it stops. Output goes to `server.log`. `service remove` takes it away.
+
+macOS is new and not yet tried on a real Mac. If something is off, see [Reporting a bug](#reporting-a-bug).
 
 ### From source
 
@@ -129,7 +149,7 @@ The first start writes `server.json`. All keys are optional.
 | --- | --- | --- |
 | `bind_host` | `127.0.0.1` | `0.0.0.0` lets other computers reach the server. |
 | `public_host` | empty | The address players use. `join` uses it when you give no address. |
-| `game_dir` | found automatically | The game folder, if the server cannot find it. |
+| `game_dir` | found automatically | The game folder, if the server cannot find it. On a Mac, the folder that holds the game app. |
 | `tcp_port`, `policy_port`, `http_port` | 27130, 27132, 8080 | Change them, then run `join` again. |
 | `open_registration` | `true` | `false` keeps existing accounts and refuses new ones. |
 | `allowed_steam_ids` | empty | Empty lets any Steam account create a rider. Fill it to allow only those ids. |
@@ -212,7 +232,7 @@ The server decides coins, rating, action points, and prizes from its own state. 
 
 - **"The game folder was not found."** Set `game_dir` in `server.json` to the folder with `rcc.exe` (on Linux, the folder that holds `rcc_Data/Managed`).
 - **The game cannot connect.** Check that `servers.txt` is next to `rcc.exe`, that the server is running, and that its address matches `public_host`. For other players, check that port 27130 is open and forwarded.
-- **"Mono is not installed" (Linux).** Run the `apt install` line above.
+- **"Mono is not installed" (Linux or Mac).** Run the `apt install` or `brew install` line above.
 - **A port is already in use.** Another copy of the server is running. Stop it, or change the port in `server.json` and run `join` again.
 - **The client drops.** Collect the logs (see [Reporting a bug](#reporting-a-bug)) and send them. The newest file in `debug_logs/` names the last call. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

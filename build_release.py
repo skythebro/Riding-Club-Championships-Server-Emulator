@@ -72,20 +72,23 @@ cd "$(dirname "$0")"
 exec .venv/bin/python Server.py "$@"
 """
 
-LINUX_QUICKSTART = """Riding Club Championships server on Linux
+LINUX_QUICKSTART = """Riding Club Championships server on Linux and macOS
 
 You need Python 3.10 or newer and Mono, and the Managed folder of your own copy of the game.
 
 1. Install:  sudo apt install python3 python3-venv mono-runtime libmono-system-web-extensions4.0-cil
-2. Copy the game's rcc_Data/Managed folder from a Windows install to a folder
+   On a Mac:  brew install python mono
+2. On a Mac with the game installed through Steam, skip this step: the server finds it.
+   Otherwise copy the game's rcc_Data/Managed folder from a Windows install to a folder
    such as ~/rcc-game/rcc_Data/Managed. Then in server.json set "game_dir" to
    that folder (~/rcc-game). Until server.json exists, ./start.sh --game-dir ~/rcc-game.
 3. Run ./start.sh. The first start creates server.json.
 4. Letting others join: in server.json set "bind_host": "0.0.0.0" and
    "public_host" to your address. Open TCP port 27130 on the firewall.
    Then run ./start.sh join YOUR.ADDRESS and send players the servers.txt it writes.
-   They put it next to rcc.exe.
+   They put it next to rcc.exe, or on a Mac inside the game app beside Contents.
 5. Always on: sudo ./start.sh service install   (a systemd unit; logs: journalctl -u rcc-server -f)
+   On a Mac: ./start.sh service install          (a LaunchAgent; output in server.log)
 
 Admin: ./start.sh admin --help
 Prices, rewards, and the news panel: balance.json.

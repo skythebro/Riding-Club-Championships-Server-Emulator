@@ -15,7 +15,7 @@ Thank you for helping. This project keeps a dead game playable, and most of what
 - Quest cards: the rules are known from the fan site (three slots, one decline a day), but not the quests or their amounts.
 - Prices that `balance.json` marks as a server choice in its `_note`.
 
-**2. Testing in the real client.** The unchecked lines in [`STATUS.md`](STATUS.md) are things nobody has tried. The most valuable test is two real PCs on one server: chat, challenges, ranked between humans, clubs, and the showdown board. Try a Linux host on other distributions, and on a Raspberry Pi if you have one.
+**2. Testing in the real client.** The unchecked lines in [`STATUS.md`](STATUS.md) are things nobody has tried. The most valuable test is two real PCs on one server: chat, challenges, ranked between humans, clubs, and the showdown board. Try a Linux host on other distributions, and on a Raspberry Pi if you have one. If you have a Mac, try joining as a player and hosting with `./start.sh`.
 
 **3. The Windows always-on option.** Run `RCCServer.exe service install` from an administrator prompt, reboot, and report whether the server came up. It is tested only as generated XML so far.
 

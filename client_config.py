@@ -1,4 +1,4 @@
-"""Write the servers.txt a player puts next to rcc.exe to join this server.
+"""Write the servers.txt a player puts next to rcc.exe (or inside the Mac app) to join this server.
 
 The game reads servers.txt before its built-in server list, and on the normal
 Steam branch it picks the entry named "live". So this one file is all a player
@@ -13,7 +13,7 @@ import argparse
 import json
 from pathlib import Path
 
-from paths import APP_DIR, find_game_dir
+from paths import APP_DIR, find_game_dir, servers_txt_path
 from server_config import load_config
 
 ROOT = APP_DIR
@@ -53,7 +53,7 @@ def main(argv=None):
     if args.out:
         out = Path(args.out)
     elif host == "127.0.0.1" and game_dir is not None:
-        out = game_dir / "servers.txt"
+        out = servers_txt_path(game_dir)
     else:
         out = ROOT / "servers.txt"
     if out.exists():
@@ -63,8 +63,9 @@ def main(argv=None):
             print("Kept the old file as %s" % backup)
     out.write_text(servers_text(host, config), encoding="utf-8", newline="")
     print("Wrote %s for %s:%s" % (out, host, config["tcp_port"]))
-    if game_dir is None or out.parent != game_dir:
-        print("Give this file to players. They put it next to rcc.exe, replacing the one there.")
+    if game_dir is None or out != servers_txt_path(game_dir):
+        print("Give this file to players. On Windows it goes next to rcc.exe. On a Mac it goes inside the game app,")
+        print("beside its Contents folder (right-click the app, Show Package Contents).")
 
 
 if __name__ == "__main__":

@@ -136,12 +136,21 @@ def collect(app_dir, config, game_dir=None, out=None):
         packet_logs = sorted((app_dir / "debug_logs").glob("*.log"), key=lambda item: item.stat().st_mtime)
         for file in packet_logs[-3:]:
             archive.writestr("debug_logs/" + file.name, _tail(file))
-        if game_dir:
-            for label, relative in (
-                ("game/output_log.txt", Path("rcc_Data") / "output_log.txt"),
-                ("game/MelonLoader_Latest.log", Path("MelonLoader") / "Latest.log"),
-            ):
-                source = Path(game_dir) / relative
-                if source.is_file():
-                    archive.writestr(label, _tail(source))
+        for label, source in game_logs(game_dir):
+            archive.writestr(label, _tail(source))
     return target
+
+
+def game_logs(game_dir):
+    """(name in the zip, file) for each game log on this PC. A Mac game logs to ~/Library/Logs/Unity."""
+    found = []
+    candidates = [("game/Player.log (Mac)", Path.home() / "Library" / "Logs" / "Unity" / "Player.log")]
+    if game_dir:
+        candidates[:0] = [
+            ("game/output_log.txt", Path(game_dir) / "rcc_Data" / "output_log.txt"),
+            ("game/MelonLoader_Latest.log", Path(game_dir) / "MelonLoader" / "Latest.log"),
+        ]
+    for label, source in candidates:
+        if source.is_file():
+            found.append((label, source))
+    return found
