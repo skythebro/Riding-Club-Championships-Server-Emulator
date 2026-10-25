@@ -65,3 +65,12 @@ Measured on 14 October 2026 against the decompiled client:
 - [x] CI runs the rule tests on Ubuntu.
 - [x] The real game client against a Linux server (Debian under WSL, Mono card host), 14 October 2026: login, avatar creation, main menu, the daily gift, and the shop with 201 items. Ranked, showdown and club play were not repeated there.
 - [ ] Docker image. Left out for now.
+
+## 7. macOS
+
+- [x] The game has a Mac depot (509422) on the same public build as Windows (4037543). Downloaded 25 October 2026: the app is `rcc.app`, the game code is in `Contents/Resources/Data/Managed`, and asset bundles sit in `rcc.app/assetbundles`, so `servers.txt` goes in `rcc.app/`.
+- [x] The Mac game code matches Windows except the Steam bindings (calling conventions and packing). Every `Protocol2` type and method is the same.
+- [x] The card host run on the Mac game's files sends byte-identical frames to Windows: the full catalogue, the session, clubs, Pro, and a course.
+- [x] The server finds the Mac game, writes `servers.txt` into the app, stops the card host through its stdin pipe, and installs a LaunchAgent. CI runs the rule tests on macOS.
+- [ ] A real Mac playing on a server.
+- [ ] A real Mac hosting under Mono.

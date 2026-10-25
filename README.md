@@ -55,7 +55,7 @@ The server runs the whole game loop: log in, ride, shop, chat, clubs, ranked, an
 - `service install` on Windows from an administrator prompt. Only the generated task has been checked.
 - The shop treats and the paddock prizes in the real client. The wire format is checked, the screens are not.
 - A Linux host with players on other distributions. The test was Debian under WSL.
-- macOS, as a player and as a host. The Mac game is on the same Steam build as Windows, and the server code is ready for it, but nobody has tried it on a real Mac yet.
+- macOS, as a player and as a host. The Mac game speaks the same protocol (checked against the Mac depot), but nobody has played or hosted on a real Mac yet.
 
 The full list of what is checked by hand is [`STATUS.md`](STATUS.md). What is planned is [`ROADMAP.md`](ROADMAP.md).
 
@@ -66,7 +66,7 @@ The server's owner sends you a file named `servers.txt`.
 1. Open the game folder. In Steam: right-click the game, Manage, Browse local files.
 2. Put `servers.txt` where the game reads it:
    - **Windows:** next to `rcc.exe`.
-   - **Mac:** inside the game app. Right-click the app, Show Package Contents, and put the file there, beside the `Contents` folder (not inside it).
+   - **Mac:** inside the game app, `rcc`. Right-click it, Show Package Contents, and put the file there, beside the `Contents` and `assetbundles` folders (not inside them).
 3. Start the game from Steam.
 
 Nothing inside the game files changes. Steam's "Verify integrity of game files" puts the original back, and you copy `servers.txt` in again. The game uses the entry named `live`, which is what the default Steam branch asks for.
@@ -131,11 +131,11 @@ tar xzf RCCServer-linux-<version>.tar.gz && cd RCCServer
 ./start.sh
 ```
 
-If the Mac version of the game is installed through Steam, the server finds it by itself (it looks inside the game app for `Contents/Resources/Data/Managed`). Otherwise copy `rcc_Data/Managed` from a Windows install, as on Linux, and pass `--game-dir`. `./start.sh join` with no address writes `servers.txt` straight into the game app, so you can play on the same Mac.
+If the Mac version of the game is installed through Steam, the server finds it by itself (it reads `rcc.app/Contents/Resources/Data/Managed`). Otherwise copy `rcc_Data/Managed` from a Windows install, as on Linux, and pass `--game-dir`. `./start.sh join` with no address writes `servers.txt` straight into the game app, so you can play on the same Mac.
 
 `./start.sh service install` makes a LaunchAgent. It starts the server when you log in and restarts it if it stops. Output goes to `server.log`. `service remove` takes it away.
 
-macOS is new and not yet tried on a real Mac. If something is off, see [Reporting a bug](#reporting-a-bug).
+The Mac game is the same build as the Windows one. Its game code differs only in the Steam bindings, and the card host run on the Mac game's files sends byte-identical frames. A real Mac has not run it yet, so if something is off, see [Reporting a bug](#reporting-a-bug).
 
 ### From source
 

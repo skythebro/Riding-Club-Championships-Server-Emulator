@@ -65,7 +65,7 @@ def main(argv=None):
     print("Wrote %s for %s:%s" % (out, host, config["tcp_port"]))
     if game_dir is None or out != servers_txt_path(game_dir):
         print("Give this file to players. On Windows it goes next to rcc.exe. On a Mac it goes inside the game app,")
-        print("beside its Contents folder (right-click the app, Show Package Contents).")
+        print("rcc, beside its Contents folder (right-click rcc, Show Package Contents).")
 
 
 if __name__ == "__main__":

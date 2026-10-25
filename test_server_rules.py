@@ -791,7 +791,7 @@ class MacSupportTests(unittest.TestCase):
         self.tmp.cleanup()
 
     def mac_game(self):
-        app = self.root / "Riding Club Championships.app"
+        app = self.root / "rcc.app"
         managed = app / "Contents" / "Resources" / "Data" / "Managed"
         managed.mkdir(parents=True)
         (managed / "Assembly-CSharp.dll").write_bytes(b"")
